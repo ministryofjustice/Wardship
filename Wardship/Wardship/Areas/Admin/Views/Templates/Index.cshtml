@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Wardship.Models.WordTemplate>
+
+@{
+    ViewBag.Title = "Templates list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head
+{
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" media="screen" />
+    <link href="@Url.Content("~/Content/newPagedListButtons.css")" rel="stylesheet" type="text/css" media="screen" />
+    <style type="text/css">
+        form {display:inline;}
+    </style>
+}
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> Templates</h6>
+<p>
+
+	@Html.ImageAndTextLink(Url.Content("~/Content/Images/add.png"), "Create new template", "Create new template", "Create", null, null, null, null, "createButton")
+
+</p>
+<table>
+    <tr>
+        <th></th>
+       @* <th>
+            @Html.LabelFor(model => model.FirstOrDefault().Discriminator)
+        </th>*@
+        <th>
+            @Html.LabelFor(model => model.FirstOrDefault().templateName)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.FirstOrDefault().active)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr style="@(item.active ? "" : "color:gray;")">
+        <td style="text-align:right;">
+            @if (item.active)
+            {
+            @Html.ImageLink(Url.Content("~/Content/Images/edit.png"), "Edit", "Edit", "Templates", new { id = item.templateID }, null, null)
+            @Html.ImageLink(Url.Content("~/Content/Images/delete.png"), "Deactivate", "Deactivate", "Templates", new { id = item.templateID }, null, null) 
+            }
+@*            @Html.ImageLink(Url.Content("~/Content/Images/Audit.png"), "Audit", "Audit", "Audit", new { area = "", auditType = "Template", id = item.templateID }, null, null) *@
+        </td>
+@*        <td>
+            @Html.DisplayFor(modelItem => item.Discriminator)
+        </td>*@
+        <td>
+            @if (item.active)
+            {
+            @Html.ImageAndTextLink(Url.Content("~/Content/Images/icon_word.png"), item.templateName, string.Format("Click to open {0} template in Word", item.templateName), "Open", "Templates", new { id = item.templateID }, new { title = string.Format("Click to open the {0} template in Word", item.templateName) }, null, "createButton")
+            }
+            else
+            {
+            @: @item.templateName deactivated @(((DateTime)item.deactivated).ToShortDateString()) by @item.deactivatedBy
+            }
+        </td>
+      
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+    </tr>
+}
+</table>

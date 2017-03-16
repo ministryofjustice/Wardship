@@ -1,0 +1,26 @@
+﻿@model Wardship.Models.WordTemplate
+
+@{
+    ViewBag.Title = string.Format("Deactivate {0}", Model.templateName);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Templates", "Index", "Templates") 
+> @Model.templateName 
+> Deactivate</h6>
+
+<fieldset>
+    <legend>Are you sure you want to deactivate @Model.templateName?</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.templateName)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.templateName)
+    </div>
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value="Deactivate" /> 
+    </p>
+}

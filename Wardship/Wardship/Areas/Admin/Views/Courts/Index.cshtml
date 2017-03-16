@@ -1,0 +1,115 @@
+﻿@model Wardship.Models.CourtListView
+
+@{
+    ViewBag.Title = "Index";
+}
+@section head
+{
+    <link rel="stylesheet" type="text/css" media="screen" href="@Url.Content("~/Content/newPagedListButtons.css")" />
+    <style type="text/css">
+        form {display:inline;}
+    </style>
+}
+
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Lookups", "Lookups", "Admin") 
+> Courts</h6>
+
+<p>
+	@Html.ImageAndTextLink(Url.Content("~/Content/Images/add.png"), "Create new Court", "Create new Court", "Create", null, null, null, null, "createButton")
+</p>
+<div style="clear:both;"><ul id="ResultMessage"></ul></div>    
+<table class="widgets">
+    <tr>
+        <th colspan="2" style="text-align:right;vertical-align:middle;">
+        Court name containing 
+        @using (Html.BeginForm())
+           {    
+            @Html.TextBox("detailContains", null, new { @style = "width: 3em;", AccessKey = "F" })
+                            <input alt="Filter Court" type="image" value="Search" src="@Url.Content("~/Content/Images/view.png")"/>
+        }
+        </th>
+        <th colspan="2">&nbsp;</th>
+    </tr>
+    <tr>
+        <th></th>
+        @Html.SortHeader(Model, "CrtNm", "Court name")
+        @Html.SortHeader(Model, "Addrss", "Address")
+        @Html.SortHeader(Model, "DX", "DX Address")
+    </tr>
+
+@{  var isAltRow = false;
+	foreach (var item in Model.Courts) {
+    <tr id="widget-@item.CourtID" class="@(isAltRow ? "altRow" : "")">
+        <td width="60px" style="text-align:right;">
+            @Html.ImageLink(Url.Content("~/Content/Images/edit.png"), "Edit", "Edit", "Courts", new { id = item.CourtID }, null, null)
+            @Html.ImageLink(Url.Content("~/Content/Images/delete.png"), "Deactivate", "Deactivate", "Courts", new { id = item.CourtID }, new { @class = "openDialog", data_title = item.CourtName }, null)
+            @Html.ImageLink(Url.Content("~/Content/Images/Audit.png"), "Audit", "Audit", "Audit", new { area = "", auditType = "Court", id = item.CourtID }, null, null)
+        </td>
+        <td>
+            @Html.ImageAndTextLink(Url.Content("~/Content/Images/view.png"), item.CourtName, string.Format("View details for {0}", item.CourtName), "Details", "Courts", new { id = item.CourtID }, null, null, "createButton")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddressSingleLine)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DX)
+        </td>
+    </tr>
+	isAltRow = !isAltRow;
+	}
+}
+</table>
+@Html.SSGPaging("Index","Courts",Model,Model.Courts)
+
+<div id="dialog"></div>
+<script type="text/javascript">
+    // Remark: all this javascript could be placed in a separate js file
+    // to avoid cluttering the views
+    $(document).ready(function () {
+        $(".openDialog").live("click", function (e) {
+            e.preventDefault();
+            var title = 'Delete ' + this.data_title + '?';
+            $('#dialog').load(this.href, function () {
+                $(this).dialog({
+                    title: title,
+                    modal: true,
+                    width: 700,
+                    height: 350,
+                    resizable: false
+                })
+                bindForm(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#dialog').dialog('close');
+                        // remove the row from the table
+                        var rowId = "#widget-" + result.id;
+                        //change the background color to red before removing
+                        $('.widgets').find(rowId).css("background-color", "#FF3700");
+                        $('.widgets').find(rowId).fadeOut(500, function () {
+                            $('.widgets').find(rowId).remove();
+                        });
+                        $("<li>" + result.message + " deleted</li>").appendTo("#ResultMessage")
+                        $('#dialog').dialog('close');
+                    } else {
+                        $('#dialog').html(result);
+                        bindForm();
+                    }
+                }
+            });
+            return false;
+        });
+    }
+</script>
+

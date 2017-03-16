@@ -1,0 +1,24 @@
+﻿@model Wardship.Models.AuditEvent
+           
+<dl>
+@if (Model.RecordAddedTo == null || Model.RecordAddedTo.ToString()==Model.RecordChanged)
+{
+    if (Model.auditEventDescription.AuditDescription.Contains("dded"))
+    {
+    <dt>On @Html.DisplayFor(model => model.EventDate), @Html.DisplayFor(model => model.UserID) created this item.</dt>
+    }
+    else if (Model.auditEventDescription.AuditDescription.Contains("eleted"))
+    {
+    <dt>On @Html.DisplayFor(model => model.EventDate), @Html.DisplayFor(model => model.UserID) deleted this item.</dt>
+    }
+    else
+    { 
+    <dt>On @Html.DisplayFor(model => model.EventDate), @Html.DisplayFor(model => model.UserID) made the following changes</dt>
+    @Html.DisplayFor(model => model.AuditEventDataRows)
+    }
+}
+else
+{ 
+        <dt>@Model.auditEventDescription.AuditDescription by @Html.DisplayFor(model => model.UserID) on @Html.DisplayFor(model => model.EventDate).</dt>   
+}
+</dl>

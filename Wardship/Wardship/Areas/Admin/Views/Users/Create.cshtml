@@ -1,0 +1,46 @@
+﻿@model Wardship.Areas.Admin.Models.UserAdminVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Users", "Index", "Users") 
+> @ViewBag.Title</h6>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>User</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.User.Name, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.User.Name)
+            @Html.ValidationMessageFor(model => model.User.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.User.DisplayName, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.User.DisplayName)
+            @Html.ValidationMessageFor(model => model.User.DisplayName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.User.RoleStrength, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.User.RoleStrength, Model.Roles, "Please select a role", new { @class = "required" })
+            @Html.ValidationMessageFor(model => model.User.RoleStrength)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+        <div>Fields marked<span class="required-star">*</span> are mandatory and must be completed before the record can be saved.</div>
+    </fieldset>
+}
+@Html.SetFocus(m=>m.User.Name)

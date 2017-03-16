@@ -1,0 +1,111 @@
+﻿@model Wardship.Areas.Admin.Models.UserList
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h6>@Html.ActionLink("Administration", "Index", "Admin") > @ViewBag.Title <img src="@Url.Content("~/Content/Images/al_arrows_green.gif")" id="refresh" alt="Loading..." style="display:none;vertical-align:bottom;" /></h6>
+@Html.ImageAndTextLink(Url.Content("~/Content/Images/add.png"), "Create New User", "Create New user", "Create", null, null, null, null, "createButton")
+<table style="margin-top:1em;">
+    <tr>
+        <th>User Login</th>
+        <th>Display Name</th>
+        <th>Access Level</th>
+        <th>Last active</th>
+    </tr>
+@foreach (var usr in Model.Users)
+{
+    <tr>
+        <td>@Html.ImageAndTextLink(Url.Content("~/Content/Images/edit.png"), usr.Name, string.Format("Edit {0}", usr.Name), "Edit", "Users", new { id = usr.UserID }, null, null, "createButton")</td>
+        <td>@usr.DisplayName</td>
+        <td>@usr.Role.Detail</td>
+        @if (usr.LastActive != null)
+        {
+            TimeSpan LastSeen = (DateTime.Now - (DateTime)usr.LastActive);
+            string duration = "";
+            if (LastSeen.TotalSeconds <= 60)
+            {
+                duration = "Within 1 minute";
+            }
+            else if (LastSeen.TotalMinutes < 60)
+            {
+                duration = Wardship.genericFunctions.DisplayFieldDescriptorWithRecordCount(Int32.Parse(Math.Floor(LastSeen.TotalMinutes).ToString()), "minutes", "ago");
+            }
+            else if (LastSeen.TotalHours < 24)
+            {
+                duration = Wardship.genericFunctions.DisplayFieldDescriptorWithRecordCount(Int32.Parse(Math.Floor(LastSeen.TotalHours).ToString()), "hours", "ago");
+            }
+            else
+            {
+                duration = Wardship.genericFunctions.DisplayFieldDescriptorWithRecordCount(Int32.Parse(Math.Floor(LastSeen.TotalDays).ToString()), "days", "ago");
+            }
+            <td>@duration</td>
+        }
+        else
+        {
+            <td>Never</td>
+        }
+    </tr>
+}
+@if ((User as Wardship.ICurrentUser).AccessLevel == Wardship.AccessLevel.Admin)
+{
+    foreach (var group in Model.Groups)
+    {
+    <tr>
+        <td colspan="2">@Html.ImageAndTextLink(Url.Content("~/Content/Images/view.png"), group.Name, string.Format("Edit {0}", group.Name), "Getusers", "Users", new { id = group.ADGroupID }, new { @class = "openDialog createButton", data_title = group.Name }, null, null)</td>
+        <td>@group.Role.Detail</td>
+    </tr>
+}
+}
+</table>
+<div id="dialog"></div>
+
+<script type="text/javascript">
+    // Remark: all this javascript could be placed in a separate js file
+    // to avoid cluttering the views
+    $(document).ready(function () {
+        $(".openDialog").live("click", function (e) {
+            e.preventDefault();
+            var title = 'List of users in ...';
+            $('#dialog').load(this.href, function () {
+                $(this).dialog({
+                    title: title,
+                    modal: true,
+                    width: 700,
+                    height: 350,
+                    resizable: false
+                })
+                bindForm(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#dialog').dialog('close');
+                        // remove the row from the table
+                        var rowId = "#widget-" + result.id;
+                        //change the background color to red before removing
+                        $('.widgets').find(rowId).css("background-color", "#FF3700");
+                        $('.widgets').find(rowId).fadeOut(500, function () {
+                            $('.widgets').find(rowId).remove();
+                        });
+                        $("<dd>" + result.message + " deleted</dd>").appendTo("#ResultMessage")
+                        $('#dialog').dialog('close');
+                    } else {
+                        $('#dialog').html(result);
+                        bindForm();
+                    }
+                }
+            });
+            return false;
+        });
+    }
+</script>

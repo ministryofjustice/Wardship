@@ -1,0 +1,29 @@
+﻿@model Wardship.Models.Salutation
+
+@{
+    ViewBag.Title = string.Format("Deactivate {0}", Model.Detail);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Lookups", "Lookups", "Admin") 
+> @Html.ActionLink("Salutations", "Index") 
+> @Html.ActionLink(Model.Detail, "Details", "Salutation", new { id = Model.salutationID }, null)
+> Deactivate</h6>*@
+
+<fieldset>
+    <legend>Are you sure you want to deactivate @Model.Detail?</legend>
+
+    <div class="display-label">@Html.LabelFor(model=>model.Detail)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Detail)
+    </div>
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value="Deactivate" /> 
+    </p>
+}
+
+

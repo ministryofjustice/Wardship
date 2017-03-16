@@ -1,0 +1,29 @@
+﻿
+
+<span>0 characters used</span>
+@Html.TextAreaFor(model => model, new { cols = "30", data_limit_input=""+Html.GetMaxLength(model=>model)+""})
+
+<script type="text/javascript">
+
+    $("textarea[data-limit-input]").keyup(function (e) {
+        var $this = $(this),
+        charLength = $this.val().length,
+        charLimit = $this.attr("data-limit-input");
+        // Displays count
+        $this.prev("span").html(charLength + " of " + charLimit + " characters used");
+        // Alert when max is reached
+        if ($this.val().length > charLimit) {
+            $this.prev("span").html("<strong>You may only have up to " + charLimit + " characters.</strong>");
+        }
+    });
+
+    $("textarea[data-limit-input]").keydown(function (e) {
+        var $this = $(this),
+        charLength = $this.val().length,
+        charLimit = $this.attr("data-limit-input");
+
+        if ($this.val().length > charLimit && e.keyCode !== 8 && e.keyCode !== 46) {
+            return false;
+        }
+    });
+</script>

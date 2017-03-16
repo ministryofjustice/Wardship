@@ -1,0 +1,44 @@
+﻿@model Wardship.Models.WardshipRecordVMlistView
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="@Url.Content("~/Content/newPagedListButtons.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+
+<h6>Wardship records</h6>
+
+<table>
+    <tr>
+        <th>Details</th>
+       
+        <th>@Html.LabelFor(model => model.WardshipResults.FirstOrDefault().FileNumber)</th>
+        <th>@Html.LabelFor(model => model.WardshipResults.FirstOrDefault().ChildForenames)</th>
+        <th>@Html.LabelFor(model => model.WardshipResults.FirstOrDefault().ChildSurname)</th>
+        <th>@Html.LabelFor(model => model.WardshipResults.FirstOrDefault().ChildDateofBirth)</th>
+        <th>@Html.LabelFor(model => model.WardshipResults.FirstOrDefault().Gender.Detail)</th>
+        <th>@Html.LabelFor(model => model.WardshipResults.FirstOrDefault().DateOfOS)</th>
+        <th>@Html.LabelFor(model => model.WardshipResults.FirstOrDefault().HearingDate)</th>
+  
+    </tr>
+
+
+@foreach (var item in Model.WardshipResults) {
+    <tr>
+        <td>@Html.ImageLink(Url.Content("~/Content/Images/view.png"), "Details", "Details", "WardshipRecord", new { id = item.WardshipCaseID }, null, null)</td>  
+        <td>@Html.DisplayFor(modelItem => item.FileNumber)</td>
+        <td>@Html.DisplayFor(modelItem => item.ChildForenames)</td>
+        <td>@Html.DisplayFor(modelItem => item.ChildSurname)</td>
+        <td>@Html.DisplayFor(modelItem => item.ChildDateofBirth) </td>
+        <td>@Html.DisplayFor(modelItem => item.Gender.Detail) </td>
+        <td>@Html.DisplayFor(modelItem => item.DateOfOS)</td>
+        <td>@Html.DisplayFor(modelItem => item.HearingDate)</td>
+     </tr>
+}
+
+
+
+
+</table>
+
+  @Html.SSGPaging("Index", "WardshipRecord", Model, Model.WardshipResults)

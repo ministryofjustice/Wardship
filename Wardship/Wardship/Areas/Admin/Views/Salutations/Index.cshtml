@@ -1,0 +1,54 @@
+﻿@model Wardship.Models.SalutationListView
+
+@{
+    ViewBag.Title = "Salutation list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head
+{
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" media="screen" />
+    <link href="@Url.Content("~/Content/newPagedListButtons.css")" rel="stylesheet" type="text/css" media="screen" />
+    <style type="text/css">
+        form {display:inline;}
+    </style>
+}
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Lookups", "Lookups", "Admin") 
+> Salutations</h6>
+
+<p>
+	@Html.ImageAndTextLink(Url.Content("~/Content/Images/add.png"), "Create new Salutation", "Create new Salutation", "Create", null, null, null, null, "createButton")
+</p>
+
+<table>
+    <tr>
+        <th></th>
+        <th>
+            @Html.LabelFor(model => model.Salutations.First().Detail)
+        </th>
+        <th>
+            @Html.LabelFor(model => model.Salutations.First().active)
+        </th>
+    </tr>
+
+@{  var isAltRow = false;
+	foreach (var item in Model.Salutations) {
+    <tr class="@(isAltRow ? "altRow" : "")>">
+       @* <td width="60px" style="text-align:right;">
+            @Html.ImageLink(Url.Content("~/Content/Images/edit.png"), "Edit", "Edit", "Salutation", new { id = item.salutationID }, null, null)
+            @Html.ImageLink(Url.Content("~/Content/Images/delete.png"), "Deactivate", "Deactivate", "Salutation", new { id = item.salutationID }, null, null) 
+            @Html.ImageLink(Url.Content("~/Content/Images/Audit.png"), "Audit", "Audit", "Audit", new { area = "", auditType = "Salutation", id = item.salutationID }, null, null) 
+        </td>*@
+		
+        <td>
+@*            @Html.ImageAndTextLink(Url.Content("~/Content/Images/view.png"), item.Detail, string.Format("Details for {0}", item.Detail), "Details", "Salutation", new { id = item.salutationID }, null, null, "createButton")*@
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+   </tr>
+    isAltRow = !isAltRow;
+    }
+}
+</table>
+@*@Html.SSGPaging("Index", "Salutation", Model, Model.Salutations)*@

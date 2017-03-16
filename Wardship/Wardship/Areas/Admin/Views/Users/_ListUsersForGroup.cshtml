@@ -1,0 +1,7 @@
+﻿@model Wardship.Models.GroupList
+
+<h6 style="padding-top:0.25em;padding-bottom:0.25em;">@Model.Name</h6>
+@foreach (var user in Model.Members)
+{
+    <div>@user.Name</div>
+}

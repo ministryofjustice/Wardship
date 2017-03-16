@@ -1,0 +1,22 @@
+﻿@model Wardship.Models.AuditEventViewModel
+@{
+    ViewBag.Title = string.Format("Audit Trail for {0} ID no. {1}", Model.auditType, Model.itemID);
+}
+
+<h2>Audit Trail for @ViewBag.Title</h2>
+
+@if (Model.AuditEvents.Count() == 0)
+{ 
+    @:No audit records found for this entry
+}
+    @using (Html.BeginForm())
+    { 
+        <dl>
+            @foreach (var item in Model.AuditEvents)
+            {
+               @Html.DisplayFor(modelItem => item)
+            }
+        </dl>
+        @Html.Paging(Model.AuditEvents, "Audit", "Audit", Model.auditType)
+    }
+<input class="prevButton" onclick="javascript: history.go(-1)" type="button" value="< Previous page" />

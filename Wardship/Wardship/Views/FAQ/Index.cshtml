@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Wardship.Models.FAQ>
+
+@{
+    ViewBag.Title = "FAQs";
+}
+
+<h2>Frequently Asked Questions</h2>
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    @Html.ActionLink("Add new FAQ","Create")
+}
+
+@foreach (var item in Model.OrderBy(f=>f.loggedInUser))
+{
+    <dl>
+        <dt>
+        @if (Request.IsAuthenticated && User.IsInRole("Admin")) { @Html.Raw(Html.Image(Url.Content("~/Content/Images/status_" + (item.loggedInUser ? "online" : "locked") + ".png"), string.Format("{0} FAQ", (item.loggedInUser ? "Online" : "Offline")), null)) }
+        @Html.DisplayFor(modelitem=>item.question)
+        @if (Request.IsAuthenticated && User.IsInRole("Admin")) { @Html.ImageLink(Url.Content("~/Content/Images/arrow_refresh_small.png"), "Amend FAQ", "Edit", "FAQ", new { id = item.faqID }, null, null) }
+        </dt>
+        <dd>@Html.Raw(item.answer)</dd>
+    </dl>
+}

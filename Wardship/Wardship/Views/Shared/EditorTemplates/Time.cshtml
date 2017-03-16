@@ -1,0 +1,5 @@
+﻿@model Nullable<System.DateTime>
+@if ( Model.HasValue )
+    { 
+    @Html.TextBox( "" , String.Format( "{0:t}" , Model.Value ) , new { @class = "textbox" } )
+    } 

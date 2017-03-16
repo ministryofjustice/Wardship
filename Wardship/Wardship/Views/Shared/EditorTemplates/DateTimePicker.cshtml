@@ -1,0 +1,30 @@
+﻿@model Nullable<System.DateTime>
+
+@{  
+    if ( Model.HasValue )
+    { 
+        @Html.TextBox( "" , String.Format( "{0:dd/MM/yy hh:mm tt}" , Model.Value ) , new { @class = "textbox" } )
+    }
+    else
+    {
+        @Html.TextBox("", "", new { @class = "textbox" })
+    } 
+    string name = ViewData.TemplateInfo.HtmlFieldPrefix; 
+    string id = name.Replace( ".", "_" ); 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#@id").datetimepicker
+                ({
+                    buttonImage: '@Url.Content("~/Content/Images/Calendar.png")',
+                    buttonImageOnly: true,
+                    showOn: 'button',
+                    yearRange: '-90:+3',
+                    showOptions: { origin: ["top", "right"] },
+                    hourGrid: 4,
+                    minuteGrid: 10,
+                    dateFormat: 'dd/mm/yy', 
+                    timeFormat: 'hh:mm tt'
+                 });
+        });
+    </script>
+}

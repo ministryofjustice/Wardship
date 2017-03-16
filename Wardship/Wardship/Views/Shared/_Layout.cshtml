@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="@Url.Content("~/Scripts/excanvas.min.js")"></script><![endif]-->
+    <link href="@Url.Content("~/Content/menuBar.css")" rel="stylesheet" type="text/css" media="screen" />
+    <link href="@Url.Content("~/Content/menuBarPrint.css")" rel="stylesheet" type="text/css" media="print" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jquery-ui-1.8.14.custom.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jquery.jqplot.css")"  rel="stylesheet" type="text/css"/>
+    <link href="@Url.Content("~/Content/ui.jqgrid.css")"  rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.5.1.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.11.min.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.jqplot.min.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/grid.locale-en.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.min.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    
+    @RenderSection("head", false)
+</head>
+<body>
+    @{Html.RenderAction("DisplayAlerts", "Home", new { area=""});}
+    <div>
+
+        <div id="header">
+            <div class="logo"><img src="@Url.Content("~/Content/Images/app.png")" alt="PRFD Logo"/></div>
+            @Html.Partial("_MenuBar")
+        </div>
+
+
+        <div id="main">
+            @RenderBody()
+        </div>
+        <div id="footer">
+           <span style="display:none;">TDB v@(typeof(Wardship.MvcApplication).Assembly.GetName().Version)</span>&copy; @System.Configuration.ConfigurationManager.AppSettings["appYear"] SSG Part of In-House Software Solutions, MoJ
+        </div>
+    </div>
+</body>
+</html>

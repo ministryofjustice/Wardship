@@ -1,0 +1,62 @@
+﻿@model Wardship.Models.TemplateEdit
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Templates", "Index", "Templates") 
+> Create</h6>
+@using (Html.BeginForm("Create", "Templates", FormMethod.Post, new { enctype = "multipart/form-data", id = "Form1" }))
+{
+    <fieldset>
+        <legend>Template</legend>
+       @if (Model != null && Model.ErrorMessage != "" && Model.ErrorMessage != null)
+       {
+           <div class="message error" style="margin:20px;">
+				    <span></span>
+				    <h6>Attention</h6>
+				    <p>@Model.ErrorMessage</p>
+		    </div>
+       } 
+
+        @Html.HiddenFor(model => model.Template.templateID)
+
+@*        <div class="editor-label">
+            @Html.LabelFor(model => model.Template.Discriminator, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Template.Discriminator, Model.DiscriminatorType)
+            @Html.ValidationMessageFor(model => model.Template.Discriminator)
+        </div>*@
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Template.templateName, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Template.templateName)
+            @Html.ValidationMessageFor(model => model.Template.templateName)
+        </div>
+
+        <div class="editor-label">
+            New template file in XML format
+        </div>
+        <div class="editor-field">
+            <input name="uploadFile" type="file" size="52"/>
+            <img width="20px" height="20px" id="loading_img" style="display:none;vertical-align:middle;" src="@Url.Content("~/Content/Images/al_arrows_green.gif")" alt="Processing..." />
+        </div>
+        <p>            
+            <input type="submit" 
+                    id="BtnSubmit" 
+                    name="BtnSubmit"
+                    value="Submit changes" 
+                    onclick="this.disabled=true;
+                                this.value='Submitting...';
+                                this.form.submit();
+                                document.getElementById('loading_img').style.display = 'inline';" 
+
+                    />
+        </p>
+    </fieldset>
+}

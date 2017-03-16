@@ -1,0 +1,21 @@
+﻿@model Wardship.Models.Court
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>Confirm deletion?</legend>
+        <div class="message warning" style="padding:10px;">
+	        <span></span>
+	        <h6>Warning</h6>
+	        <p>You will no longer be able to allocate this court or send it letters.</p>
+            To confirm the deletion, please click the button below, or close this form using the button on the top right
+        </div>
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CourtID)
+        @Html.HiddenFor(model => model.CourtName)
+        @Html.HiddenFor(model => model.Country)
+        <p>
+            <input type="submit" value="Delete" /> 
+        </p>
+    </fieldset>
+}

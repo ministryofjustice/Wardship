@@ -1,0 +1,24 @@
+﻿@model Wardship.Models.Court
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Lookups", "Lookups", "Admin") 
+> @Html.ActionLink("Courts", "Index")
+> @Model.CourtName</h6>
+<fieldset>
+    <legend>@Html.DisplayFor(model => model.CourtName) - @Html.ImageAndTextLink(Url.Content("~/Content/Images/edit.png"), "Edit", string.Format("Edit {0}", Model.CourtName), "Edit", "Courts", new { id = Model.CourtID }, null, null, "createButton")</legend>
+
+    <div class="display-label">@Html.LabelFor(model=>model.ScreenAddressMultiLine)</div>
+    <div class="display-field" >
+        @Html.Raw(Model.ScreenAddressMultiLine)
+    </div>
+
+    <div class="display-label">DX</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DX)
+    </div>
+
+</fieldset>

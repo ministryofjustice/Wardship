@@ -1,0 +1,15 @@
+﻿@model Wardship.Models.ErrorModel
+
+@{
+    ViewBag.Title = string.Format("{0}Error", Model.ErrorCode == -1 ? "Unspecified " : "");
+}
+
+
+<div class="message error" style="padding:10px;">
+	<span></span>
+	<h6>An @ViewBag.Title has occurred</h6>
+	<div>This may be due to the development state of the site, or a previously undiscovered error.</div>
+    <div>Please make a note of the function you were trying to access and raise a helpdesk call, quoting the following details: -</div>
+    <div class="quote"><blockquote>@Model.ErrorMessage</blockquote></div>
+    <div>SSG apologises for the inconvenience</div>
+</div>

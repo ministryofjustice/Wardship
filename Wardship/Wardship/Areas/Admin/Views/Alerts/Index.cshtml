@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Wardship.Models.Alert>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> Alerts</h6>
+
+<p>
+	@Html.ImageAndTextLink(Url.Content("~/Content/Images/add.png"), "Create new Alert", "Create new Alert", "Create", null, null, null, null, "createButton")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+			@Html.LabelFor(modelItem =>  Model.FirstOrDefault().Live)
+        </th>
+        <th>
+			@Html.LabelFor(modelItem =>  Model.FirstOrDefault().EventStart)
+        </th>
+        <th>
+			@Html.LabelFor(modelItem =>  Model.FirstOrDefault().RaisedHours)
+        </th>
+        <th>
+			@Html.LabelFor(modelItem =>  Model.FirstOrDefault().WarnStart)
+        </th>
+        <th>
+			@Html.LabelFor(modelItem =>  Model.FirstOrDefault().Message)
+        </th>
+        <th>
+			@Html.LabelFor(modelItem =>  Model.FirstOrDefault().DisplayMessage)
+        </th>
+        <th>
+			@Html.LabelFor(modelItem =>  Model.FirstOrDefault().DisplayClass)
+        </th>
+    </tr>
+
+@{  var isAltRow = false;
+	foreach (var item in Model) {
+    <tr class="@(isAltRow ? "altRow" : "")">
+        <td style="text-align:right;">
+            @Html.ImageLink(Url.Content("~/Content/Images/edit.png"), "Edit", "Edit", "Alerts", new { id = item.AlertID }, null, null)
+            @Html.ImageLink(Url.Content("~/Content/Images/delete.png"), "Deactivate", "Deactivate", "Alerts", new { id = item.AlertID }, null, null)
+            @Html.ImageLink(Url.Content("~/Content/Images/Audit.png"), "Audit", "Audit", "Audit", new { area = "", auditType = "Alert", id = item.AlertID }, null, null)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Live)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EventStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RaisedHours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WarnStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Message)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayMessage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayClass)
+        </td>
+    </tr>
+	isAltRow = !isAltRow;
+	}
+}
+</table>

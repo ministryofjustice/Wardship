@@ -1,0 +1,15 @@
+﻿@model Wardship.Models.AuditEventDataRow
+
+@{  DateTime res1;
+    DateTime res2;
+
+    if ((DateTime.TryParse(Model.Was, out res1) == true) && (DateTime.TryParse(Model.Now, out res2)))
+    {
+    <dd>@Html.DisplayFor(model => model.ColumnName) was changed from <span class="audit-oldValue">@Html.Encode(res1.ToShortDateString()) </span> to <span class="audit-newValue">@Html.Encode(res2.ToShortDateString())</span></dd>
+    }
+    else
+    {
+    <dd>@Html.DisplayFor(model => model.ColumnName) was changed from <span class="audit-oldValue">@Html.DisplayFor(model => model.Was)</span> to <span class="audit-newValue">@Html.DisplayFor(model => model.Now)</span></dd>
+    } 
+}
+      

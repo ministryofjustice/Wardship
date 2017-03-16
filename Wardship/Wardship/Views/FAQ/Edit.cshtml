@@ -1,0 +1,84 @@
+﻿@model Wardship.Models.FAQ
+
+@{
+    ViewBag.Title = "Edit FAQ";
+}
+@section head {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jHtmlArea-0.7.0.min.js")" charset="utf-8"></script>
+
+    <link href="@Url.Content("~/Content/jHtmlArea.css")"  rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        /* body { background: #ccc;} */
+        div.jHtmlArea .ToolBar ul li a.custom_disk_button 
+        {
+            background: url(images/disk.png) no-repeat;
+            background-position: 0 0;
+        }
+        
+        div.jHtmlArea { border: none }
+        #answer  
+        {
+        	width:600px;
+        	height:200px;
+        }
+    </style>
+}
+    <script type="text/javascript">
+        // You can do this to perform a global override of any of the "default" options
+        // jHtmlArea.fn.defaultOptions.css = "jHtmlArea.Editor.css";
+
+        $(function () {
+            //$("textarea").htmlarea(); // Initialize all TextArea's as jHtmlArea's with default values
+
+            $("#txtCustomHtmlArea").htmlarea(); // Initialize jHtmlArea's with all default values
+
+            $("#answer").htmlarea({
+                // Override/Specify the Toolbar buttons to show
+                toolbar: [
+                    ["bold", "italic", "underline"],
+                    ["h1", "h2"], ["orderedlist", "unorderedlist"]
+                ],
+
+                // Do something once the editor has finished loading
+                loaded: function () {
+                    //// 'this' is equal to the jHtmlArea object
+                    //alert("jHtmlArea has loaded!");
+                    //this.showHTMLView(); // show the HTML view once the editor has finished loading
+                }
+            });
+        });
+    </script>
+
+
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend><h2>Edit FAQ</h2></legend>
+
+        @Html.HiddenFor(model => model.faqID)
+
+        <div class="editor-label">
+            Is this FAQ for logged in users?
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.loggedInUser)
+            @Html.ValidationMessageFor(model => model.loggedInUser)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.question)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.question)
+            @Html.ValidationMessageFor(model => model.question)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.answer)
+        </div>
+            @Html.EditorFor(model => model.answer)
+            @Html.ValidationMessageFor(model => model.answer)
+            <input type="submit" value="Save" />
+    </fieldset>
+}

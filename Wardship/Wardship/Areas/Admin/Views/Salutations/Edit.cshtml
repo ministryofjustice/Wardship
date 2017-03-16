@@ -1,0 +1,34 @@
+﻿@model Wardship.Models.Salutation
+
+@{
+    ViewBag.Title = ViewBag.Title = string.Format("Edit {0}", Model.Detail);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h6>@Html.ActionLink("Administration", "Index", "Admin") 
+> @Html.ActionLink("Lookups", "Lookups", "Admin") 
+> @Html.ActionLink("Salutations","Index") 
+> @Html.ActionLink(Model.Detail, "Details", "Salutation", new { id = Model.salutationID }, null)
+> Edit</h6>*@
+
+	
+@*@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>@ViewBag.Title</legend>
+        @Html.HiddenFor(model => model.salutationID)
+        @Html.HiddenFor(model => model.active)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Detail, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Detail)
+            @Html.ValidationMessageFor(model => model.Detail)
+        </div>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}*@
+

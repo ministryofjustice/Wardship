@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Wardship - Home Page";
+}
+
+<br />
+<h2>Wardship Application</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div>Welcome to the Wardship register.</div>
+}
+else
+{
+    <div>Access to the Wardship register is restricted.  Please contact a system administrator to gain access.</div>
+}
