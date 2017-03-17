@@ -149,7 +149,6 @@
     <Compile Include="Controllers\QuickSearchController.cs" />
     <Compile Include="Controllers\WardshipRecordController.cs" />
     <Compile Include="DAL\DataContext.cs" />
-    <Compile Include="DAL\DBInitializer.cs" />
     <Compile Include="Classes\DateTimeFunctions.cs" />
     <Compile Include="Classes\pageDisplay.cs" />
     <Compile Include="Classes\genericFunctions.cs" />

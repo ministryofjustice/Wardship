@@ -35,33 +35,7 @@ namespace Wardship
                                 {
                                     auditType = @"\D{1,20}",
                                     id = @"\d{1,6}"
-                                });
-
-
-            //routes.MapRoute("Print"
-            //                           , "{controller}/{action}/{WardshipCaseID}"
-            //                           , new
-            //                           {
-            //                               controller = "QuickSearch"
-            //                             ,
-            //                               action = "Print"
-            //                           }
-            //                           , new
-            //                           {
-            //                               WardshipCaseID = UrlParameter.Optional     //UrlParameter.Optional // @"\d{1,9}"
-                                     
-            //                           }
-            //                           );
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+                                });         
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
