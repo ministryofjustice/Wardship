@@ -8,6 +8,7 @@ using Wardship.Models;
 
 namespace Wardship.Controllers
 {
+    [Authorize]
     public class FAQController : Controller
     {
         SourceRepository db = new SQLRepository();

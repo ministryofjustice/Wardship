@@ -7,6 +7,7 @@ using System.Configuration;
 namespace Wardship.Controllers
 {
     [AuthorizeRedirect(MinimumRequiredAccessLevel = AccessLevel.Admin)]
+    [Authorize]
     public class AuditController : Controller
     {
         SourceRepository db = new SQLRepository();

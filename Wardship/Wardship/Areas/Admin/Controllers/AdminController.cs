@@ -7,6 +7,7 @@ using System.Web.Mvc;
 namespace Wardship.Areas.Admin.Controllers
 {
     [AuthorizeRedirect(MinimumRequiredAccessLevel = AccessLevel.Manager)]
+    [Authorize]
     public class AdminController : Controller
     {
         //

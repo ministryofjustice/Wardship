@@ -14,6 +14,7 @@ using System.Security.Principal;
 
 namespace Wardship.Controllers
 {
+    [Authorize]
     public class WardshipRecordController : Controller
     {
 		SourceRepository db = new SQLRepository();

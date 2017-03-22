@@ -10,6 +10,7 @@ using System.Data;
 
 namespace Wardship.Areas.Admin.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         string domainID = null;

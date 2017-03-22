@@ -7,6 +7,7 @@ using Wardship.Models;
 using PagedList;
 namespace Wardship.Areas.Admin.Controllers
 {
+    [Authorize]
     public class CourtsController : Controller
     {
 		SourceRepository db = new SQLRepository();

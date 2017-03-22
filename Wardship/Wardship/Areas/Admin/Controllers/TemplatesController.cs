@@ -11,6 +11,7 @@ using System.Xml;
 namespace Wardship.Areas.Admin.Controllers
 {
     [AuthorizeRedirect(Roles = "Admin")]
+    [Authorize]
     public class TemplatesController : Controller
     {
  		SourceRepository db = new SQLRepository();

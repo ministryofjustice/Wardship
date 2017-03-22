@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Wardship.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
 		SourceRepository db = new SQLRepository();

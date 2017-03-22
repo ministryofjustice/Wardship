@@ -7,6 +7,7 @@ using Wardship.Models;
 
 namespace Wardship.Areas.Admin.Controllers
 {
+    [Authorize]
     public class AlertsController : Controller
     {
 		SourceRepository db = new SQLRepository();

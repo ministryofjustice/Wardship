@@ -16,6 +16,7 @@ using System.Security.Principal;
 
 namespace Wardship.Controllers
 {
+    [Authorize]
     public class QuickSearchController : Controller
     {
 		SourceRepository db = new SQLRepository();
