@@ -262,8 +262,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\PagedList.dll" />
-    <Content Include="App_Data\PagedList.Mvc.dll" />
     <Content Include="Content\closeBtn.gif" />
     <Content Include="Content\closeBtn.png" />
     <Content Include="Content\Images\app.png" />
@@ -502,8 +500,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Service References\AzureAD\ConnectedService.json" />
+    <None Include="Properties\PublishProfiles\Wardshiptest - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\Wardshiptest - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\Wardshiptest - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Uploads\" />
     <Folder Include="Views\Alert\" />
   </ItemGroup>
