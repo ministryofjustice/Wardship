@@ -213,7 +213,7 @@
     <None Include="Data\Roles.data.sql" />
     <None Include="Data\User.data.sql" />
     <None Include="Wardship.Database.publish.xml" />
-    <None Include="Wardship.Database.jfm" />
+    <!--<None Include="Wardship.Database.jfm" />-->
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
