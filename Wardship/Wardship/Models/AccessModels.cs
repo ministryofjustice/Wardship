@@ -19,7 +19,7 @@ namespace Wardship.Models
     {
         [Key]
         public int UserID { get; set; }
-        [Required,MaxLength(50), Display(Name="Login Name")]
+        [Required,MaxLength(150), Display(Name="Login Name")]
         public string Name { get; set; }
         [MaxLength(30), Display(Name="Display Name")]
         public string DisplayName { get; set; }
