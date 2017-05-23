@@ -241,4 +241,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 #Database not required files
-*.Database.jfm
+Wardship.Database/Wardship.Database.jfm
+
