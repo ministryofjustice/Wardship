@@ -2,6 +2,7 @@
 
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     <fieldset>
         <legend>Confirm deletion?</legend>
         <div class="message warning" style="padding:10px;">

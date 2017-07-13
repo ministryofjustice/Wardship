@@ -17,6 +17,7 @@ using System.Security.Principal;
 namespace Wardship.Controllers
 {
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class QuickSearchController : Controller
     {
 		SourceRepository db = new SQLRepository();

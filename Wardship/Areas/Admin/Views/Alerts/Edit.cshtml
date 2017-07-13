@@ -14,7 +14,9 @@
 > @Html.ActionLink("Alerts","Index","Alerts")
 > Edit @string.Format("Alert ID#{0}",Model.AlertID)</h6>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Alert</legend>

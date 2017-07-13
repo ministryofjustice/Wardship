@@ -9,7 +9,8 @@
 
 
 @using (Html.BeginForm("Index", "QuickSearch", FormMethod.Post, new { autocomplete = "off" }))
-{ 
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
 

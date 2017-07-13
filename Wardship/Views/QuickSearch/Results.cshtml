@@ -12,32 +12,31 @@
   <script src="../../Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
   
     
-<script type="text/javascript">    // Remark: all this javascript could be placed in a separate js file
+<script type="text/javascript">            // Remark: all this javascript could be placed in a separate js file
     // to avoid cluttering the views. The first three lines fires up any action link set to the "openDialog"
     $(document).ready(function () {
         $(".openDialog").live("click", function (e) {
             e.preventDefault();
 
             var title = 'Wardship Details For: ' + this.data_title;
+            
             $('#dialog').load(this.href, function () {
                 $(this).dialog({
                     open: function (event, ui) { $('#Details').focus(); },
                     title: title,
                     modal: true,
                     width: 600,
-
                     show: { effect: "bind", duration: 1000 },
                     hide: { effect: "bind", duration: 1000 },
-
                     resizable: false,
-                    
+
                     //  $( "#dialog-message" ).dialog    ( Close: function was Ok:function )
                     buttons: { Close: function () { $(this).dialog("close"); }  }
                 });
             });
             return false;
         });
-    }); 
+    });
 
 </script>
 
@@ -72,8 +71,9 @@
         <p>Click the link below to add Applicant details and print the "no trace" letter</p>
 
       @using (Html.BeginForm("Print", "QuickSearch"))
-      { 
-                   <div>
+      {
+        @Html.AntiForgeryToken()
+          <div>
                   
                     @Html.HiddenFor(model => model.FileNumber)
                     @Html.HiddenFor(model => model.ChildSurname)
@@ -157,27 +157,24 @@
            <td>
 
             @using (Html.BeginForm("Print", "QuickSearch"))
-            { 
+            {
+             @Html.AntiForgeryToken()
              @Html.HiddenFor(model => model.ApplicantName)
              @Html.HiddenFor(model => model.ApplicantAddr1)
              @Html.HiddenFor(model => model.ApplicantAddr2)
              @Html.HiddenFor(model => model.ApplicantAddr3)
              @Html.HiddenFor(model => model.ApplicantAddr4)
              @Html.HiddenFor(model => model.ApplicantPostcode)
-           
-            @Html.HiddenFor(model => model.WardshipCaseID, item.WardshipCaseID, null) 
-
-            @Html.ImageAndTextLink(Url.Content("~/Content/Images/tick.png"), "Click here", "Add applicant details", "CompleteForPrinting", "QuickSearch", new { id = item.WardshipCaseID }, null, null, "createButton")
-           
-                             
+             @Html.HiddenFor(model => model.WardshipCaseID, item.WardshipCaseID, null) 
+             @Html.ImageAndTextLink(Url.Content("~/Content/Images/tick.png"), "Click here", "Add applicant details", "CompleteForPrinting", "QuickSearch", new { id = item.WardshipCaseID }, null, null, "createButton")
             }
            
            </td>
         </tr>
     }
 
-</table> 
-        
+</table>
+
   @Html.SSGPaging("Results", "QuickSearch", Model, Model.results)
     
     <br />   
@@ -193,7 +190,7 @@
        @using (Html.BeginForm("Print", "QuickSearch"))
        { 
             <div>
-        
+                @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.FileNumber)
             @Html.HiddenFor(model => model.ChildSurname)
             @Html.HiddenFor(model => model.ChildForenames)

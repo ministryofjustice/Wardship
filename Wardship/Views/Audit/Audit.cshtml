@@ -10,7 +10,8 @@
     @:No audit records found for this entry
 }
     @using (Html.BeginForm())
-    { 
+    {
+        @Html.AntiForgeryToken()
         <dl>
             @foreach (var item in Model.AuditEvents)
             {

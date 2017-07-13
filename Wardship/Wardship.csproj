@@ -229,6 +229,7 @@
     <Compile Include="Classes\AjaxPagerItem.cs" />
     <Compile Include="Classes\Errors.cs" />
     <Compile Include="Classes\genImport.cs" />
+    <Compile Include="Classes\ValidateAntiForgeryTokenOnPost.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuditController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />

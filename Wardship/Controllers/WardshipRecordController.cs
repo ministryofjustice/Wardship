@@ -15,6 +15,8 @@ using System.Security.Principal;
 namespace Wardship.Controllers
 {
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
+    
     public class WardshipRecordController : Controller
     {
 		SourceRepository db = new SQLRepository();

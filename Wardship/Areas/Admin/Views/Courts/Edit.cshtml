@@ -10,7 +10,9 @@
 > @Html.ActionLink(Model.CourtName, "Details", new { id = Model.CourtID })
 > Edit</h6>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Edit @Model.CourtName</legend>

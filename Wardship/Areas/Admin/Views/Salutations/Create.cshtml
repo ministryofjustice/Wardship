@@ -9,7 +9,9 @@
 > @Html.ActionLink("Lookups", "Lookups", "Admin") 
 > @Html.ActionLink("Salutations","Index") 
 > Create</h6>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>@ViewBag.Title</legend>

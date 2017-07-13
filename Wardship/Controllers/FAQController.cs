@@ -9,6 +9,7 @@ using Wardship.Models;
 namespace Wardship.Controllers
 {
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class FAQController : Controller
     {
         SourceRepository db = new SQLRepository();

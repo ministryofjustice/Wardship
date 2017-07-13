@@ -8,6 +8,7 @@ namespace Wardship.Controllers
 {
     [AuthorizeRedirect(MinimumRequiredAccessLevel = AccessLevel.Admin)]
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class AuditController : Controller
     {
         SourceRepository db = new SQLRepository();

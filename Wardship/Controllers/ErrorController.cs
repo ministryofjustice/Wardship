@@ -9,6 +9,7 @@ using System.Web.UI;
 namespace Wardship.Controllers
 {
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class ErrorController : Controller
     {
         public ActionResult Index()
