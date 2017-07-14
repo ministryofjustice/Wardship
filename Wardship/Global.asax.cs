@@ -7,6 +7,8 @@ using System.Web.Routing;
 using System.Data.Entity;
 using Wardship.Models;
 using System.Web.Security;
+using System.Web.Helpers;
+using System.IdentityModel.Claims;
 
 namespace Wardship
 {
@@ -58,6 +60,9 @@ namespace Wardship
         }
         protected void Application_Start(object sender, EventArgs e)
         {
+
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+
             AreaRegistration.RegisterAllAreas();
 
             ViewEngines.Engines.Clear();

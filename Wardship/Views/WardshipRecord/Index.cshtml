@@ -41,4 +41,12 @@
 
 </table>
 
-  @Html.SSGPaging("Index", "WardshipRecord", Model, Model.WardshipResults)
+@{
+    var token2 = @Html.AntiForgeryToken().ToHtmlString();
+
+    var beginIndex2 = token2.IndexOf("value=\"") + 7;
+    var endIndex2 = token2.IndexOf("\"", beginIndex2);
+    token2 = token2.Substring(beginIndex2, endIndex2 - beginIndex2);
+
+}
+@Html.SSGPaging("Index", "WardshipRecord", Model, Model.WardshipResults, token2)

@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Wardship.Models;
 using Wardship.Areas.Admin.Models;
 using System.DirectoryServices.AccountManagement;
-using System.Data;
 
 namespace Wardship.Areas.Admin.Controllers
 {
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class UsersController : Controller
     {
         string domainID = null;
