@@ -1,43 +1,62 @@
-﻿
-using System;
+﻿using System;
 using System.Net;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Wardship
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class ValidateAntiForgeryTokenOnAllPosts : AuthorizeAttribute
     {
-        public const string HTTP_HEADER_NAME = "x-RequestVerificationToken";
-
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             var request = filterContext.HttpContext.Request;
 
-            //  Only validate POSTs
-            if (request.HttpMethod == WebRequestMethods.Http.Post)
+            try
             {
+                string tokenInCookie = string.Empty;
+                string tokenInForm = string.Empty;
 
-                var headerTokenValue = request.Headers[HTTP_HEADER_NAME];
-                // Ajax POSTs using jquery have a header set that defines the token.
-                // However using unobtrusive ajax the token is still submitted normally in the form.
-                // if the header is present then use it, else fall back to processing the form like normal
-                if (headerTokenValue != null)
+                if (request.HttpMethod == WebRequestMethods.Http.Post)
                 {
-                    var antiForgeryCookie = request.Cookies[AntiForgeryConfig.CookieName];
+                    if (filterContext.HttpContext.Request.IsAjaxRequest())
+                    {
+                        var antiforgeryToken = request.Headers.Get("AntiForgeryToken");
 
-                    var cookieValue = antiForgeryCookie != null
-                        ? antiForgeryCookie.Value
-                        : null;
+                        if (!string.IsNullOrEmpty(antiforgeryToken))
+                        {
+                            tokenInCookie = antiforgeryToken.Split(':')[0].Trim();
+                            tokenInForm = antiforgeryToken.Split(':')[1].Trim();
+                        }
 
-                    AntiForgery.Validate(cookieValue, headerTokenValue);
+                        AntiForgery.Validate(tokenInCookie, tokenInForm);
+                        return;
+                    }
                 }
-                else if ((!request.FilePath.Contains("ExportToExcel")) && (!request.FilePath.Contains("ListOfCasesExportToExcel")))
+
+                if (request.HttpMethod == WebRequestMethods.Http.Post)
                 {
-                    new ValidateAntiForgeryTokenAttribute()
-                        .OnAuthorization(filterContext);
+                    var formTokenValue = request.Form.Get(AntiForgeryConfig.CookieName);
+                    var cookieTokenValue = request.Cookies[AntiForgeryConfig.CookieName];
+                    var cookieValue = cookieTokenValue?.Value;
+                    AntiForgery.Validate(cookieValue, formTokenValue);
                 }
+            }
+            catch (HttpAntiForgeryException e)
+            {
+                //Log
+                filterContext.Result = new ContentResult()
+                {
+                    Content =
+                        "Forbidden Content.You do not currently have permission to access the page you have requested. <br /> " +
+                        "If you feel this is incorrect," +
+                        "please contact your local admin.",
+                };
+            }
+            catch (Exception)
+            {
+                //Log
+                throw;
             }
         }
     }
