@@ -10,6 +10,7 @@
 > Create</h6>
 @using (Html.BeginForm("Create", "Templates", FormMethod.Post, new { enctype = "multipart/form-data", id = "Form1" }))
 {
+    @Html.AntiForgeryToken()
     <fieldset>
         <legend>Template</legend>
        @if (Model != null && Model.ErrorMessage != "" && Model.ErrorMessage != null)

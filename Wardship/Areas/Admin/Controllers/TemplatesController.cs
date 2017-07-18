@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Wardship.Models;
-using System.Data;
 using System.IO;
 using System.Xml;
-using System.Web.Security;
 
 namespace Wardship.Areas.Admin.Controllers
 {
     [AuthorizeRedirect(Roles = "Admin")]
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class TemplatesController : Controller
     {
  		SourceRepository db = new SQLRepository();

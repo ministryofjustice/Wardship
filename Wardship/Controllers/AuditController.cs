@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Wardship.Models;
-using PagedList;
-using System.Configuration;
+
 namespace Wardship.Controllers
 {
     [AuthorizeRedirect(MinimumRequiredAccessLevel = AccessLevel.Admin)]
     [Authorize]
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class AuditController : Controller
     {
         SourceRepository db = new SQLRepository();

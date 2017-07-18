@@ -7,6 +7,8 @@ using System.Web.Routing;
 using System.Data.Entity;
 using Wardship.Models;
 using System.Web.Security;
+using System.Web.Helpers;
+using System.IdentityModel.Claims;
 
 namespace Wardship
 {
@@ -20,6 +22,7 @@ namespace Wardship
             filters.Add(new LogonAuthorize());
             filters.Add(new HandleErrorAttribute());
             //filters.Add(new Filters.UserActivityAttribute());
+            
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -57,6 +60,9 @@ namespace Wardship
         }
         protected void Application_Start(object sender, EventArgs e)
         {
+
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+
             AreaRegistration.RegisterAllAreas();
 
             ViewEngines.Engines.Clear();
@@ -66,7 +72,8 @@ namespace Wardship
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-           // Database.SetInitializer(new DBInitializer());
+            // Database.SetInitializer(new DBInitializer());
+            Database.SetInitializer<DataContext>(null);
             //System.Configuration.ConfigurationManager.AppSettings["CurServer"] = System.Configuration.ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString.Split(';').First().Split('=').Last();
             ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
         }

@@ -51,7 +51,9 @@
 
 
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     <fieldset>
         <legend><h2>Edit FAQ</h2></legend>

@@ -9,7 +9,6 @@ using System.Web.Mvc.Html;
 using System.Linq.Expressions;
 using System.Web.Mvc.Ajax;
 using Wardship.Models;
-using Wardship;
 
 //namespace oldWardship.Helpers
 //{
@@ -1580,7 +1579,7 @@ namespace Wardship.Helpers
         /// <param name="model">A ListViewModel containing sort and filter criteria</param>
         /// <param name="pagedList">A paged list of objects</param>
         /// <returns></returns>
-        public static MvcHtmlString SSGPaging(this HtmlHelper htmlHelper, string actionName, string controllerName, ListViewModel model, IPagedList pagedList)
+        public static MvcHtmlString SSGPaging(this HtmlHelper htmlHelper, string actionName, string controllerName, ListViewModel model, IPagedList pagedList, string token="")
         {
             if (pagedList.PageCount > 1)
             {
@@ -1595,6 +1594,17 @@ namespace Wardship.Helpers
                 form.MergeAttribute("actionName", actionName);
                 form.MergeAttribute("controllerName", controllerName);
                 form.MergeAttribute("Method", FormMethod.Post.ToString());
+
+                //Add CSRF token
+                if (token != "")
+                {
+                    TagBuilder csrfToken = new TagBuilder("input");
+                    csrfToken.Attributes.Add("id", "__RequestVerificationToken");
+                    csrfToken.Attributes.Add("name", "__RequestVerificationToken");
+                    csrfToken.MergeAttribute("type", "hidden");
+                    csrfToken.MergeAttribute("value", token);
+                    form.InnerHtml += csrfToken;
+                }
 
                 string pageText = string.Format("Page {0} of {1}", pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber, pagedList.PageCount);
                 pageBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" value=\"{0}\" class=\"pageButton text\" disabled=\"disabled\" style=\"width:100px !important;\">{0}</button>", pageText));
@@ -1628,43 +1638,6 @@ namespace Wardship.Helpers
                 if (model is QuickSearch)
                 {
                     QuickSearch temp = model as QuickSearch;
-
-                    //TagBuilder ApplicantName = new TagBuilder("input");
-                    //ApplicantName.Attributes.Add("id", "ApplicantName");
-                    //ApplicantName.Attributes.Add("name", "ApplicantName");
-                    //ApplicantName.MergeAttribute("type", "hidden");
-                    //ApplicantName.MergeAttribute("value", temp.ApplicantName == null ? "" : temp.ApplicantName.ToString());
-                    //form.InnerHtml += ApplicantName.ToString();
-                    //TagBuilder ApplicantAddr1 = new TagBuilder("input");
-                    //ApplicantAddr1.Attributes.Add("id", "ApplicantAddr1");
-                    //ApplicantAddr1.Attributes.Add("name", "ApplicantAddr1");
-                    //ApplicantAddr1.MergeAttribute("type", "hidden");
-                    //ApplicantAddr1.MergeAttribute("value", temp.ApplicantAddr1 == null ? "" : temp.ApplicantAddr1.ToString());
-                    //form.InnerHtml += ApplicantAddr1.ToString();
-                    //TagBuilder ApplicantAddr2 = new TagBuilder("input");
-                    //ApplicantAddr2.Attributes.Add("id", "ApplicantAddr2");
-                    //ApplicantAddr2.Attributes.Add("name", "ApplicantAddr2");
-                    //ApplicantAddr2.MergeAttribute("type", "hidden");
-                    //ApplicantAddr2.MergeAttribute("value", temp.ApplicantAddr2 == null ? "" : temp.ApplicantAddr2.ToString());
-                    //form.InnerHtml += ApplicantAddr2.ToString();
-                    //TagBuilder ApplicantAddr3 = new TagBuilder("input");
-                    //ApplicantAddr3.Attributes.Add("id", "ApplicantAddr3");
-                    //ApplicantAddr3.Attributes.Add("name", "ApplicantAddr3");
-                    //ApplicantAddr3.MergeAttribute("type", "hidden");
-                    //ApplicantAddr3.MergeAttribute("value", temp.ApplicantAddr3 == null ? "" : temp.ApplicantAddr3.ToString());
-                    //form.InnerHtml += ApplicantAddr3.ToString();
-                    //TagBuilder ApplicantAddr4 = new TagBuilder("input");
-                    //ApplicantAddr4.Attributes.Add("id", "ApplicantAddr4");
-                    //ApplicantAddr4.Attributes.Add("name", "ApplicantAddr4");
-                    //ApplicantAddr4.MergeAttribute("type", "hidden");
-                    //ApplicantAddr4.MergeAttribute("value", temp.ApplicantAddr4 == null ? "" : temp.ApplicantAddr4.ToString());
-                    //form.InnerHtml += ApplicantAddr4.ToString();
-                    //TagBuilder ApplicantPostcode = new TagBuilder("input");
-                    //ApplicantPostcode.Attributes.Add("id", "ApplicantPostcode");
-                    //ApplicantPostcode.Attributes.Add("name", "ApplicantPostcode");
-                    //ApplicantPostcode.MergeAttribute("type", "hidden");
-                    //ApplicantPostcode.MergeAttribute("value", temp.ApplicantPostcode == null ? "" : temp.ApplicantPostcode.ToString());
-                    //form.InnerHtml += ApplicantPostcode.ToString();
 
                     TagBuilder FileNumber = new TagBuilder("input");
                     FileNumber.Attributes.Add("id", "FileNumber");

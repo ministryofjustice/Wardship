@@ -8,7 +8,8 @@
 <h6>@Html.ActionLink("Reset Form", "Index") > Search</h6>
 
 @using (Html.BeginForm("print", "QuickSearch", FormMethod.Post, new { autocomplete = "off" }))
-{ 
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
         <fieldset>
