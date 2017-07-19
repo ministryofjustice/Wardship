@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Wardship.Models;
 using System.IO;
 using System.Xml;
+using System.Web.ModelBinding;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -52,7 +53,8 @@ namespace Wardship.Areas.Admin.Controllers
                     if (!Path.GetExtension(model.uploadFile.FileName.ToLower()).EndsWith("xml")) { throw new NotUploaded("Please select an XML file to upload"); }
                     if (model.uploadFile.ContentLength == 0) { throw new NotUploaded("The selected file appears to be empty, please select a different file and re-try"); }
                     //Upload
-                    var fileName = Path.Combine(Server.MapPath("~/uploads"), Path.GetFileName(model.uploadFile.FileName));
+                    var fileName = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/uploads"), Path.GetFileName(model.uploadFile.FileName));
+                    (new FileInfo(fileName)).Directory.Create();
                     model.uploadFile.SaveAs(fileName); //Save to uploads folder     
                     XmlDocument document = new XmlDocument();
                     document.Load(fileName);
