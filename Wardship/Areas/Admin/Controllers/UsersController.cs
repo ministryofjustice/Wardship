@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Wardship.Models;
 using Wardship.Areas.Admin.Models;
 using System.DirectoryServices.AccountManagement;
+using System.Diagnostics;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -56,6 +57,7 @@ namespace Wardship.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                Trace.TraceError("Admin/UserController - GetUsers. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
             }
             return PartialView("_ListUsersForGroup", model);
@@ -79,8 +81,9 @@ namespace Wardship.Areas.Admin.Controllers
                     db.UserAdd(model.User);
                     return RedirectToAction("Index");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Trace.TraceError("Admin/UserController - Create. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                     return View(model);
                 }
             }
@@ -100,7 +103,14 @@ namespace Wardship.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.UpdateUser(model.User);
+                try
+                {
+                    db.UpdateUser(model.User);
+                }
+                catch (Exception ex)
+                {
+                    Trace.TraceError("Admin/UserController - Edit. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
+                }
                 return RedirectToAction("Index");
             }
             return View(model);

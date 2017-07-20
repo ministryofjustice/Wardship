@@ -4,6 +4,7 @@ using Wardship.Models;
 using System.IO;
 using System.Xml;
 using System.Web.ModelBinding;
+using System.Diagnostics;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -78,6 +79,7 @@ namespace Wardship.Areas.Admin.Controllers
             {
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
                 model.UploadSuccessful = false;
+                Trace.TraceError("Admin/TemplatesController - Create. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 return View(model);
             }
         }
@@ -122,6 +124,7 @@ namespace Wardship.Areas.Admin.Controllers
             {
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
                 model.UploadSuccessful = false;
+                Trace.TraceError("Admin/TemplatesController - Edit. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 return View(model);
             }
         }
@@ -144,12 +147,19 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost, ActionName("Deactivate")]
         public ActionResult DeactivateConfirmed(int id)
         {
-            WordTemplate model = db.GetTemplateByID(id);
-            model.active = false;
-            model.deactivated = DateTime.Now;
-            model.deactivatedBy = ((Wardship.ICurrentUser)User).DisplayName;
-            //model.templateXML = null;
-            db.UpdateTemplate(model);
+            try
+            {
+                WordTemplate model = db.GetTemplateByID(id);
+                model.active = false;
+                model.deactivated = DateTime.Now;
+                model.deactivatedBy = ((Wardship.ICurrentUser)User).DisplayName;
+                //model.templateXML = null;
+                db.UpdateTemplate(model);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Admin/TemplatesController - DeactivateConfirmed. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
+            }
             return RedirectToAction("Index");
         }
 

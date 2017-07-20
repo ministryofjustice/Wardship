@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Web.Mvc;
 using Wardship.Models;
 
@@ -61,8 +62,9 @@ namespace Wardship.Controllers
                 }
                 return View(faq);
             }
-            catch
+            catch (Exception ex)
             {
+                Trace.TraceError("FAQController - Edit. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 return View(faq);
             }
         }
@@ -86,8 +88,9 @@ namespace Wardship.Controllers
                     db.FAQAdd(faq);
                     return RedirectToAction("Index");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Trace.TraceError("FAQController - Create. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                     return View(faq);
                 }
             }

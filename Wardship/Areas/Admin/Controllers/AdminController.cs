@@ -18,6 +18,5 @@ namespace Wardship.Areas.Admin.Controllers
         {
             return View();
         }
-
     }
 }

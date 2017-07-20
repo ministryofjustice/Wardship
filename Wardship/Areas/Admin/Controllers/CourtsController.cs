@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Wardship.Models;
 using PagedList;
+using System.Diagnostics;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -84,7 +85,8 @@ namespace Wardship.Areas.Admin.Controllers
                 }
             }
             catch(Exception ex)
-            { 
+            {
+                Trace.TraceError("Admin/CourtsController - Edit. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 ModelState.AddModelError("Error", string.Format("Error: {0}", genericFunctions.GetLowestError(ex)));
             }
             return View("Edit", model);
@@ -107,6 +109,7 @@ namespace Wardship.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                Trace.TraceError("Admin/CourtsController - Create. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 ModelState.AddModelError("Error", string.Format("Error: {0}", genericFunctions.GetLowestError(ex)));
             }
             return View("Edit", model);
@@ -120,17 +123,25 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Deactivate(Court model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                ModelState.AddModelError("error", "uh oh");
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("error", "uh oh");
+                    return PartialView("_Deactivate", model);
+                }
+                Court crt = db.getCourtByID(model.CourtID);
+                //load Court to delete
+                crt.active = false;
+                crt.deactivatedBy = (User as Wardship.ICurrentUser).DisplayName;
+                crt.deactivated = DateTime.Now;
+                db.EditCourt(crt);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Admin/CourtsController - Deactivate. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 return PartialView("_Deactivate", model);
             }
-            Court crt = db.getCourtByID(model.CourtID);
-            //load Court to delete
-            crt.active = false;
-            crt.deactivatedBy = (User as Wardship.ICurrentUser).DisplayName;
-            crt.deactivated = DateTime.Now;
-            db.EditCourt(crt);
             return Json(new { success = true, id = model.CourtID, message=model.CourtName });
         }
 		

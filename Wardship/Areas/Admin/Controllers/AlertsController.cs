@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web.Mvc;
 using Wardship.Models;
 
@@ -34,9 +36,18 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(Alert model)
         {
-            model.Live = true;
-            db.CreateAlert(model);
-            return RedirectToAction("Index");
+            try
+            {
+                model.Live = true;
+                db.CreateAlert(model);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Admin/AlertsController - Create. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
+                return PartialView("_Deactivate", model);
+            }
+            
         }
         
         public ActionResult Edit(int id)
@@ -48,12 +59,21 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(Alert model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.updateAlert(model);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.updateAlert(model);
+                    return RedirectToAction("Index");
+                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                Trace.TraceError("Admin/AlertsController - Edit. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
+                return View(model);
+            }
+            
         }
       
       

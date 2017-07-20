@@ -6,6 +6,7 @@ using PagedList;
 
 using System.Xml;
 using System.Text;
+using System.Diagnostics;
 
 namespace Wardship.Controllers
 {
@@ -50,57 +51,66 @@ namespace Wardship.Controllers
 
         [HttpPost]
         public ActionResult Index(QuickSearch model)
-        {           
-            if (model != null && model.isValid())//if not equal to null build list of results 
+        {
+            try
             {
-                #region New search type
-
-                model.page = model.page ?? 1;
-
-                if (model.FileNumber != null)// search criteria 
+                if (model != null && model.isValid())//if not equal to null build list of results 
                 {
-                    model.results = db.QuickSearchByNumber(model.FileNumber).ToPagedList(model.page ?? 1, 15);
-                }
-                if (model.ChildSurname != null)
-                {
-                    model.results = db.QuickSearchSurname(model.ChildSurname).ToPagedList(model.page ?? 1, 15);
-                }
-                if (model.ChildForenames != null)
-                {
-                    model.results = db.QuickSearchByForename(model.ChildForenames).ToPagedList(model.page ?? 1, 15);
-                }
-                if (model.ChildDateofBirth != null)
-                {
-                    model.results = db.QuickSearchByDOB(model.ChildDateofBirth).ToPagedList(model.page ?? 1, 15);
-                }
+                    #region New search type
+
+                    model.page = model.page ?? 1;
+
+                    if (model.FileNumber != null)// search criteria 
+                    {
+                        model.results = db.QuickSearchByNumber(model.FileNumber).ToPagedList(model.page ?? 1, 15);
+                    }
+                    if (model.ChildSurname != null)
+                    {
+                        model.results = db.QuickSearchSurname(model.ChildSurname).ToPagedList(model.page ?? 1, 15);
+                    }
+                    if (model.ChildForenames != null)
+                    {
+                        model.results = db.QuickSearchByForename(model.ChildForenames).ToPagedList(model.page ?? 1, 15);
+                    }
+                    if (model.ChildDateofBirth != null)
+                    {
+                        model.results = db.QuickSearchByDOB(model.ChildDateofBirth).ToPagedList(model.page ?? 1, 15);
+                    }
 
 
-                //Adding Audit for new record 
-                var Audit = new AuditEvent();
+                    //Adding Audit for new record 
+                    var Audit = new AuditEvent();
 
-                Audit.EventDate = DateTime.Now;
-                Audit.UserID = (User as Wardship.ICurrentUser).DisplayName;
-                Audit.idAuditEventDescription = "New Search Made";
-                Audit.ChildForenames = model.ChildForenames;
-                Audit.ChildSurname = model.ChildSurname;
-                Audit.ChildDateofBirth = model.ChildDateofBirth;
+                    Audit.EventDate = DateTime.Now;
+                    Audit.UserID = (User as Wardship.ICurrentUser).DisplayName;
+                    Audit.idAuditEventDescription = "New Search Made";
+                    Audit.ChildForenames = model.ChildForenames;
+                    Audit.ChildSurname = model.ChildSurname;
+                    Audit.ChildDateofBirth = model.ChildDateofBirth;
+
+                    //Audit.RecordChanged = model.WardshipCaseID.ToString();
+
+                    db.AddAuditEvent(Audit);
+                    //
+
+
+                    return View("Results", model);
+                    //return View(model);
+
+
+                    #endregion
+
+                }
+                //return View(model);
                 
-                //Audit.RecordChanged = model.WardshipCaseID.ToString();
-
-                db.AddAuditEvent(Audit);
-                //
-
-
-                return View("Results", model);
-                //return View(model);
-
-
-                #endregion
-
             }
-                //return View(model);
+            catch (Exception ex)
+            {
+                Trace.TraceError("QuickSearchController - Index. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
+            }
             return View("Results", model);
-         }
+
+        }
 
 
 
@@ -206,12 +216,13 @@ namespace Wardship.Controllers
                 return File(ConvertToBytes(xDoc), "application/msword", template.templateName + ".doc"); //return byte version
 
             }
-            catch
+            catch (Exception ex)
             {
                 // redirect to error page
                 ErrorModel errModel = new ErrorModel(2);
                 errModel.ErrorMessage = string.Format("Could not load SearchTemplate {0}", RefNum);
                 TempData["ErrorModel"] = errModel;
+                Trace.TraceError("QuickSearchController - Print. User: " + User.Identity.Name + ". When: " + DateTime.Now + ". Exception: " + ex.ToString());
                 return RedirectToAction("IndexByModel", "Error", new { area = "", model = errModel ?? null });
             }
 
