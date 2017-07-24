@@ -33,8 +33,6 @@ namespace Wardship
         {
             filters.Add(new LogonAuthorize());
             filters.Add(new HandleErrorAttribute());
-            //filters.Add(new Filters.UserActivityAttribute());
-            
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -88,6 +86,8 @@ namespace Wardship
             Database.SetInitializer<DataContext>(null);
             //System.Configuration.ConfigurationManager.AppSettings["CurServer"] = System.Configuration.ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString.Split(';').First().Split('=').Last();
             ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
+
+            BootstrapContainer();
         }
     }
 }

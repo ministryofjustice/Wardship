@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Web.Routing;
 using System.Security.Principal;
 using Wardship.Models;
+using Wardship.Logger;
 
 namespace Wardship.Tests
 {
@@ -18,7 +19,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Nonexistantuser"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository();
+            SourceRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             var result = rep.getCurrentAlerts();
@@ -32,7 +33,7 @@ namespace Wardship.Tests
         {
             //Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Nonexistantuser"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository();
+            SourceRepository rep = new MockRepository(new TelemetryLogger());
 
             //Act
             IEnumerable<Alert> results = rep.getCurrentAlerts();
@@ -45,7 +46,7 @@ namespace Wardship.Tests
         {
             //Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Nonexistantuser"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository();
+            SourceRepository rep = new MockRepository(new TelemetryLogger());
 
             //Act
             IEnumerable<Alert> results = rep.getCurrentAlerts();
@@ -58,7 +59,7 @@ namespace Wardship.Tests
         {
             //Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Nonexistantuser"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository();
+            SourceRepository rep = new MockRepository(new TelemetryLogger());
 
             //Act
             IEnumerable<Alert> results = rep.getCurrentAlerts();

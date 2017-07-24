@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Wardship.Logger;
 using Wardship.Models;
 
 namespace Wardship.Controllers
@@ -8,13 +9,13 @@ namespace Wardship.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class AuditController : Controller
     {
-        SourceRepository db = new SQLRepository();
-        public AuditController()
-            : this(new SQLRepository())
-        { }
-        public AuditController(SourceRepository repository)
+        private readonly SourceRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public AuditController(SQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
         }
 
         public ActionResult Audit(string auditType, int id, int? page)

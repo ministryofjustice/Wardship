@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Wardship.Logger;
 
 namespace Wardship.Controllers
 {
@@ -6,13 +7,13 @@ namespace Wardship.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class HomeController : Controller
     {
-		SourceRepository db = new SQLRepository();
-        public HomeController()
-            : this(new SQLRepository())
-        { }
-        public HomeController(SourceRepository repository)
+        private readonly SourceRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public HomeController(SQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
         }
 
         [AllowAnonymous]

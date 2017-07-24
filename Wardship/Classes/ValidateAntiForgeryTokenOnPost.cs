@@ -2,12 +2,15 @@
 using System.Net;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using Wardship.Logger;
 
 namespace Wardship
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ValidateAntiForgeryTokenOnAllPosts : AuthorizeAttribute
     {
+        public ITelemetryLogger Logger { get { return new TelemetryLogger(); } }
+
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             var request = filterContext.HttpContext.Request;
@@ -52,10 +55,12 @@ namespace Wardship
                         "If you feel this is incorrect," +
                         "please contact your local admin.",
                 };
+                Logger.LogError(e, $"Exception in ValidateAntiForgeryToken for user {filterContext.HttpContext.User.Identity.Name}");
+                throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //Log
+                Logger.LogError(ex, $"Exception in ValidateAntiForgeryToken for user {filterContext.HttpContext.User.Identity.Name}");
                 throw;
             }
         }

@@ -7,6 +7,7 @@ using System.Security.Principal;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.SqlServer;
+using Wardship.Logger;
 
 namespace Wardship
 {
@@ -14,7 +15,14 @@ namespace Wardship
     {
         DataContext db = new DataContext();
 
-        #region FAQ
+        private readonly ITelemetryLogger _logger;
+ 
+         public SQLRepository(ITelemetryLogger logger)
+         {
+             _logger = logger;
+         }
+
+    #region FAQ
         IEnumerable<Models.FAQ> SourceRepository.FAQsGetAll()
         {
             return db.FAQs.ToList();
@@ -102,9 +110,9 @@ namespace Wardship
                 }
                 return grpLvl ?? AccessLevel.Denied;
             }
-            catch
+            catch (Exception ex)
             {
-                //return an error code
+                _logger.LogError(ex, $"Exception in SqlRepository in UserAccessLevel method, for user {(HttpContext.Current.User as IPrincipal).Identity.Name}");
                 return AccessLevel.Denied;
             }
         }
@@ -183,36 +191,6 @@ namespace Wardship
             db.Entry(model).State = EntityState.Modified;
             db.SaveChanges();
         }
-        #endregion
-
-        #region Salutations
-        //IEnumerable<Salutation> SourceRepository.GetListofSalutations()
-        //{
-        //    return db.Salutations.ToList();
-        //}
-        //Salutation SourceRepository.GetSalutationByID(int id)
-        //{
-        //    return db.Salutations.FirstOrDefault(d => d.SalutationID == id);
-        //}
-        //void SourceRepository.CreateSalutation(Salutation model)
-        //{
-        //    db.Salutations.Add(model);
-        //    db.SaveChanges();
-        //}
-        //void SourceRepository.SalutationEditByID(Salutation model)
-        //{
-        //    db.Entry(model).State = EntityState.Modified;
-        //    db.SaveChanges();
-        //}
-        //Salutation SourceRepository.SalutationDeleteByID(int id)
-        //{
-        //    return db.Salutations.FirstOrDefault(d => d.SalutationID == id);
-        //}
-        //void SourceRepository.SalutationDeactivateByID(Salutation model)
-        //{
-        //    db.Entry(model).State = EntityState.Modified;
-        //    db.SaveChanges();
-        //}
         #endregion
 
         #region Courts

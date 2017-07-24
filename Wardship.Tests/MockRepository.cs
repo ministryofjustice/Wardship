@@ -7,16 +7,23 @@ using Wardship.Models;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Routing;
+using Wardship.Logger;
 
 namespace Wardship.Tests
 {
-    class MockRepository : Wardship.SourceRepository
+    class MockRepository : SourceRepository
     {
+        private readonly ITelemetryLogger _logger;
+
         private HttpContextBase httpContext { get; set; }
-        public MockRepository() { }
-        public MockRepository(RequestContext rc)
+        public MockRepository(ITelemetryLogger logger)
+        {
+            _logger = logger;
+        }
+        public MockRepository(RequestContext rc, ITelemetryLogger logger)
         {
             httpContext = rc.HttpContext;
+            _logger = logger;
         }
 
         #region data

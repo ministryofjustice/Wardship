@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-
+using Wardship.Logger;
 
 namespace Wardship.Models
 {
@@ -19,7 +19,7 @@ namespace Wardship.Models
         
         public TemplateEdit(int id) : this()
         {
-                    using (SourceRepository db = new SQLRepository())
+                    using (SourceRepository db = new SQLRepository(new TelemetryLogger()))
                     {
                         Template = db.GetTemplateByID(id);
                     }

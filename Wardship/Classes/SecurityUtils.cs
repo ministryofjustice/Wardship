@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Linq;
 using Wardship.Models;
 using System.Web;
+using Wardship.Logger;
 
 namespace Wardship
 {
@@ -31,7 +32,7 @@ namespace Wardship
         {
             db = repository;
         }
-        public ICurrentUser(IIdentity identity): this(new SQLRepository())
+        public ICurrentUser(IIdentity identity): this(new SQLRepository( new TelemetryLogger()))
         { 
             this.Identity = identity;
             SystemUser = db.GetUserByName(Identity.Name.Split('\\').Last());
@@ -106,7 +107,7 @@ namespace Wardship
             _isAuthorized = false;
             UserAccessLevel = AccessLevel.Denied;
             //check groups (strart with them for a bigger group target!)
-            using (SourceRepository db = new SQLRepository())
+            using (SourceRepository db = new SQLRepository(new TelemetryLogger()))
             {
                 UserAccessLevel = (AccessLevel)db.UserAccessLevel(httpContext.User);
             }

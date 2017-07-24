@@ -4,6 +4,7 @@ using Wardship.Models;
 using System.IO;
 using System.Xml;
 using System.Web.ModelBinding;
+using Wardship.Logger;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -12,13 +13,13 @@ namespace Wardship.Areas.Admin.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class TemplatesController : Controller
     {
- 		SourceRepository db = new SQLRepository();
-        public TemplatesController()
-            : this(new SQLRepository())
-        { }
-        public TemplatesController(SourceRepository repository)
+        private readonly SourceRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public TemplatesController(SQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
         }
       
         // GET: /Admin/Template/
@@ -78,7 +79,8 @@ namespace Wardship.Areas.Admin.Controllers
             {
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
                 model.UploadSuccessful = false;
-                return View(model);
+                _logger.LogError(ex, $"Exception in TemplatesController in Create method, for user {User.Identity.Name}");
+                return View("Error");
             }
         }
 
@@ -122,7 +124,8 @@ namespace Wardship.Areas.Admin.Controllers
             {
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
                 model.UploadSuccessful = false;
-                return View(model);
+                _logger.LogError(ex, $"Exception in TemplatesController in Edit method, for user {User.Identity.Name}");
+                return View("Error");
             }
         }
 
@@ -144,13 +147,21 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost, ActionName("Deactivate")]
         public ActionResult DeactivateConfirmed(int id)
         {
-            WordTemplate model = db.GetTemplateByID(id);
-            model.active = false;
-            model.deactivated = DateTime.Now;
-            model.deactivatedBy = ((Wardship.ICurrentUser)User).DisplayName;
-            //model.templateXML = null;
-            db.UpdateTemplate(model);
-            return RedirectToAction("Index");
+            try
+            {
+                WordTemplate model = db.GetTemplateByID(id);
+                model.active = false;
+                model.deactivated = DateTime.Now;
+                model.deactivatedBy = ((Wardship.ICurrentUser)User).DisplayName;
+                //model.templateXML = null;
+                db.UpdateTemplate(model);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception in TemplatesController in Deactivate method, for user {User.Identity.Name}");
+                return View("Error");
+            }
         }
 
     }
