@@ -9,6 +9,9 @@ using Wardship.Models;
 using System.Web.Security;
 using System.Web.Helpers;
 using System.IdentityModel.Claims;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using Wardship.Infrastructure;
 
 namespace Wardship
 {
@@ -17,6 +20,15 @@ namespace Wardship
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        private static IWindsorContainer _container;
+ 
+         private static void BootstrapContainer()
+         {
+             _container = new WindsorContainer().Install(FromAssembly.This());
+             
+             ControllerBuilder.Current.SetControllerFactory(new ControllerFactory(_container.Kernel));
+         }
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new LogonAuthorize());
