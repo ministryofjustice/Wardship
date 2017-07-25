@@ -18,7 +18,7 @@ namespace Wardship.Tests
         {
             //Arrange
             RequestContext requestContext1 = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Admin"), new string[] { "Admin" })), new RouteData());
-            SourceRepository rep = new MockRepository(requestContext1, new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(requestContext1, new TelemetryLogger());
 
             //Act
             var Roles = rep.GetAllRoles();
@@ -34,7 +34,7 @@ namespace Wardship.Tests
             MockHttpContext bob = new MockHttpContext();
             
             RequestContext requestContext1 = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Manager"), new string[] { "Manager" })), new RouteData());
-            SourceRepository rep = new MockRepository(requestContext1, new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(requestContext1, new TelemetryLogger());
 
             //Act
             var Roles = rep.GetAllRoles();
@@ -50,7 +50,7 @@ namespace Wardship.Tests
 
             RequestContext requestContext1 = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("cbruce"), new string[] { "no_roles" })), new RouteData());
             RequestContext requestContext2 = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("dpenny"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
            
             //Act
             string name1 = rep.GetUserByName(requestContext1.HttpContext.User.Identity.Name).DisplayName;
@@ -65,7 +65,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Nonexistantuser"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             AccessLevel result = rep.UserAccessLevel(requestContext.HttpContext.User);
@@ -78,7 +78,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("cbruce"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             AccessLevel result = rep.UserAccessLevel(requestContext.HttpContext.User);
@@ -91,7 +91,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("Nonexistantuser"), new string[] { "soldev\\gg_ssg_developer" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             AccessLevel result = rep.UserAccessLevel(requestContext.HttpContext.User);
@@ -104,7 +104,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("dpenny"), new string[] { "soldev\\gg_ssg_developer" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             AccessLevel result = rep.UserAccessLevel(requestContext.HttpContext.User);
@@ -119,7 +119,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("ijones"), new string[] { "soldev\\gg_ssg_developer","soldev\\SSGDeveloper" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             AccessLevel result = rep.UserAccessLevel(requestContext.HttpContext.User);
@@ -134,7 +134,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("ijones"), new string[] { "soldev\\gg_ssg_developer","soldev\\SSGDeveloper" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             string result = rep.curUserDisplay(requestContext.HttpContext.User);
@@ -147,7 +147,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("amason"), new string[] { "soldev\\gg_ssg_developer"})), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             string result = rep.curUserDisplay(requestContext.HttpContext.User);
@@ -160,7 +160,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("soldev\\Nonexistantuser"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             string result = rep.curUserDisplay(requestContext.HttpContext.User);
@@ -173,7 +173,7 @@ namespace Wardship.Tests
         {
             // Arrange
             RequestContext requestContext = new RequestContext(new MockHttpContext(new GenericPrincipal(new GenericIdentity("oUser"), new string[] { "no_roles" })), new RouteData());
-            SourceRepository rep = new MockRepository(new TelemetryLogger());
+            ISQLRepository rep = new MockRepository(new TelemetryLogger());
 
             // Act
             AccessLevel result = rep.UserAccessLevel(requestContext.HttpContext.User);

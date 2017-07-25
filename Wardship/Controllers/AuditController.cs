@@ -9,10 +9,10 @@ namespace Wardship.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class AuditController : Controller
     {
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public AuditController(SQLRepository repository, ITelemetryLogger logger)
+        public AuditController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

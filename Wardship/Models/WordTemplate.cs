@@ -19,7 +19,7 @@ namespace Wardship.Models
         
         public TemplateEdit(int id) : this()
         {
-                    using (SourceRepository db = new SQLRepository(new TelemetryLogger()))
+                    using (ISQLRepository db = new SQLRepository(new TelemetryLogger()))
                     {
                         Template = db.GetTemplateByID(id);
                     }

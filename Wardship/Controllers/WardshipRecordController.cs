@@ -11,10 +11,10 @@ namespace Wardship.Controllers
     
     public class WardshipRecordController : Controller
     {
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public WardshipRecordController(SQLRepository repository, ITelemetryLogger logger)
+        public WardshipRecordController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

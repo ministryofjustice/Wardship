@@ -12,10 +12,10 @@ namespace Wardship.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         string domainID = null;
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public UsersController(SQLRepository repository, ITelemetryLogger logger)
+        public UsersController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

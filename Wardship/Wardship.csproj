@@ -242,7 +242,7 @@
     <Compile Include="Classes\DateTimeFunctions.cs" />
     <Compile Include="Classes\pageDisplay.cs" />
     <Compile Include="Classes\genericFunctions.cs" />
-    <Compile Include="DAL\SourceRepository.cs" />
+    <Compile Include="DAL\ISQLRepository.cs" />
     <Compile Include="DAL\SQLRepository.cs" />
     <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />
     <Compile Include="FilterConfig.cs" />

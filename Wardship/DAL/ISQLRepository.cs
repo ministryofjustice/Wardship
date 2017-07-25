@@ -7,7 +7,7 @@ using System.Security.Principal;
 
 namespace Wardship
 {
-    public interface SourceRepository : IDisposable
+    public interface ISQLRepository : IDisposable
     {
         #region FAQ
         IEnumerable<FAQ> FAQsGetAll();

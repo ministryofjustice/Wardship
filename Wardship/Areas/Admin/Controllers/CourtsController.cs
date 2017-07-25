@@ -13,10 +13,10 @@ namespace Wardship.Areas.Admin.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class CourtsController : Controller
     {
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public CourtsController(SQLRepository repository, ITelemetryLogger logger)
+        public CourtsController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

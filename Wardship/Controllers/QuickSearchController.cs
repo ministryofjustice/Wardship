@@ -14,10 +14,10 @@ namespace Wardship.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class QuickSearchController : Controller
     {
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public QuickSearchController(SQLRepository repository, ITelemetryLogger logger)
+        public QuickSearchController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

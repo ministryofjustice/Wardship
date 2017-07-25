@@ -7,10 +7,10 @@ namespace Wardship.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class HomeController : Controller
     {
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public HomeController(SQLRepository repository, ITelemetryLogger logger)
+        public HomeController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

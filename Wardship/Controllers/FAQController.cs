@@ -9,10 +9,10 @@ namespace Wardship.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class FAQController : Controller
     {
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public FAQController(SQLRepository repository, ITelemetryLogger logger)
+        public FAQController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

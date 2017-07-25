@@ -10,10 +10,10 @@ namespace Wardship.Areas.Admin.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class AlertsController : Controller
     {
-        private readonly SourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ITelemetryLogger _logger;
 
-        public AlertsController(SQLRepository repository, ITelemetryLogger logger)
+        public AlertsController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
             _logger = logger;

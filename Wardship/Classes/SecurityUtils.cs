@@ -26,9 +26,9 @@ namespace Wardship
         private DateTime lastActive { get; set; }
         public IIdentity Identity { get; private set; }
 
-        private SourceRepository db { get; set; }
+        private ISQLRepository db { get; set; }
 
-        public ICurrentUser(SourceRepository repository)
+        public ICurrentUser(ISQLRepository repository)
         {
             db = repository;
         }
@@ -38,7 +38,7 @@ namespace Wardship
             SystemUser = db.GetUserByName(Identity.Name.Split('\\').Last());
         }
 
-        public ICurrentUser(IIdentity identity, SourceRepository rep)
+        public ICurrentUser(IIdentity identity, ISQLRepository rep)
         {
             db = rep;
             this.Identity = identity;
@@ -107,7 +107,7 @@ namespace Wardship
             _isAuthorized = false;
             UserAccessLevel = AccessLevel.Denied;
             //check groups (strart with them for a bigger group target!)
-            using (SourceRepository db = new SQLRepository(new TelemetryLogger()))
+            using (ISQLRepository db = new SQLRepository(new TelemetryLogger()))
             {
                 UserAccessLevel = (AccessLevel)db.UserAccessLevel(httpContext.User);
             }
