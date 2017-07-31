@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
+using Wardship.Logger;
 using Wardship.Models;
 
 namespace Wardship.Areas.Admin.Controllers
@@ -8,13 +10,13 @@ namespace Wardship.Areas.Admin.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class AlertsController : Controller
     {
-		SourceRepository db = new SQLRepository();
-        public AlertsController()
-            : this(new SQLRepository())
-        { }
-        public AlertsController(SourceRepository repository)
+        private readonly ISQLRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public AlertsController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
         }
 
         //
@@ -34,9 +36,18 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(Alert model)
         {
-            model.Live = true;
-            db.CreateAlert(model);
-            return RedirectToAction("Index");
+            try
+            {
+                model.Live = true;
+                db.CreateAlert(model);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception in AlertsController in Create method, for user {User.Identity.Name}");
+                return View("Error");
+            }
+            
         }
         
         public ActionResult Edit(int id)
@@ -48,12 +59,21 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(Alert model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.updateAlert(model);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.updateAlert(model);
+                    return RedirectToAction("Index");
+                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception in AlertsController in Create method, for user {User.Identity.Name}");
+                return View("Error");
+            }
+           
         }
       
       

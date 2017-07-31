@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Wardship.Models;
 using Wardship.Areas.Admin.Models;
 using System.DirectoryServices.AccountManagement;
+using Wardship.Logger;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -11,12 +12,13 @@ namespace Wardship.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         string domainID = null;
-		SourceRepository db = new SQLRepository();
-        public UsersController(): this(new SQLRepository())
-        { }
-        public UsersController(SourceRepository repository)
+        private readonly ISQLRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public UsersController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
             // domainID = "CDC0821.dom1.infra.int";// uncomment for DOM1/Live use
         }
 
@@ -57,6 +59,8 @@ namespace Wardship.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
+                _logger.LogError(ex, $"Exception in UsersController in GetUSers method, for user {User.Identity.Name}");
+                return View("Error");
             }
             return PartialView("_ListUsersForGroup", model);
         }
@@ -79,9 +83,11 @@ namespace Wardship.Areas.Admin.Controllers
                     db.UserAdd(model.User);
                     return RedirectToAction("Index");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return View(model);
+                    _logger.LogError(ex, $"Exception in UsersController in Create method, for user {User.Identity.Name}");
+                    return View("Error");
+                   
                 }
             }
             return View(model);
@@ -98,12 +104,21 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(UserAdminVM model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.UpdateUser(model.User);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.UpdateUser(model.User);
+                    return RedirectToAction("Index");
+                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception in UsersController in Edit method, for user {User.Identity.Name}");
+                return View("Error");
+            }
+            
         }
     }
 }

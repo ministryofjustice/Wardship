@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Wardship.Models;
 using PagedList;
+using Wardship.Logger;
 
 namespace Wardship.Controllers
 {
@@ -10,13 +11,13 @@ namespace Wardship.Controllers
     
     public class WardshipRecordController : Controller
     {
-		SourceRepository db = new SQLRepository();
-        public WardshipRecordController()
-            : this(new SQLRepository())
-        { }
-        public WardshipRecordController(SourceRepository repository)
+        private readonly ISQLRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public WardshipRecordController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
         }
 
 

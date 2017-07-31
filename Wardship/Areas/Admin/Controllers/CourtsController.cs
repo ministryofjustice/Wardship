@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web.Mvc;
 using Wardship.Models;
 using PagedList;
+using Wardship.Logger;
+using System.Security.Principal;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -11,13 +13,13 @@ namespace Wardship.Areas.Admin.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class CourtsController : Controller
     {
-		SourceRepository db = new SQLRepository();
-        public CourtsController()
-            : this(new SQLRepository())
-        { }
-        public CourtsController(SourceRepository repository)
+        private readonly ISQLRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public CourtsController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
         }
 
         //
@@ -84,8 +86,9 @@ namespace Wardship.Areas.Admin.Controllers
                 }
             }
             catch(Exception ex)
-            { 
-                ModelState.AddModelError("Error", string.Format("Error: {0}", genericFunctions.GetLowestError(ex)));
+            {
+                _logger.LogError(ex, $"Exception in CourtsController in Edit method, for user {User.Identity.Name}");
+                
             }
             return View("Edit", model);
         }
@@ -107,7 +110,7 @@ namespace Wardship.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Error", string.Format("Error: {0}", genericFunctions.GetLowestError(ex)));
+                _logger.LogError(ex, $"Exception in CourtsController in Create method, for user {User.Identity.Name}");
             }
             return View("Edit", model);
         }
@@ -120,18 +123,28 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Deactivate(Court model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                ModelState.AddModelError("error", "uh oh");
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("error", "uh oh");
+                    return PartialView("_Deactivate", model);
+                }
+                Court crt = db.getCourtByID(model.CourtID);
+                //load Court to delete
+                crt.active = false;
+                crt.deactivatedBy = (User as Wardship.ICurrentUser).DisplayName;
+                crt.deactivated = DateTime.Now;
+                db.EditCourt(crt);
+                return Json(new { success = true, id = model.CourtID, message = model.CourtName });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception in CourtsController in Deactivate method, for user {User.Identity.Name}");
                 return PartialView("_Deactivate", model);
             }
-            Court crt = db.getCourtByID(model.CourtID);
-            //load Court to delete
-            crt.active = false;
-            crt.deactivatedBy = (User as Wardship.ICurrentUser).DisplayName;
-            crt.deactivated = DateTime.Now;
-            db.EditCourt(crt);
-            return Json(new { success = true, id = model.CourtID, message=model.CourtName });
+
+            
         }
 		
     }

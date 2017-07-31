@@ -9,6 +9,9 @@ using Wardship.Models;
 using System.Web.Security;
 using System.Web.Helpers;
 using System.IdentityModel.Claims;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using Wardship.Infrastructure;
 
 namespace Wardship
 {
@@ -17,16 +20,24 @@ namespace Wardship
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        private static IWindsorContainer _container;
+ 
+         private static void BootstrapContainer()
+         {
+             _container = new WindsorContainer().Install(FromAssembly.This());
+             
+             ControllerBuilder.Current.SetControllerFactory(new ControllerFactory(_container.Kernel));
+         }
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new LogonAuthorize());
             filters.Add(new HandleErrorAttribute());
-            //filters.Add(new Filters.UserActivityAttribute());
-            
         }
 
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute("Audit", "{auditType}/Audit/{id}"
                                 , new
@@ -76,6 +87,8 @@ namespace Wardship
             Database.SetInitializer<DataContext>(null);
             //System.Configuration.ConfigurationManager.AppSettings["CurServer"] = System.Configuration.ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString.Split(';').First().Split('=').Last();
             ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
+
+            BootstrapContainer();
         }
     }
 }

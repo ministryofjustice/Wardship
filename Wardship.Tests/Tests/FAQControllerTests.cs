@@ -6,18 +6,28 @@ using Wardship.Models;
 using Wardship.Controllers;
 using System.Security.Principal;
 using System.Web.Mvc;
+using Wardship.Logger;
+using Moq;
 
 namespace Wardship.Tests.Controllers
 {
     [TestClass]
     public class FAQControllerTest
     {
+        private IMock<ITelemetryLogger> _telemetryLoggerMock;
+
+        [TestInitialize]
+        public void StartUp()
+        {
+            _telemetryLoggerMock = new Mock<ITelemetryLogger>();
+        }
+
         [TestMethod]
         public void FAQControllerReturnsIndexPage()
         {
             {
                 // Arrange
-                FAQController testController = new FAQController(new MockRepository());
+                FAQController testController = new FAQController(new SQLRepository(_telemetryLoggerMock.Object), _telemetryLoggerMock.Object);
                 testController.ControllerContext = new ControllerContext()
                 {
                     Controller = testController,
@@ -36,7 +46,7 @@ namespace Wardship.Tests.Controllers
         {
             {
                 // Arrange
-                FAQController testController = new FAQController(new MockRepository());
+                FAQController testController = new FAQController(new MockRepository(new TelemetryLogger()), new TelemetryLogger());
                 testController.ControllerContext = new ControllerContext()
                 {
                     Controller = testController,
@@ -55,7 +65,7 @@ namespace Wardship.Tests.Controllers
         {
             {
                 // Arrange
-                FAQController testController = new FAQController(new MockRepository());
+                FAQController testController = new FAQController(new MockRepository(new TelemetryLogger()), new TelemetryLogger());
                 testController.ControllerContext = new ControllerContext()
                 {
                     Controller = testController,
@@ -74,7 +84,7 @@ namespace Wardship.Tests.Controllers
         {
             {
                 // Arrange
-                FAQController testController = new FAQController(new MockRepository());
+                FAQController testController = new FAQController(new MockRepository(new TelemetryLogger()), new TelemetryLogger());
                 testController.ControllerContext = new ControllerContext()
                 {
                     Controller = testController,
@@ -92,7 +102,7 @@ namespace Wardship.Tests.Controllers
         public void FAQControllerCanCreateNewFAQ()
         {
             // Arrange
-            FAQController testController = new FAQController(new MockRepository());
+            FAQController testController = new FAQController(new MockRepository(new TelemetryLogger()), new TelemetryLogger());
             testController.ControllerContext = new ControllerContext()
             {
                 Controller = testController,
@@ -109,7 +119,7 @@ namespace Wardship.Tests.Controllers
         public void FAQControllerCanAmendFAQ()
         {
             // Arrange
-            FAQController testController = new FAQController(new MockRepository());
+            FAQController testController = new FAQController(new MockRepository(new TelemetryLogger()), new TelemetryLogger());
             testController.ControllerContext = new ControllerContext()
             {
                 Controller = testController,
@@ -126,7 +136,7 @@ namespace Wardship.Tests.Controllers
         public void FAQControllerShouldRedisplayWithErrorsIfFAQUpdateFails()
         {
             // Arrange
-            FAQController testController = new FAQController(new MockRepository());
+            FAQController testController = new FAQController(new MockRepository(new TelemetryLogger()), new TelemetryLogger());
             testController.ControllerContext = new ControllerContext()
             {
                 Controller = testController,

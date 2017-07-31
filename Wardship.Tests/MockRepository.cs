@@ -7,16 +7,23 @@ using Wardship.Models;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Routing;
+using Wardship.Logger;
 
 namespace Wardship.Tests
 {
-    class MockRepository : Wardship.SourceRepository
+    class MockRepository : ISQLRepository
     {
+        private readonly ITelemetryLogger _logger;
+
         private HttpContextBase httpContext { get; set; }
-        public MockRepository() { }
-        public MockRepository(RequestContext rc)
+        public MockRepository(ITelemetryLogger logger)
+        {
+            _logger = logger;
+        }
+        public MockRepository(RequestContext rc, ITelemetryLogger logger)
         {
             httpContext = rc.HttpContext;
+            _logger = logger;
         }
 
         #region data
@@ -63,27 +70,27 @@ namespace Wardship.Tests
         };
         #endregion
         #region FAQtests
-        IEnumerable<Wardship.Models.FAQ> Wardship.SourceRepository.FAQsGetAll()
+        IEnumerable<Wardship.Models.FAQ> Wardship.ISQLRepository.FAQsGetAll()
         {
             return testFAQS.ToList();
         }
 
-        IEnumerable<Wardship.Models.FAQ> Wardship.SourceRepository.FAQsGetOnline()
+        IEnumerable<Wardship.Models.FAQ> Wardship.ISQLRepository.FAQsGetOnline()
         {
             return testFAQS.Where(f => f.loggedInUser == true).ToList();
         }
 
-        IEnumerable<Wardship.Models.FAQ> Wardship.SourceRepository.FAQsGetOffline()
+        IEnumerable<Wardship.Models.FAQ> Wardship.ISQLRepository.FAQsGetOffline()
         {
             return testFAQS.Where(f => f.loggedInUser == false).ToList();
         }
 
-        Wardship.Models.FAQ Wardship.SourceRepository.FAQGetbyID(int id)
+        Wardship.Models.FAQ Wardship.ISQLRepository.FAQGetbyID(int id)
         {
             throw new NotImplementedException();
         }
 
-        void Wardship.SourceRepository.FAQUpdate(Wardship.Models.FAQ faq)
+        void Wardship.ISQLRepository.FAQUpdate(Wardship.Models.FAQ faq)
         {
             FAQ toAmend = testFAQS.Where(f => f.faqID == faq.faqID).Single();
             toAmend.question = faq.question;
@@ -91,32 +98,32 @@ namespace Wardship.Tests
             toAmend.loggedInUser = faq.loggedInUser;
         }
 
-        void Wardship.SourceRepository.FAQAdd(Wardship.Models.FAQ faq)
+        void Wardship.ISQLRepository.FAQAdd(Wardship.Models.FAQ faq)
         {
             testFAQS.Add(faq);
         }
 
         #endregion
         #region Audits
-        IEnumerable<AuditEvent> SourceRepository.AuditEventsGetAll()
+        IEnumerable<AuditEvent> ISQLRepository.AuditEventsGetAll()
         {
             throw new NotImplementedException();
         }
         #endregion
         #region ActiveDirectory
-        IEnumerable<ADGroup> SourceRepository.GetAllGroups()
+        IEnumerable<ADGroup> ISQLRepository.GetAllGroups()
         {
             return groups.ToList();
         }
-        IEnumerable<User> SourceRepository.GetAllUsers()
+        IEnumerable<User> ISQLRepository.GetAllUsers()
         {
             return users.ToList();
         }
-        ADGroup SourceRepository.GetGroupByID(int id)
+        ADGroup ISQLRepository.GetGroupByID(int id)
         {
             return groups.Single(x => x.ADGroupID == id);
         }
-        AccessLevel SourceRepository.UserAccessLevel(IPrincipal User)
+        AccessLevel ISQLRepository.UserAccessLevel(IPrincipal User)
         {
             try
             {
@@ -154,7 +161,7 @@ namespace Wardship.Tests
                 return AccessLevel.Denied;
             }
         }
-        string SourceRepository.curUserDisplay(IPrincipal User)
+        string ISQLRepository.curUserDisplay(IPrincipal User)
         {
             string userName = ((string)User.Identity.Name).Split('\\').Last();
             User usr = users.Where(x => x.Name == userName).FirstOrDefault();
@@ -171,7 +178,7 @@ namespace Wardship.Tests
             }
             return User.Identity.Name;
         }
-        IEnumerable<Role> SourceRepository.GetAllRoles()
+        IEnumerable<Role> ISQLRepository.GetAllRoles()
         {
             
             ICurrentUser usr = new ICurrentUser(httpContext.User.Identity, this);
@@ -184,46 +191,46 @@ namespace Wardship.Tests
                 return roles.Where(x => x.Detail != "Admin");
             }
         }
-        void SourceRepository.UserAdd(User model)
+        void ISQLRepository.UserAdd(User model)
         {
             users.Add(model);
         }
-        User SourceRepository.GetUserByID(int id)
+        User ISQLRepository.GetUserByID(int id)
         {
             User user = users.Single(x => x.UserID == id);
             user.Role = roles.Single(x => x.strength == user.RoleStrength);
             return user;
         }
-        User SourceRepository.GetUserByName(string Name)
+        User ISQLRepository.GetUserByName(string Name)
         {
             User user = users.Single(x => x.Name == Name);
             user.Role = roles.Single(x => x.strength == user.RoleStrength);
             return user;
         }
-        void SourceRepository.UpdateUser(User model)
+        void ISQLRepository.UpdateUser(User model)
         {
             User toAmend = users.Single(f => f.UserID == model.UserID);
             toAmend = model;
         }
         #endregion
         #region Alerts
-        IEnumerable<Alert> SourceRepository.getCurrentAlerts()
+        IEnumerable<Alert> ISQLRepository.getCurrentAlerts()
         {
             return Alerts.Where(x => x.Live == true && x.WarnStart < DateTime.Now);
         }
-        IEnumerable<Alert> SourceRepository.getAllAlerts()
+        IEnumerable<Alert> ISQLRepository.getAllAlerts()
         {
             return Alerts;
         }
-        void SourceRepository.CreateAlert(Alert model)
+        void ISQLRepository.CreateAlert(Alert model)
         {
             Alerts.Add(model);
         }
-        Alert SourceRepository.getAlertbyID(int id)
+        Alert ISQLRepository.getAlertbyID(int id)
         {
             return Alerts.Single(x=>x.AlertID==id);
         }
-        void SourceRepository.updateAlert(Alert model)
+        void ISQLRepository.updateAlert(Alert model)
         {
             Alert alert = Alerts.Single(x => x.AlertID == model.AlertID);
             alert = model;
@@ -256,44 +263,44 @@ namespace Wardship.Tests
         //}
         #endregion
         #region Courts
-        IEnumerable<Court> SourceRepository.getAllCourts()
+        IEnumerable<Court> ISQLRepository.getAllCourts()
         {
             throw new NotImplementedException();
         }
-        void SourceRepository.CreateCourt(Court model)
-        {
-            throw new NotImplementedException();
-        }
-
-        void SourceRepository.EditCourt(Court model)
+        void ISQLRepository.CreateCourt(Court model)
         {
             throw new NotImplementedException();
         }
 
-        Court SourceRepository.getCourtByID(int id)
+        void ISQLRepository.EditCourt(Court model)
+        {
+            throw new NotImplementedException();
+        }
+
+        Court ISQLRepository.getCourtByID(int id)
         {
             throw new NotImplementedException();
         }
         #endregion
        
         #region Templates
-        IEnumerable<WordTemplate> SourceRepository.GetAllTemplates()
+        IEnumerable<WordTemplate> ISQLRepository.GetAllTemplates()
         {
             return Templates.Where(x => x.active == true);
         }
-        WordTemplate SourceRepository.GetTemplateByID(int id)
+        WordTemplate ISQLRepository.GetTemplateByID(int id)
         {
             return Templates.Single(x => x.templateID == id);
         }
-        void SourceRepository.UpdateTemplate(WordTemplate model)
+        void ISQLRepository.UpdateTemplate(WordTemplate model)
         {
             throw new NotImplementedException();
         }
-        void SourceRepository.DeactivateTemplate(WordTemplate model)
+        void ISQLRepository.DeactivateTemplate(WordTemplate model)
         {
             throw new NotImplementedException();
         }
-        void SourceRepository.AddNewTemplate(WordTemplate model)
+        void ISQLRepository.AddNewTemplate(WordTemplate model)
         {
             Templates.Add(model);
         }

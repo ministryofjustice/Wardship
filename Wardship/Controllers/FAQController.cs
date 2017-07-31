@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using Wardship.Logger;
 using Wardship.Models;
 
 namespace Wardship.Controllers
@@ -8,13 +9,13 @@ namespace Wardship.Controllers
     [ValidateAntiForgeryTokenOnAllPosts]
     public class FAQController : Controller
     {
-        SourceRepository db = new SQLRepository();
-        public FAQController()
-            : this(new SQLRepository())
-        { }
-        public FAQController(SourceRepository repository)
+        private readonly ISQLRepository db;
+        private readonly ITelemetryLogger _logger;
+
+        public FAQController(ISQLRepository repository, ITelemetryLogger logger)
         {
             db = repository;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -39,6 +40,7 @@ namespace Wardship.Controllers
                 }
             }
         }
+
         [AuthorizeRedirect(MinimumRequiredAccessLevel=AccessLevel.Manager)]
         public ActionResult Edit(int id)
         {
@@ -61,9 +63,10 @@ namespace Wardship.Controllers
                 }
                 return View(faq);
             }
-            catch
+            catch (Exception ex)
             {
-                return View(faq);
+                _logger.LogError(ex, $"Exception in FAQController in Edit method, for user {User.Identity.Name}");
+                return View("Error");
             }
         }
         [AuthorizeRedirect(MinimumRequiredAccessLevel = AccessLevel.Manager)]
@@ -86,9 +89,10 @@ namespace Wardship.Controllers
                     db.FAQAdd(faq);
                     return RedirectToAction("Index");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return View(faq);
+                    _logger.LogError(ex, $"Exception in FAQController in Create method, for user {User.Identity.Name}");
+                    return View("Error");
                 }
             }
             return View(faq);

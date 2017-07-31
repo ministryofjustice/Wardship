@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Linq;
 using Wardship.Models;
 using System.Web;
+using Wardship.Logger;
 
 namespace Wardship
 {
@@ -25,19 +26,19 @@ namespace Wardship
         private DateTime lastActive { get; set; }
         public IIdentity Identity { get; private set; }
 
-        private SourceRepository db { get; set; }
+        private ISQLRepository db { get; set; }
 
-        public ICurrentUser(SourceRepository repository)
+        public ICurrentUser(ISQLRepository repository)
         {
             db = repository;
         }
-        public ICurrentUser(IIdentity identity): this(new SQLRepository())
+        public ICurrentUser(IIdentity identity): this(new SQLRepository( new TelemetryLogger()))
         { 
             this.Identity = identity;
             SystemUser = db.GetUserByName(Identity.Name.Split('\\').Last());
         }
 
-        public ICurrentUser(IIdentity identity, SourceRepository rep)
+        public ICurrentUser(IIdentity identity, ISQLRepository rep)
         {
             db = rep;
             this.Identity = identity;
@@ -106,7 +107,7 @@ namespace Wardship
             _isAuthorized = false;
             UserAccessLevel = AccessLevel.Denied;
             //check groups (strart with them for a bigger group target!)
-            using (SourceRepository db = new SQLRepository())
+            using (ISQLRepository db = new SQLRepository(new TelemetryLogger()))
             {
                 UserAccessLevel = (AccessLevel)db.UserAccessLevel(httpContext.User);
             }
