@@ -30,8 +30,6 @@ namespace Wardship.Controllers
             return View();
         }
 
-
-
         public ActionResult PoPupDetails(int id)
         {
             WardshipRecord model = db.GetWardshipRecordByID(id);
@@ -39,15 +37,11 @@ namespace Wardship.Controllers
 
         }
 
-
-      
-
         //go to Wardship index
         public ActionResult Homeindex()
         {
             return RedirectToAction("Index", "Home");
         }
-
 
         [HttpPost]
         public ActionResult Index(QuickSearch model)
@@ -109,7 +103,6 @@ namespace Wardship.Controllers
                 _logger.LogError(ex, $"Exception in QuickSearchController in Index method, for user {User.Identity.Name}");
                 return View("Error");
             }
-            
          }
 
 
