@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using Wardship.Models;
 using PagedList;
-using Wardship.Logger;
+using TPLibrary.Logger;
 
 namespace Wardship.Controllers
 {
@@ -12,9 +12,9 @@ namespace Wardship.Controllers
     public class WardshipRecordController : Controller
     {
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public WardshipRecordController(ISQLRepository repository, ITelemetryLogger logger)
+        public WardshipRecordController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using Wardship.Models;
 using Wardship.Areas.Admin.Models;
 using System.DirectoryServices.AccountManagement;
-using Wardship.Logger;
+using TPLibrary.Logger;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -13,9 +13,9 @@ namespace Wardship.Areas.Admin.Controllers
     {
         string domainID = null;
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public UsersController(ISQLRepository repository, ITelemetryLogger logger)
+        public UsersController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

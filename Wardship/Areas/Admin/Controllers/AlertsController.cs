@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Wardship.Logger;
+
 using Wardship.Models;
+using TPLibrary.Logger;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -11,9 +12,9 @@ namespace Wardship.Areas.Admin.Controllers
     public class AlertsController : Controller
     {
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public AlertsController(ISQLRepository repository, ITelemetryLogger logger)
+        public AlertsController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

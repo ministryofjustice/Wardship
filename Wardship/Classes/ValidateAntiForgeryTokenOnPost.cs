@@ -2,14 +2,14 @@
 using System.Net;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using Wardship.Logger;
+using TPLibrary.Logger;
 
 namespace Wardship
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ValidateAntiForgeryTokenOnAllPosts : AuthorizeAttribute
     {
-        public ITelemetryLogger Logger { get { return new TelemetryLogger(); } }
+        public ICloudWatchLogger Logger { get { return new CloudWatchLogger(); } }
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {

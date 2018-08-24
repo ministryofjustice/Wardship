@@ -7,7 +7,8 @@ using System.Security.Principal;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.SqlServer;
-using Wardship.Logger;
+
+using TPLibrary.Logger;
 
 namespace Wardship
 {
@@ -15,14 +16,15 @@ namespace Wardship
     {
         DataContext db = new DataContext();
 
-        private readonly ITelemetryLogger _logger;
- 
-         public SQLRepository(ITelemetryLogger logger)
-         {
-             _logger = logger;
-         }
+        private readonly ICloudWatchLogger _logger;
 
-    #region FAQ
+        public SQLRepository(ICloudWatchLogger logger)
+        {
+            db = new DataContext();
+            _logger = logger;
+        }
+
+        #region FAQ
         IEnumerable<Models.FAQ> ISQLRepository.FAQsGetAll()
         {
             return db.FAQs.ToList();

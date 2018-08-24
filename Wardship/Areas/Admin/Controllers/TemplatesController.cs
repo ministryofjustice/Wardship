@@ -4,7 +4,7 @@ using Wardship.Models;
 using System.IO;
 using System.Xml;
 using System.Web.ModelBinding;
-using Wardship.Logger;
+using TPLibrary.Logger;
 
 namespace Wardship.Areas.Admin.Controllers
 {
@@ -14,9 +14,9 @@ namespace Wardship.Areas.Admin.Controllers
     public class TemplatesController : Controller
     {
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public TemplatesController(ISQLRepository repository, ITelemetryLogger logger)
+        public TemplatesController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

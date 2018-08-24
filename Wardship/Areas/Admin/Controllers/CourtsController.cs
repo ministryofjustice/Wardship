@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Wardship.Models;
 using PagedList;
-using Wardship.Logger;
+using TPLibrary.Logger;
 using System.Security.Principal;
 
 namespace Wardship.Areas.Admin.Controllers
@@ -14,9 +14,9 @@ namespace Wardship.Areas.Admin.Controllers
     public class CourtsController : Controller
     {
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public CourtsController(ISQLRepository repository, ITelemetryLogger logger)
+        public CourtsController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

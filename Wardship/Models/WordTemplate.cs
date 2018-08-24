@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Wardship.Logger;
+using TPLibrary.Logger;
 
 namespace Wardship.Models
 {
@@ -19,7 +18,7 @@ namespace Wardship.Models
         
         public TemplateEdit(int id) : this()
         {
-                    using (ISQLRepository db = new SQLRepository(new TelemetryLogger()))
+                    using (ISQLRepository db = new SQLRepository(new CloudWatchLogger()))
                     {
                         Template = db.GetTemplateByID(id);
                     }

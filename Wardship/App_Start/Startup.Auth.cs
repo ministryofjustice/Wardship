@@ -8,6 +8,7 @@ using Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
+using Microsoft.Owin.Host.SystemWeb;
 
 namespace Wardship
 {
@@ -23,15 +24,25 @@ namespace Wardship
         {
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = "Cookies",
+                CookieManager = new SystemWebChunkingCookieManager()
+            });
 
-            app.UseOpenIdConnectAuthentication(
-                new OpenIdConnectAuthenticationOptions
-                {
-                    ClientId = clientId,
-                    Authority = authority,
-                    PostLogoutRedirectUri = postLogoutRedirectUri
-                });
+            OpenIdConnectAuthenticationOptions options = new OpenIdConnectAuthenticationOptions
+            {
+                ClientId = clientId,
+                Authority = aadInstance + tenantId,
+                RedirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"],
+                PostLogoutRedirectUri = ConfigurationManager.AppSettings["ida:PostLogoutRedirectUri"]
+            };
+
+            app.UseOpenIdConnectAuthentication(options);
+
+
+
         }
     }
 }

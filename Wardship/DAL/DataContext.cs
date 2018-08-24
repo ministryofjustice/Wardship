@@ -1,18 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Configuration;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Web;
-using System.Data.Entity.Validation;
-using System.Data.Entity.ModelConfiguration.Conventions;
-
 
 namespace Wardship.Models
 {
     public class DataContext : DbContext
     {
+        public static string GetRDSConnectionString()
+        {
+            var appConfig = ConfigurationManager.AppSettings;
+
+            string dbname = appConfig["DB_NAME"]; //Environment.GetEnvironmentVariable("DB_NAME"); 
+
+            if (string.IsNullOrEmpty(dbname))
+            {
+                return ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString;
+            }
+            else
+            {
+                string username = appConfig["RDS_USERNAME"];
+                string password = appConfig["RDS_PASSWORD"];
+                string hostname = appConfig["RDS_HOSTNAME"];
+                string port = appConfig["RDS_PORT"];
+                return "Data Source=" + hostname + ";Initial Catalog=" + dbname + ";User ID=" + username + ";Password=" + password + ";MultipleActiveResultSets=true;";
+            }
+
+        }
+
+        public DataContext()
+            : base(GetRDSConnectionString())
+        { }
+
         //SSG Standard Models
         /// <summary>
         /// Frequently Asked Questions

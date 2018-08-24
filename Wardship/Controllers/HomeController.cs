@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using Wardship.Logger;
+using TPLibrary.Logger;
 
 namespace Wardship.Controllers
 {
@@ -8,9 +8,9 @@ namespace Wardship.Controllers
     public class HomeController : Controller
     {
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public HomeController(ISQLRepository repository, ITelemetryLogger logger)
+        public HomeController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

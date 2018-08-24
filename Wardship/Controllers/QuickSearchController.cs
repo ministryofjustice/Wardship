@@ -6,7 +6,7 @@ using PagedList;
 
 using System.Xml;
 using System.Text;
-using Wardship.Logger;
+using TPLibrary.Logger;
 
 namespace Wardship.Controllers
 {
@@ -15,9 +15,9 @@ namespace Wardship.Controllers
     public class QuickSearchController : Controller
     {
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public QuickSearchController(ISQLRepository repository, ITelemetryLogger logger)
+        public QuickSearchController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

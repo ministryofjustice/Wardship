@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
-using Wardship.Logger;
 using Wardship.Models;
+using TPLibrary.Logger;
 
 namespace Wardship.Controllers
 {
@@ -10,9 +10,9 @@ namespace Wardship.Controllers
     public class AuditController : Controller
     {
         private readonly ISQLRepository db;
-        private readonly ITelemetryLogger _logger;
+        private readonly ICloudWatchLogger _logger;
 
-        public AuditController(ISQLRepository repository, ITelemetryLogger logger)
+        public AuditController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;

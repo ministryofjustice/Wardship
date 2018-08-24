@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Data.Entity;
-using Wardship.Models;
-using System.Web.Security;
 using System.Web.Helpers;
 using System.IdentityModel.Claims;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Wardship.Infrastructure;
+using Microsoft.IdentityModel.Protocols;
+using TPLibrary.Logger;
+using System.Data.Entity;
+using Wardship.Models;
 
 namespace Wardship
 {
@@ -21,8 +20,14 @@ namespace Wardship
     public class MvcApplication : System.Web.HttpApplication
     {
         private static IWindsorContainer _container;
- 
-         private static void BootstrapContainer()
+        private ICloudWatchLogger _cloudWatchLogger;
+
+        public MvcApplication()
+        {
+            _cloudWatchLogger = new CloudWatchLogger();
+        }
+
+        private static void BootstrapContainer()
          {
              _container = new WindsorContainer().Install(FromAssembly.This());
              
@@ -86,9 +91,23 @@ namespace Wardship
             // Database.SetInitializer(new DBInitializer());
             Database.SetInitializer<DataContext>(null);
             //System.Configuration.ConfigurationManager.AppSettings["CurServer"] = System.Configuration.ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString.Split(';').First().Split('=').Last();
-            ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
-
             BootstrapContainer();
+            ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
+            
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            //Handle nonce exception
+            var ex = Server.GetLastError();
+
+            _cloudWatchLogger.LogError(ex, "Application_Error");
+
+            if ((ex.GetType() == typeof(OpenIdConnectProtocolInvalidNonceException) && User.Identity.IsAuthenticated) && (ex.Message.StartsWith("OICE_20004") || ex.Message.Contains("IDX10311")))
+            {
+                Server.ClearError();
+                Response.Redirect(Request.RawUrl);
+            }
         }
     }
 }

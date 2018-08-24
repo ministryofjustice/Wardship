@@ -21,7 +21,7 @@ namespace Wardship.Models
         public int UserID { get; set; }
         [Required,MaxLength(150), Display(Name="Login Name")]
         public string Name { get; set; }
-        [MaxLength(30), Display(Name="Display Name")]
+        [MaxLength(150), Display(Name="Display Name")]
         public string DisplayName { get; set; }
         public DateTime? LastActive { get; set; }
         [Required, Display(Name = "Role")]
