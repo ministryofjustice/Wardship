@@ -89,8 +89,8 @@ namespace Wardship
             RegisterRoutes(RouteTable.Routes);
 
             // Database.SetInitializer(new DBInitializer());
-            Database.SetInitializer<DataContext>(null);
             //System.Configuration.ConfigurationManager.AppSettings["CurServer"] = System.Configuration.ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString.Split(';').First().Split('=').Last();
+            Database.SetInitializer<DataContext>(null);
             BootstrapContainer();
             ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
             
