@@ -138,12 +138,23 @@ namespace Wardship
             //}
         }
         protected override bool AuthorizeCore(HttpContextBase httpContext)
-        {
-            IIdentity user = httpContext.User.Identity;
-            ICurrentUser cPrincipal = new ICurrentUser(user);
-            httpContext.User = cPrincipal;
 
-            return true; // always true as anonymous allowed
+        {
+            try
+            {
+                IIdentity user = httpContext.User.Identity;
+                ICurrentUser cPrincipal = new ICurrentUser(user);
+                httpContext.User = cPrincipal;
+
+                return true; // always true as anonymous allowed
+
+            }
+            catch
+            {
+                return false;
+            }
+
         }
+        
     }
 }
