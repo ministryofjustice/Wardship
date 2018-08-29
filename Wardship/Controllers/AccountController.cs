@@ -9,6 +9,7 @@ using Microsoft.Owin.Security;
 
 namespace Wardship.Controllers
 {
+    [ValidateAntiForgeryTokenOnAllPosts]
     public class AccountController : Controller
     {
         public void SignIn()

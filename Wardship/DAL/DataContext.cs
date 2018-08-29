@@ -98,9 +98,15 @@ namespace Wardship.Models
         /// <summary>
         /// Saves changes made to the database context - can be overridden to provide audit function
         /// </summary>
+        
+
+        public int SaveChanges(int userID)
+        {
+            //TODO implement new audit on save
+            return base.SaveChanges();
+        }
         public override int SaveChanges()
         {
-
             return base.SaveChanges();
         }
     }
