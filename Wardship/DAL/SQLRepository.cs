@@ -159,7 +159,7 @@ namespace Wardship
         }
         User ISQLRepository.GetUserByName(string Name)
         {
-            User usr = db.Users.Single(x=>x.Name==Name);
+            User usr = db.Users.Single(x=>x.Name.ToLower()==Name.ToLower());
             usr.LastActive = DateTime.Now;
             db.SaveChanges();
             return usr;
@@ -168,10 +168,9 @@ namespace Wardship
         {
             db.Entry(model).State = EntityState.Modified;
             db.SaveChanges();
-            //Original update user.
-            //db.Entry(model).State = EntityState.Modified;
-            //db.SaveChanges();
         }
+
+
         #endregion
         #region Alerts
         IEnumerable<Alert> ISQLRepository.getCurrentAlerts()
