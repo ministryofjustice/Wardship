@@ -168,9 +168,6 @@ namespace Wardship
         {
             db.Entry(model).State = EntityState.Modified;
             db.SaveChanges();
-            //Original update user.
-            //db.Entry(model).State = EntityState.Modified;
-            //db.SaveChanges();
         }
         #endregion
         #region Alerts
