@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.Web.Mvc;
-using System.Web.Security;
 using System.Security.Principal;
 using System.Linq;
 using Wardship.Models;
 using System.Web;
-
 using TPLibrary.Logger;
 
 namespace Wardship
@@ -26,7 +23,6 @@ namespace Wardship
         private User SystemUser { get; set; }
         private DateTime lastActive { get; set; }
         public IIdentity Identity { get; private set; }
-
         private ISQLRepository db { get; set; }
 
         public ICurrentUser(ISQLRepository repository)

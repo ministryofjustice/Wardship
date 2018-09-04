@@ -27,7 +27,6 @@ namespace Wardship
                 RedirectUri = "https://localhost:44397/";
             }
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "Cookies",
@@ -36,9 +35,7 @@ namespace Wardship
             OpenIdConnectAuthenticationOptions options = new OpenIdConnectAuthenticationOptions
             {
                 ClientId = clientId,
-                Authority = aadInstance + tenantId//,
-                                                  //PostLogoutRedirectUri = postLogoutRedirectUri,
-                                                  //RedirectUri = RedirectUri
+                Authority = aadInstance + tenantId
             };
             app.UseOpenIdConnectAuthentication(options);
         }

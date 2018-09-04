@@ -63,14 +63,7 @@ namespace Wardship.Models
         /// List of alerts to display to users
         /// </summary>
         public DbSet<Alert> Alerts { get; set; }
-        
-        ///// <summary>
-        ///// List of salutations/titles for an individual
-        ///// </summary>
-        //public DbSet<Salutation> Salutations { get; set; }
-     
-    
-  
+
         /// <summary>
         /// List of Templates in XML format
         /// </summary>
@@ -78,9 +71,6 @@ namespace Wardship.Models
 
         //ToDo Replace temp objects
         public DbSet<DataUpload> DataUploads { get; set; }
-
-
-
          public DbSet<WardshipRecord> WardshipRecord { get; set; }
         // Application Specifc Models
         public DbSet<CaseType> CaseType { get; set; }

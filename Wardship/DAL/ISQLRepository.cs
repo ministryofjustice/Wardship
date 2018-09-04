@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Wardship.Models;
 using System.Security.Principal;
 
@@ -17,9 +15,11 @@ namespace Wardship
         void FAQUpdate(FAQ faq);
         void FAQAdd(FAQ faq);
         #endregion
+        
         #region Audit
         IEnumerable<AuditEvent> AuditEventsGetAll();
         #endregion
+       
         #region Users and Groups
         IEnumerable<ADGroup> GetAllGroups();
         IEnumerable<User> GetAllUsers();
@@ -32,6 +32,7 @@ namespace Wardship
         User GetUserByName(string Name);
         void UpdateUser(User model);
         #endregion
+        
         #region Alerts
         IEnumerable<Alert> getAllAlerts();
         IEnumerable<Alert> getCurrentAlerts();
@@ -40,11 +41,10 @@ namespace Wardship
         void updateAlert(Alert model);
         #endregion
 
-       #region Wardships records and collections
+        #region Wardships records and collections
             IEnumerable<WardshipRecord> WardshipsGetAll();
             WardshipRecord GetWardshipRecordByID(int id);
         #endregion
-
 
         #region Salutations
         //IEnumerable<Salutation> GetListofSalutations();
@@ -70,7 +70,6 @@ namespace Wardship
         void AddNewTemplate(WordTemplate model);
         #endregion
 
-        
         #region Quick Search
         IEnumerable<WardshipRecord> QuickSearchByNumber(string p);
         IEnumerable<WardshipRecord> QuickSearchSurname(string p);

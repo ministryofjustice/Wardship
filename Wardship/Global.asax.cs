@@ -30,7 +30,6 @@ namespace Wardship
         private static void BootstrapContainer()
          {
              _container = new WindsorContainer().Install(FromAssembly.This());
-             
              ControllerBuilder.Current.SetControllerFactory(new ControllerFactory(_container.Kernel));
          }
 
@@ -76,31 +75,22 @@ namespace Wardship
         }
         protected void Application_Start(object sender, EventArgs e)
         {
-
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-
             AreaRegistration.RegisterAllAreas();
-
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
             ViewEngines.Engines.Add(new WebFormViewEngine());
-
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-
-            // Database.SetInitializer(new DBInitializer());
-            //System.Configuration.ConfigurationManager.AppSettings["CurServer"] = System.Configuration.ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString.Split(';').First().Split('=').Last();
             Database.SetInitializer<DataContext>(null);
             BootstrapContainer();
             ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
-            
         }
 
         protected void Application_Error(object sender, EventArgs e)
         {
             //Handle nonce exception
             var ex = Server.GetLastError();
-
             _cloudWatchLogger.LogError(ex, "Application_Error");
 
             if ((ex.GetType() == typeof(OpenIdConnectProtocolInvalidNonceException) && User.Identity.IsAuthenticated) && (ex.Message.StartsWith("OICE_20004") || ex.Message.Contains("IDX10311")))

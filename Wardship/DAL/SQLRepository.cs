@@ -6,7 +6,6 @@ using Wardship.Models;
 using System.Security.Principal;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.SqlServer;
 
 using TPLibrary.Logger;
 
@@ -62,12 +61,14 @@ namespace Wardship
             db.SaveChanges();
         }
         #endregion
+        
         #region Audit
         IEnumerable<Models.AuditEvent> ISQLRepository.AuditEventsGetAll()
         {
             return db.AuditEvents.ToList();
         }
         #endregion
+       
         #region Users and Groups
         IEnumerable<ADGroup> ISQLRepository.GetAllGroups()
         {
@@ -101,7 +102,7 @@ namespace Wardship
                 }
                 //Not in a group?  Try loading a user object
                 string userName = ((string)User.Identity.Name).Split('\\').Last();
-                User usr = db.Users.Where(x => x.Name == userName).FirstOrDefault();
+                User usr = db.Users.FirstOrDefault(x => x.Name.ToLower() == userName.ToLower());
                 if (usr != null)
                 {
                     usrLvl = (AccessLevel)usr.RoleStrength;
@@ -121,7 +122,7 @@ namespace Wardship
         string ISQLRepository.curUserDisplay(IPrincipal User)
         {
             string userName = ((string)User.Identity.Name).Split('\\').Last();
-            User usr = db.Users.Where(x => x.Name == userName).FirstOrDefault();
+            User usr = db.Users.FirstOrDefault(x => x.Name.ToLower() == userName.ToLower());
             if (usr != null)
             {
                 return usr.DisplayName;
@@ -172,6 +173,7 @@ namespace Wardship
 
 
         #endregion
+       
         #region Alerts
         IEnumerable<Alert> ISQLRepository.getCurrentAlerts()
         {
@@ -248,7 +250,6 @@ namespace Wardship
         }
         #endregion
 
-        
         #region QuickSearch
         public IEnumerable<WardshipRecord> QuickSearchByNumber(string p)
         {
@@ -276,7 +277,6 @@ namespace Wardship
        
 
         #endregion
-
 
         #region Wardships records and collections
             public WardshipRecord GetWardshipRecordByID(int id)
