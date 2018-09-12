@@ -105,8 +105,8 @@ namespace Wardship.Models
 
 
         [Display(Name = "Child Date Of Birth")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "0:d", ApplyFormatInEditMode = true)]
+        //[DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "0:d", ApplyFormatInEditMode = true), UIHint("DatePicker")]
         public DateTime? ChildDateofBirth { get; set; }
 
   

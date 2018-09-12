@@ -1,17 +1,52 @@
-﻿@model Nullable<System.DateTime>
+﻿@*@model Nullable<System.DateTime>
 
-@{  
-    if ( Model.HasValue )
-    { 
-        @Html.TextBox("", String.Format("{0:d}", Model.Value), new { @class = "textbox dateTextBox" })
+    @{
+        if ( Model.HasValue )
+        {
+            @Html.TextBox("", String.Format("{0:d}", Model.Value), new { @class = "textbox dateTextBox" })
+        }
+        else
+        {
+            @Html.TextBox("", "", new { @class = "textbox dateTextBox" })
+        }
+        string name = ViewData.TemplateInfo.HtmlFieldPrefix;
+        string id = name.Replace( ".", "_" );
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#@id").datepicker
+                ({
+                    dateFormat: 'dd/mm/yy',
+                    showStatus: true,
+                    showWeeks: true,
+                    highlightWeek: true,
+                    changeYear: true,
+                    changeMonth: true,
+                    numberOfMonths: 1,
+                    showAnim: "slideDown",
+                    buttonImage: '@Url.Content("~/Content/Images/Calendar.png")',
+                    buttonImageOnly: true,
+                    showOn: 'button',
+                    yearRange: '-90:+3',
+                    showOptions: { origin: ["top", "right"] }
+                });
+        });
+    </script>
+    }*@
+
+@model Nullable<System.DateTime>
+
+@{
+    if (Model.HasValue)
+    {
+        @Html.TextBox("", String.Format("{0:d}", Model.Value), new { @class = "textbox", style = "width:100px" })
     }
     else
     {
-        @Html.TextBox("", "", new { @class = "textbox dateTextBox" })
-    } 
-    string name = ViewData.TemplateInfo.HtmlFieldPrefix; 
-    string id = name.Replace( ".", "_" ); 
-<script type="text/javascript">
+        @Html.TextBox("", "", new { @class = "textbox", style = "width:100px" })
+    }
+    string name = ViewData.TemplateInfo.HtmlFieldPrefix;
+    string id = name.Replace(".", "_");
+    <script type="text/javascript">
     $(document).ready(function () {
         $("#@id").datepicker
             ({
@@ -29,6 +64,18 @@
                 yearRange: '-90:+3',
                 showOptions: { origin: ["top", "right"] }
             });
+
+
+        jQuery.validator.methods["date"] = function (value, element) {
+            var shortDateFormat = "dd/mm/yy";
+            var res = true;
+            try {
+                $.datepicker.parseDate(shortDateFormat, value);
+            } catch (error) {
+                res = false;
+            }
+            return res;
+        }
     });
-</script>
+    </script>
 }

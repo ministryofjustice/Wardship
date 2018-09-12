@@ -471,7 +471,6 @@
     <Content Include="Content\tooltip.css" />
     <Content Include="Content\ui.jqgrid.css" />
     <Content Include="Global.asax" />
-    <Content Include="README.jQuery.vsdoc.txt" />
     <Content Include="ReadMe.txt" />
     <Content Include="Scripts\default.js" />
     <Content Include="Scripts\excanvas.js" />
