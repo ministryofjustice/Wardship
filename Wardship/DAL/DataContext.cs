@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
+using System.Reflection;
 
 namespace Wardship.Models
 {
@@ -9,21 +10,21 @@ namespace Wardship.Models
         {
             var appConfig = ConfigurationManager.AppSettings;
 
-            string dbname = appConfig["DB_NAME"]; //Environment.GetEnvironmentVariable("DB_NAME"); 
-
-            if (string.IsNullOrEmpty(dbname))
-            {
-                return ConfigurationManager.ConnectionStrings["DataContext"].ConnectionString;
-            }
-            else
+            string dbname = appConfig["DB_NAME"];
+            if (!string.IsNullOrEmpty(dbname))
             {
                 string username = appConfig["RDS_USERNAME"];
                 string password = appConfig["RDS_PASSWORD"];
                 string hostname = appConfig["RDS_HOSTNAME"];
                 string port = appConfig["RDS_PORT"];
-                return "Data Source=" + hostname + ";Initial Catalog=" + dbname + ";User ID=" + username + ";Password=" + password + ";MultipleActiveResultSets=true;";
+                var settings = ConfigurationManager.ConnectionStrings[1];
+                var fi = typeof(ConfigurationElement).GetField(
+                              "_bReadOnly",
+                              BindingFlags.Instance | BindingFlags.NonPublic);
+                fi.SetValue(settings, false);
+                settings.ConnectionString = "Server=" + hostname + ";port=" + port + ";database=" + dbname + ";user id=" + username + ";password=" + password;
             }
-
+            return appConfig["DataContextName"];
         }
 
         public DataContext()
