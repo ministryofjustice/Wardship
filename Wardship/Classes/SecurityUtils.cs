@@ -75,7 +75,7 @@ namespace Wardship
 
         public bool IsInRole(string role)
         {
-            return false;
+            return SystemUser.Role.Detail == role;
         }
     }
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
@@ -145,7 +145,7 @@ namespace Wardship
                 return true; // always true as anonymous allowed
 
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
