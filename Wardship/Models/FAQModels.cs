@@ -14,6 +14,8 @@ namespace Wardship.Models
         [DataType(DataType.MultilineText)]
         public string answer { get; set; }
 
+        [MaxLength(144)]
+        public string testField { get; set; }
 
     }
 
