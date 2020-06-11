@@ -253,17 +253,17 @@ namespace Wardship
         #region QuickSearch
         public IEnumerable<WardshipRecord> QuickSearchByNumber(string p)
         {
-           return db.WardshipRecord.Where(x =>x.FileNumber.Contains(p)).ToList();
+           return db.WardshipRecord.Where(x =>x.FileNumber.ToLower().Contains(p.ToLower())).ToList();
         }
 
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchSurname(string p)
         {
-            return db.WardshipRecord.Where(x => x.ChildSurname.Contains(p)).ToList();
+            return db.WardshipRecord.Where(x => x.ChildSurname.ToLower().Contains(p.ToLower())).ToList();
         }
 
         public IEnumerable<WardshipRecord> QuickSearchByForename(string p)
         {
-            return db.WardshipRecord.Where(x => x.ChildForenames.Contains(p)).ToList();
+            return db.WardshipRecord.Where(x => x.ChildForenames.ToLower().Contains(p.ToLower())).ToList();
         }
         public IEnumerable<WardshipRecord> QuickSearchByDOB(DateTime? DOB)
         {
