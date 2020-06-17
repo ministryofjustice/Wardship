@@ -1,34 +1,30 @@
-﻿input.pageButton, button.pageButton
-{
-	float:left;
+﻿input.pageButton, button.pageButton {
+    float: left;
     display: inline;
-    border:none !important;
-    margin:0px !important;
-    background-color:transparent;
-    cursor:pointer;
-	color:#3399ff ! important;
-	text-decoration:none;
-    vertical-align:middle;
-    font-size:1em !important;
-    background-image:none;
-
+    border: none !important;
+    margin: 0px !important;
+    background-color: transparent;
+    cursor: pointer;
+    color: #0070e0 !important;
+    text-decoration: none;
+    vertical-align: middle;
+    font-size: 1em !important;
+    background-image: none;
     /*border: 1px solid #ccccff !important;*/
     border-radius: 2px 2px 2px 2px;
     color: #666666;
     padding: 3px 7px !important;
     text-align: center !important;
-    height:35px !important;
-    width:35px !important;
-    background-color:#ffffff;
-
-    width:40px;  /* IE table-cell margin fix */
-	overflow:visible !important;
+    height: 35px !important;
+    width: 35px !important;
+    background-color: #ffffff;
+    width: 40px; /* IE table-cell margin fix */
+    overflow: visible !important;
 }
-INPUT[disabled][type='submit']
-{   
+INPUT[disabled][type='submit'] {
     color: #FFFFFF !important;
-    background-color:#3399ff;
-	cursor:default;
+    background-color: #0070e0;
+    cursor: default;
 }
 input.pageButton.text, button.pageButton.text
 {
@@ -40,27 +36,25 @@ button.pageButton.text.number[disabled][type='submit']
 {
     border: 1px solid #ccccff !important;
 }
-input.pageButton:hover,button.pageButton:hover
-{
-	color:#ffffff ! important;
-    background-color:#3399ff;
+input.pageButton:hover, button.pageButton:hover {
+    color: #ffffff !important;
+    background-color: #0070e0;
 }
 input.pageButton.text:hover,button.pageButton.text:hover
 {
 	color:#000000 ! important;
-    background-color:#3399ff;
+    background-color:#0070e0;
 }
 
-input.pageButton.img ,button.pageButton.img 
-{
-    border:none !important;
-	text-indent: -9000px; text-transform: capitalize;
-    background-color:#3399ff;
+input.pageButton.img, button.pageButton.img {
+    border: none !important;
+    text-indent: -9000px;
+    text-transform: capitalize;
+    background-color: #0070e0;
 }
-input.pageButton.img:hover,button.pageButton.img:hover
-{
-    background-color:#3399ff;
-}
+    input.pageButton.img:hover, button.pageButton.img:hover {
+        background-color: #0070e0;
+    }
 input.pageButton.undo:hover,button.pageButton.undo:hover
 {
     color:Green !important;
