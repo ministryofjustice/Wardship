@@ -4,9 +4,10 @@
     ViewBag.Title = "FAQs";
 }
 
-<h2>Frequently Asked Questions</h2>
+<h1>Frequently Asked Questions</h1>
 @if (Request.IsAuthenticated && User.IsInRole("Admin"))
 {
+    <br />
     @Html.ActionLink("Add new FAQ","Create")
 }
 

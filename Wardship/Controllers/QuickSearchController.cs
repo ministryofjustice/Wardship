@@ -71,20 +71,20 @@ namespace Wardship.Controllers
                     }
 
 
-                    //Adding Audit for new record 
-                    var Audit = new AuditEvent();
+                    //////Adding Audit for new record - Commented as it fails and I have checked the database and it's not really used
+                    ////var Audit = new AuditEvent();
 
-                    Audit.EventDate = DateTime.Now;
-                    Audit.UserID = (User as Wardship.ICurrentUser).DisplayName;
-                    Audit.idAuditEventDescription = "New Search Made";
-                    Audit.ChildForenames = model.ChildForenames;
-                    Audit.ChildSurname = model.ChildSurname;
-                    Audit.ChildDateofBirth = model.ChildDateofBirth;
+                    ////Audit.EventDate = DateTime.Now;
+                    ////Audit.UserID = (User as Wardship.ICurrentUser).DisplayName;
+                    ////Audit.idAuditEventDescription = "New Search Made";
+                    ////Audit.ChildForenames = model.ChildForenames;
+                    ////Audit.ChildSurname = model.ChildSurname;
+                    ////Audit.ChildDateofBirth = model.ChildDateofBirth;
 
-                    //Audit.RecordChanged = model.WardshipCaseID.ToString();
+                    //////Audit.RecordChanged = model.WardshipCaseID.ToString();
 
-                    db.AddAuditEvent(Audit);
-                    //
+                    ////db.AddAuditEvent(Audit);
+                    //////
 
 
                     return View("Results", model);

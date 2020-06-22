@@ -1,20 +1,19 @@
 ﻿@{
-    ViewBag.Title = "Adminstration";
+    ViewBag.Title = "Administration";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h6>@ViewBag.Title</h6>
+<h1>@ViewBag.Title</h1>
+<br />
 <fieldset>
     <legend>@Html.ActionLink("User management", "Index", "Users")</legend>
     <p>Allows managers and admins to add, update and block named users</p>
 </fieldset>
-
-
 @if ((User as Wardship.ICurrentUser).AccessLevel == Wardship.AccessLevel.Admin)
 {
-
-<fieldset>
-    <legend>@Html.ActionLink("Templates", "Index", "Templates")</legend>
-    <div>Allows admin users to maintain letter tempaltes.</div>
-</fieldset>
+    <br />
+    <fieldset>
+        <legend>@Html.ActionLink("Templates", "Index", "Templates")</legend>
+        <div>Allows admin users to maintain letter tempaltes.</div>
+    </fieldset>
 }

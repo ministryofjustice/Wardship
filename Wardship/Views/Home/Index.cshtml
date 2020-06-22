@@ -3,13 +3,15 @@
 }
 
 <br />
-<h2>Wardship Application</h2>
+<h1>Wardship Application</h1>
 
 @if (User.Identity.IsAuthenticated)
 {
+    <br />
     <div>Welcome to the Wardship register.</div>
 }
 else
 {
+    <br />
     <div>Access to the Wardship register is restricted.  Please contact a system administrator to gain access.</div>
 }

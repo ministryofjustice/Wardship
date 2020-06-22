@@ -15,10 +15,9 @@
 <script type="text/javascript">            // Remark: all this javascript could be placed in a separate js file
     // to avoid cluttering the views. The first three lines fires up any action link set to the "openDialog"
     $(document).ready(function () {
-        $(".openDialog").live("click", function (e) {
+        $(".openDialog").live("click", function (e, p) {
             e.preventDefault();
-
-            var title = 'Wardship Details For: ' + this.data_title;
+            var title = 'Wardship Details For: ' + this.getAttribute("data_title");
             
             $('#dialog').load(this.href, function () {
                 $(this).dialog({
@@ -26,8 +25,7 @@
                     title: title,
                     modal: true,
                     width: 600,
-                    show: { effect: "bind", duration: 1000 },
-                    hide: { effect: "bind", duration: 1000 },
+
                     resizable: false,
 
                     //  $( "#dialog-message" ).dialog    ( Close: function was Ok:function )
@@ -41,15 +39,15 @@
 </script>
 
 
-</head>
 
 @*Empty div so that the java sctipts will place the action link in hear as a popup with my partial view .*@
-<div id="dialog"> </div>
 
 
+<h1>Quick search results</h1>
 
 <h6>@Html.ActionLink("Reset Form", "Index") > Results</h6>
-            
+ 
+<div id="dialog"></div>           
 
 
  @if (Model != null && Model.results != null && Model.results.Count() == 0)
