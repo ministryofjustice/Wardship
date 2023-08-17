@@ -74,7 +74,7 @@ stages:
           - task: ECRPushImage@1
             displayName: "Push image to ECR - Dev"
             inputs:
-              awsCredentials: "AWS-WARDSHIP-Dev-Connection"
+              awsCredentials: "AWS-Wardship-Dev-Connection"
               regionName: $(awsEcrRegion)
               imageSource: "imagename"
               sourceImageName: $(imageName)
@@ -82,62 +82,62 @@ stages:
               pushTag: "latest"
               repositoryName: "wardship-ecr-repo"
 
-  #         - task: ECRPushImage@1
-  #           displayName: "Push image to ECR - Preprod"
-  #           inputs:
-  #             awsCredentials: "AWS-WARDSHIP-Pre-Prod-Connection"
-  #             regionName: $(awsEcrRegion)
-  #             imageSource: "imagename"
-  #             sourceImageName: $(imageName)
-  #             sourceImageTag: $(Build.BuildId)
-  #             pushTag: "latest"
-  #             repositoryName: "wardship-ecr-repo"
+          - task: ECRPushImage@1
+            displayName: "Push image to ECR - Preprod"
+            inputs:
+              awsCredentials: "AWS-Wardship-Pre-Prod-Connection"
+              regionName: $(awsEcrRegion)
+              imageSource: "imagename"
+              sourceImageName: $(imageName)
+              sourceImageTag: $(Build.BuildId)
+              pushTag: "latest"
+              repositoryName: "wardship-ecr-repo"
 
-  # - stage: ApproveProd
-  #   displayName: "APPROVE PRODUCTION"
-  #   jobs:
-  #     - job: waitForValidation
-  #       displayName: PRODUCTION Update Image on ECR
-  #       pool: server
-  #       timeoutInMinutes: 4320
-  #       steps:
-  #         - task: ManualValidation@0
-  #           timeoutInMinutes: 1440
-  #           inputs:
-  #             instructions: "Are you sure you want to update the image on ECR PRODUCTION?"
-  #             onTimeout: "reject"
+  - stage: ApproveProd
+    displayName: "APPROVE PRODUCTION"
+    jobs:
+      - job: waitForValidation
+        displayName: PRODUCTION Update Image on ECR
+        pool: server
+        timeoutInMinutes: 4320
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 1440
+            inputs:
+              instructions: "Are you sure you want to update the image on ECR PRODUCTION?"
+              onTimeout: "reject"
 
-  # - stage: ProdDockerizeAndPushToECR
-  #   displayName: "PRODUCTION Dockerize and push image to AWS ECR"
-  #   jobs:
-  #     - job: DockerizeAndPushToECR
-  #       displayName: "Dockerize and Deploy"
-  #       pool:
-  #         vmImage: "windows-2019"
-  #       steps:
-  #         - task: DownloadBuildArtifacts@0
-  #           displayName: "Download WebApp.zip Artifact"
-  #           inputs:
-  #             buildType: "current"
-  #             downloadType: "single"
-  #             artifactName: "WebApp"
-  #             downloadPath: "$(Build.SourcesDirectory)"
+  - stage: ProdDockerizeAndPushToECR
+    displayName: "PRODUCTION Dockerize and push image to AWS ECR"
+    jobs:
+      - job: DockerizeAndPushToECR
+        displayName: "Dockerize and Deploy"
+        pool:
+          vmImage: "windows-2019"
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: "Download WebApp.zip Artifact"
+            inputs:
+              buildType: "current"
+              downloadType: "single"
+              artifactName: "WebApp"
+              downloadPath: "$(Build.SourcesDirectory)"
 
-  #         - task: Docker@2
-  #           displayName: "Build Docker Image"
-  #           inputs:
-  #             command: "build"
-  #             Dockerfile: "$(dockerfilePath)"
-  #             buildContext: '$(Build.SourcesDirectory)\WebApp'
-  #             repository: "$(imageName)"
+          - task: Docker@2
+            displayName: "Build Docker Image"
+            inputs:
+              command: "build"
+              Dockerfile: "$(dockerfilePath)"
+              buildContext: '$(Build.SourcesDirectory)\WebApp'
+              repository: "$(imageName)"
 
-  #         - task: ECRPushImage@1
-  #           displayName: "Push image to ECR - PRODUCTION"
-  #           inputs:
-  #             awsCredentials: "AWS-WARDSHIP-Prod-Connection"
-  #             regionName: $(awsEcrRegion)
-  #             imageSource: "imagename"
-  #             sourceImageName: $(imageName)
-  #             sourceImageTag: $(Build.BuildId)
-  #             pushTag: "latest"
-  #             repositoryName: "wardship-ecr-repo"
+          - task: ECRPushImage@1
+            displayName: "Push image to ECR - PRODUCTION"
+            inputs:
+              awsCredentials: "AWS-Wardship-Prod-Connection"
+              regionName: $(awsEcrRegion)
+              imageSource: "imagename"
+              sourceImageName: $(imageName)
+              sourceImageTag: $(Build.BuildId)
+              pushTag: "latest"
+              repositoryName: "wardship-ecr-repo"
