@@ -14,7 +14,7 @@ namespace Wardship
 {
     public partial class Startup
     {
-        private string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
+        private string clientId = Environment.GetEnvironmentVariable["ida:ClientId"];
         private string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
         private string tenantId = ConfigurationManager.AppSettings["ida:TenantId"];
         private string postLogoutRedirectUri = ConfigurationManager.AppSettings["ida:PostLogoutRedirectUri"];

@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Helpers;
 using System.IdentityModel.Claims;
+using System.Net;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Wardship.Infrastructure;
@@ -75,6 +76,7 @@ namespace Wardship
         }
         protected void Application_Start(object sender, EventArgs e)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3; // only allow TLSV1.2 and SSL3
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             ViewEngines.Engines.Clear();

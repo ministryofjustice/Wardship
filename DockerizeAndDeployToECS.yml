@@ -1,0 +1,143 @@
+# This file defines an Azure DevOps pipeline that builds, tests, and Dockerizes
+# an ASP.NET Framework application as a Windows container and then deploys it to Amazon ECS.
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+resources:
+  - repo: self
+
+variables:
+  - name: "dockerfilePath"
+    value: "Dockerfile"
+  - name: "imageName"
+    value: "wardship-docker-image"
+  - name: "awsEcrRegion"
+    value: "eu-west-2"
+
+stages:
+  - stage: BuildAndTest
+    displayName: "Build and Test Application"
+    jobs:
+      - job: BuildAndTest
+        displayName: "Build and Test"
+        pool:
+          vmImage: "windows-2019"
+        steps:
+          - task: NuGetToolInstaller@1
+
+          - task: NuGetCommand@2
+            inputs:
+              command: "restore"
+              restoreSolution: "**/*.sln"
+
+          - task: VSBuild@1
+            inputs:
+              solution: "**/*.sln"
+              configuration: "Release"
+              msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish WebApp.zip Artifact"
+            inputs:
+              PathtoPublish: '$(build.artifactStagingDirectory)\WebApp.zip'
+              ArtifactName: "WebApp"
+              publishLocation: "Container"
+
+  - stage: DockerizeAndPushToECR
+    displayName: "Dockerize and push image to AWS ECR"
+    jobs:
+      - job: DockerizeAndPushToECR
+        displayName: "Dockerize and Deploy"
+        pool:
+          vmImage: "windows-2019"
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: "Download WebApp.zip Artifact"
+            inputs:
+              buildType: "current"
+              downloadType: "single"
+              artifactName: "WebApp"
+              downloadPath: "$(Build.SourcesDirectory)"
+
+          - task: Docker@2
+            displayName: "Build Docker Image"
+            inputs:
+              command: "build"
+              Dockerfile: "$(dockerfilePath)"
+              buildContext: '$(Build.SourcesDirectory)\WebApp'
+              repository: "$(imageName)"
+
+          - task: ECRPushImage@1
+            displayName: "Push image to ECR - Dev"
+            inputs:
+              awsCredentials: "AWS-WARDSHIP-Dev-Connection"
+              regionName: $(awsEcrRegion)
+              imageSource: "imagename"
+              sourceImageName: $(imageName)
+              sourceImageTag: $(Build.BuildId)
+              pushTag: "latest"
+              repositoryName: "wardship-ecr-repo"
+
+          - task: ECRPushImage@1
+            displayName: "Push image to ECR - Preprod"
+            inputs:
+              awsCredentials: "AWS-WARDSHIP-Pre-Prod-Connection"
+              regionName: $(awsEcrRegion)
+              imageSource: "imagename"
+              sourceImageName: $(imageName)
+              sourceImageTag: $(Build.BuildId)
+              pushTag: "latest"
+              repositoryName: "wardship-ecr-repo"
+
+  - stage: ApproveProd
+    displayName: "APPROVE PRODUCTION"
+    jobs:
+      - job: waitForValidation
+        displayName: PRODUCTION Update Image on ECR
+        pool: server
+        timeoutInMinutes: 4320
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 1440
+            inputs:
+              instructions: "Are you sure you want to update the image on ECR PRODUCTION?"
+              onTimeout: "reject"
+
+  - stage: ProdDockerizeAndPushToECR
+    displayName: "PRODUCTION Dockerize and push image to AWS ECR"
+    jobs:
+      - job: DockerizeAndPushToECR
+        displayName: "Dockerize and Deploy"
+        pool:
+          vmImage: "windows-2019"
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: "Download WebApp.zip Artifact"
+            inputs:
+              buildType: "current"
+              downloadType: "single"
+              artifactName: "WebApp"
+              downloadPath: "$(Build.SourcesDirectory)"
+
+          - task: Docker@2
+            displayName: "Build Docker Image"
+            inputs:
+              command: "build"
+              Dockerfile: "$(dockerfilePath)"
+              buildContext: '$(Build.SourcesDirectory)\WebApp'
+              repository: "$(imageName)"
+
+          - task: ECRPushImage@1
+            displayName: "Push image to ECR - PRODUCTION"
+            inputs:
+              awsCredentials: "AWS-WARDSHIP-Prod-Connection"
+              regionName: $(awsEcrRegion)
+              imageSource: "imagename"
+              sourceImageName: $(imageName)
+              sourceImageTag: $(Build.BuildId)
+              pushTag: "latest"
+              repositoryName: "wardship-ecr-repo"
