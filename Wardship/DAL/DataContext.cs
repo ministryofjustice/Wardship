@@ -11,13 +11,13 @@ namespace Wardship.Models
         {
             var appConfig = ConfigurationManager.AppSettings;
 
-            string dbname = Environment.GetEnvironmentVariable["DB_NAME"];
+            string dbname = Environment.GetEnvironmentVariable("DB_NAME");
             if (!string.IsNullOrEmpty(dbname))
             {
-                string username = Environment.GetEnvironmentVariable["RDS_USERNAME"];
-                string password = Environment.GetEnvironmentVariable["RDS_PASSWORD"];
-                string hostname = Environment.GetEnvironmentVariable["RDS_HOSTNAME"];
-                string port = Environment.GetEnvironmentVariable["RDS_PORT"];
+                string username = Environment.GetEnvironmentVariable("RDS_USERNAME");
+                string password = Environment.GetEnvironmentVariable("RDS_PASSWORD");
+                string hostname = Environment.GetEnvironmentVariable("RDS_HOSTNAME");
+                string port = Environment.GetEnvironmentVariable("RDS_PORT");
                 var settings = ConfigurationManager.ConnectionStrings[1];
                 var fi = typeof(ConfigurationElement).GetField(
                               "_bReadOnly",
