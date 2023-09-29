@@ -1,14 +1,17 @@
 # Pull the Windows Server IIS base image
 FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
 
-# Copy the WebApp.zip file
-COPY WebApp.zip /inetpub/
+# Create a directory for your application
+WORKDIR C:/app
 
-# Extract the contents of WebApp.zip to a temporary directory and clean up the files that are no longer needed
+# Copy your WebApp.zip file into the container
+COPY WebApp.zip .
+
+# Unzip the WebApp.zip file
 RUN powershell -Command " \
-    Expand-Archive -Path C:\inetpub\WebApp.zip -DestinationPath C:\temp_extracted; \
-    xcopy C:\temp_extracted\Content\D_C\a\1\s\Wardship\obj\Release\Package\PackageTmp\* C:\inetpub\wwwroot /E /I; \
-    Remove-Item -Path C:\inetpub\WebApp.zip -Force; \
+    Expand-Archive -Path C:\app\WebApp.zip -DestinationPath C:\temp_extracted; \
+    xcopy C:\temp_extracted\Content\D_C\a\ncas\ncas\NCAS\obj\Release\Package\PackageTmp\* C:\inetpub\wwwroot /E /I; \
+    Remove-Item -Path C:\app\WebApp.zip -Force; \
     Remove-Item -Recurse -Force C:\temp_extracted \
     "
 
