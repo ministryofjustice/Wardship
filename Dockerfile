@@ -10,7 +10,7 @@ COPY WebApp.zip .
 # Unzip the WebApp.zip file
 RUN powershell -Command " \
     Expand-Archive -Path C:\app\WebApp.zip -DestinationPath C:\temp_extracted; \
-    xcopy C:\temp_extracted\Content\D_C\a\wardship\Wardship\obj\Release\Package\PackageTmp\* C:\inetpub\wwwroot /E /I; \
+    xcopy C:\temp_extracted\Content\D_C\a\Wardship\Wardship\Wardship\obj\Release\Package\PackageTmp\* C:\inetpub\wwwroot /E /I; \
     Remove-Item -Path C:\app\WebApp.zip -Force; \
     Remove-Item -Recurse -Force C:\temp_extracted \
     "
