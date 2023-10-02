@@ -122,9 +122,10 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Install .NET Framework 4.6.1 Developer Pack
+      - name: Install .NET Framework 4.8
         run: |
-          choco install netfx-4.6.1-devpack -y
+          choco upgrade chocolatey
+          choco install dotnetfx --version 4.8.0
         shell: powershell
 
       - name: Restore NuGet packages
@@ -205,9 +206,10 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Install .NET Framework 4.6.1 Developer Pack
+      - name: Install .NET Framework 4.8
         run: |
-          choco install netfx-4.6.1-devpack -y
+          choco upgrade chocolatey
+          choco install dotnetfx --version 4.8.0
         shell: powershell
 
       - name: Restore NuGet packages
