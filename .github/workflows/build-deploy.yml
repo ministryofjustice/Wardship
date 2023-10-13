@@ -2,7 +2,7 @@ name: Wardship-Modernisation-Platform
 
 on:
   push:
-    branches: [ "dockerize" ]
+    branches: [ "master", "dockerize", "staging" ]
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
@@ -38,10 +38,9 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Install .NET Framework 4.8
+      - name: Install .NET Framework 4.6.1 Developer Pack
         run: |
-          choco upgrade chocolatey
-          choco install dotnetfx --version 4.8.0
+          choco install netfx-4.6.1-devpack -y
         shell: powershell
 
       - name: Restore NuGet packages
@@ -76,33 +75,15 @@ jobs:
         run: |
           # Build a docker container and push it to ECR so that it can be deployed to ECS.
           docker build -t "wardship" .
-          docker tag "wardship:latest" "${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
-          docker push "${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
+          docker tag "wardship:latest" "${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest"
+          docker push "${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest"
 
-      - name: Download task definition
+      - name: Force deployment
         run: |
-          aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION_FAMILY }} --query taskDefinition > task-definition.json
-
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        with:
-          task-definition: task-definition.json
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: "${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
 
   deploy-preprod:
-    if: github.ref == 'refs/heads/dockerize'
+    if: github.ref == 'refs/heads/staging'
     name: Preprod - Build & Deploy
     runs-on: windows-2019
     permissions:
@@ -122,10 +103,9 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Install .NET Framework 4.8
+      - name: Install .NET Framework 4.6.1 Developer Pack
         run: |
-          choco upgrade chocolatey
-          choco install dotnetfx --version 4.8.0
+          choco install netfx-4.6.1-devpack -y
         shell: powershell
 
       - name: Restore NuGet packages
@@ -186,7 +166,7 @@ jobs:
           wait-for-service-stability: true
 
   deploy-prod:
-    if: github.ref == 'refs/heads/dockerize'
+    if: github.ref == 'refs/heads/master'
     name: Prod - Build & Deploy
     runs-on: windows-2019
     permissions:
@@ -206,10 +186,9 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Install .NET Framework 4.8
+      - name: Install .NET Framework 4.6.1 Developer Pack
         run: |
-          choco upgrade chocolatey
-          choco install dotnetfx --version 4.8.0
+          choco install netfx-4.6.1-devpack -y
         shell: powershell
 
       - name: Restore NuGet packages
