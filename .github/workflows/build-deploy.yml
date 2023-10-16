@@ -82,7 +82,7 @@ jobs:
           aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
 
   deploy-preprod:
-    if: github.ref == 'refs/heads/dockerize'
+    if: github.ref == 'refs/heads/staging'
     name: Preprod - Build & Deploy
     runs-on: windows-2019
     permissions:
@@ -147,7 +147,7 @@ jobs:
           aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
 
   deploy-prod:
-    if: github.ref == 'refs/heads/dockerize'
+    if: github.ref == 'refs/heads/master'
     name: Prod - Build & Deploy
     runs-on: windows-2019
     permissions:
