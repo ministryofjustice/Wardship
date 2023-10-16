@@ -76,7 +76,7 @@ namespace Wardship
         }
         protected void Application_Start(object sender, EventArgs e)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3; // only allow TLSV1.2 and SSL3
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072 | (SecurityProtocolType)12288 | (SecurityProtocolType)48; // only allow TLSV1.2, TLSV1.3 and SSL3
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             ViewEngines.Engines.Clear();
