@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   deploy-dev:
-    if: startsWith(github.ref, 'refs/heads/RST-')'
+    if: startsWith(github.ref, 'refs/heads/RST-')
     name: Dev - Build & Deploy
     runs-on: windows-2019
     permissions:
