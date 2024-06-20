@@ -302,7 +302,7 @@ namespace Wardship
 
             public IEnumerable<CaseType> GetCaseTypes()
             {
-                return db.CaseTypes.ToList();
+                return db.CaseType.ToList();
             }
 
             public IEnumerable<Court> GetCourts()
@@ -317,7 +317,7 @@ namespace Wardship
 
             public void AddWardshipRecord(WardshipRecord record)
             {
-                db.WardshipRecords.Add(record);
+                db.WardshipRecord.Add(record);
                 db.SaveChanges();
             }
     }
