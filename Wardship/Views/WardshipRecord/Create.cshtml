@@ -1,0 +1,28 @@
+﻿@model WardshipRecord.Models.WardshipCreationModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<h6>@Html.ActionLink("WardshipRecords", "Index") > Create Wardship Record</h6>
+
+@using (Html.BeginForm("Create", "Wardship", FormMethod.Post, new { autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+
+@Html.Partial("_CreateWardship")
+
+
+    
+        <p>
+            <input type="submit" value="Create and add parties" />
+           @* <input type="button" title="  Cancel  " value="  Cancel  " onclick="location.href='@Url.Action("Index", "Wardship")'" />*@
+        </p>
+    
+        
+}   
+         
+   

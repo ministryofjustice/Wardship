@@ -61,14 +61,14 @@ namespace Wardship
             db.SaveChanges();
         }
         #endregion
-        
+
         #region Audit
         IEnumerable<Models.AuditEvent> ISQLRepository.AuditEventsGetAll()
         {
             return db.AuditEvents.ToList();
         }
         #endregion
-       
+
         #region Users and Groups
         IEnumerable<ADGroup> ISQLRepository.GetAllGroups()
         {
@@ -160,7 +160,7 @@ namespace Wardship
         }
         User ISQLRepository.GetUserByName(string Name)
         {
-            User usr = db.Users.Single(x=>x.Name.ToLower()==Name.ToLower());
+            User usr = db.Users.Single(x => x.Name.ToLower() == Name.ToLower());
             usr.LastActive = DateTime.Now;
             db.SaveChanges();
             return usr;
@@ -173,7 +173,7 @@ namespace Wardship
 
 
         #endregion
-       
+
         #region Alerts
         IEnumerable<Alert> ISQLRepository.getCurrentAlerts()
         {
@@ -221,7 +221,7 @@ namespace Wardship
             db.SaveChanges();
         }
         #endregion
-     
+
         #region Templates
         IEnumerable<WordTemplate> ISQLRepository.GetAllTemplates()
         {
@@ -253,7 +253,7 @@ namespace Wardship
         #region QuickSearch
         public IEnumerable<WardshipRecord> QuickSearchByNumber(string p)
         {
-           return db.WardshipRecord.Where(x =>x.FileNumber.ToLower().Contains(p.ToLower())).ToList();
+            return db.WardshipRecord.Where(x => x.FileNumber.ToLower().Contains(p.ToLower())).ToList();
         }
 
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchSurname(string p)
@@ -274,30 +274,146 @@ namespace Wardship
         {
             return db.WardshipRecord.Where(x => x.DateOfOS == DofOS).ToList();
         }
-       
+
 
         #endregion
 
         #region Wardships records and collections
-            public WardshipRecord GetWardshipRecordByID(int id)
-            {
-                return db.WardshipRecord.FirstOrDefault(d => d.WardshipCaseID == id);
-            }
-            public IEnumerable<WardshipRecord> WardshipsGetAll()
-            {
-                return db.WardshipRecord.ToList();
-            }
+        public WardshipRecord GetWardshipRecordByID(int id)
+        {
+            return db.WardshipRecord.FirstOrDefault(d => d.WardshipCaseID == id);
+        }
+        public IEnumerable<WardshipRecord> WardshipsGetAll()
+        {
+            return db.WardshipRecord.ToList();
+        }
         #endregion
 
-            void IDisposable.Dispose()
-            {
+        void IDisposable.Dispose()
+        {
 
-            }
+        }
 
-            public void AddAuditEvent(AuditEvent Audit)
-            {
-                db.AuditEvents.Add(Audit);
-                db.SaveChanges();
-            }
+        public void AddAuditEvent(AuditEvent Audit)
+        {
+            db.AuditEvents.Add(Audit);
+            db.SaveChanges();
+        }
+    }
+
+    //CREATE
+    public void WardshipRecordCreateNew(WardshipRecord WardshipRecordToCreate)
+    {
+        #region NumberCode
+
+        //Building The Number 
+        string slash;
+        int DateYear;
+        string num;
+        string Prefix;
+
+
+        int TheNumberToSaveIs;
+
+        WardshipRecordToCreate.WardshipRecord_Status = db.WardshipRecord_Status.Find(WardshipRecordToCreate.WardshipRecord_StatusID);
+        WardshipRecordToCreate.WardshipRecord_Type = db.WardshipRecord_Type.Find(WardshipRecordToCreate.WardshipRecord_TypeID);
+        //Record in the database relating to status and type
+        var record = db.AllocateNumber.Where(P => P.WardshipRecordStatus == WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus && P.WardshipRecordType == WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType).OrderByDescending(o => o.Number).FirstOrDefault();
+
+        if (DateTime.Now.Year > record.Timestamp.Year)
+        {
+            TheNumberToSaveIs = 1;//re-start the numbering
+        }
+        else
+        {
+            TheNumberToSaveIs = record.Number + 1;//no need to re-start the numbering
+        }
+
+        //Allocate zeros
+        if (TheNumberToSaveIs.ToString().Length == 1)
+        { LeadingZeros = "0000"; }
+        else if (TheNumberToSaveIs.ToString().Length == 2)
+        { LeadingZeros = "000"; }
+        else if (TheNumberToSaveIs.ToString().Length == 3)
+        { LeadingZeros = "00"; }
+        else if (TheNumberToSaveIs.ToString().Length == 4)
+        { LeadingZeros = "0"; }
+        else if (TheNumberToSaveIs.ToString().Length == 5)
+        { LeadingZeros = ""; }
+
+
+        num = LeadingZeros + TheNumberToSaveIs;
+        slash = "/";
+        DateYear = Int32.Parse(DateTime.Now.Year.ToString());
+
+        //Registered WardshipRecord with Step 
+        if (WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus == "Registered" && WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType == "Step")
+        {
+            Prefix = "5";
+            WardshipRecord_No = Prefix + num + slash + (DateYear);
+        }
+        //Registered WardshipRecord Natural 
+        else if (WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus == "Registered" && WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType == "Natural")
+        {
+            Prefix = "R";
+            WardshipRecord_No = Prefix + num + slash + (DateYear);
+        }
+
+        //Registered WardshipRecord with HFE 
+        else if (WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus == "Registered" && WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType == "HFE")
+        {
+            Prefix = "HFE";
+            WardshipRecord_No = Prefix + num + slash + (DateYear);
+        }
+
+        //Stop WardshipRecord with Step 
+        else if (WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus == "Stop" && WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType == "Step")
+        {
+            Prefix = "S5";
+            WardshipRecord_No = Prefix + num + slash + (DateYear);
+        }
+        //Stop WardshipRecord Natural 
+        else if (WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus == "Stop" && WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType == "Natural")
+        {
+            Prefix = "S";
+            WardshipRecord_No = Prefix + num + slash + (DateYear);
+        }
+
+        //Stop WardshipRecord with HFE 
+        else if (WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus == "Stop" && WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType == "HFE")
+        {
+            Prefix = "SHFE";
+            WardshipRecord_No = Prefix + num + slash + (DateYear);
+        }
+
+        //WardshipRecord_No = num + slash + (DateYear);
+        if (record.WardshipRecordStatus != WardshipRecordToCreate.WardshipRecord_Status.WardshipRecordStatus && record.WardshipRecordType != WardshipRecordToCreate.WardshipRecord_Type.WardshipRecordType)
+        {
+
+            //Error Trapping!!!
+            //return View(??);
+        }
+        else
+        {
+            record.Number = TheNumberToSaveIs;
+            record.Timestamp = DateTime.Now;
+            record.WardshipRecord_Number = WardshipRecord_No;
+        }
+
+        db.Entry(record).State = EntityState.Modified;
+        db.SaveChanges();
+
+
+        string parameter = record.WardshipRecord_Number;
+        WardshipRecordToCreate.WardshipRecordNumber = parameter;
+
+
+        //WardshipRecordToCreate.WardshipRecordNumber = "R0000" + DateTime.Now.Second + "/2013";
+        WardshipRecordToCreate.DateEntered = DateTime.Now;
+
+        #endregion
+
+        db.WardshipRecords.Add(WardshipRecordToCreate);
+        db.SaveChanges();
     }
 }
