@@ -299,9 +299,9 @@ namespace Wardship
             db.AuditEvents.Add(Audit);
             db.SaveChanges();
         }
-    }
 
-    //CREATE
+
+         //CREATE
     public void WardshipRecordCreateNew(WardshipRecord WardshipRecordToCreate)
     {
         #region NumberCode
@@ -415,5 +415,6 @@ namespace Wardship
 
         db.WardshipRecords.Add(WardshipRecordToCreate);
         db.SaveChanges();
+        }
     }
 }
