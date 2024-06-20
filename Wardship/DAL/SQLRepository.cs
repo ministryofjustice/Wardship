@@ -310,7 +310,7 @@ namespace Wardship
                 return db.Courts.ToList();
             }
 
-            public IEnumerable<Type> GetTypes()
+            public IEnumerable<Wardship.Models.Type> GetTypes()
             {
                 return db.Types.ToList();
             }

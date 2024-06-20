@@ -81,10 +81,11 @@ namespace Wardship
         #region New Methods
         IEnumerable<CaseType> GetCaseTypes();
         IEnumerable<Court> GetCourts();
-        IEnumerable<Type> GetTypes();
+        IEnumerable<Wardship.Models.Type> GetTypes();
         void AddWardshipRecord(WardshipRecord record);
         #endregion
 
         void AddAuditEvent(AuditEvent Audit);
     }
 }
+
