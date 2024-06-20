@@ -2,7 +2,7 @@ name: Wardship-Modernisation-Platform
 
 on:
   push:
-    branches: [ "master", "dockerize", "staging" ]
+    branches: [ "master", "RST-6394-add-create-functionality", "staging" ]
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   deploy-dev:
-    if: github.ref == 'refs/heads/dockerize'
+    if: github.ref == 'refs/heads/RST-6394-add-create-functionality'
     name: Dev - Build & Deploy
     runs-on: windows-2019
     permissions:
