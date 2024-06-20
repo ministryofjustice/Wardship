@@ -8,7 +8,7 @@ namespace Wardship.Controllers
 {
     [Authorize]
     [ValidateAntiForgeryTokenOnAllPosts]
-    
+
     public class WardshipRecordController : Controller
     {
         private readonly ISQLRepository db;
@@ -20,9 +20,7 @@ namespace Wardship.Controllers
             _logger = logger;
         }
 
-
-
-        // GET: /Wardship/ using model to return the whole data so we know the number of records and pageing info 
+        // GET: /Wardship/ using model to return the whole data so we know the number of records and pageing info
         public ActionResult Index(WardshipRecordVMlistView model)
         {
             var ListofWardships = db.WardshipsGetAll();
@@ -31,21 +29,42 @@ namespace Wardship.Controllers
             return View("Index", model);
         }
 
-
-
-
-
         // GET: /WardshipRecord/Details/5
-       public ActionResult Details(int id)
+        public ActionResult Details(int id)
         {
             WardshipRecord model = db.GetWardshipRecordByID(id);
             return View(model);
         }
 
+        // GET: /WardshipRecord/Create
+        public ActionResult Create()
+        {
+            var model = new WardshipRecordCreateVM
+            {
+                CaseTypeList = new SelectList(db.GetCaseTypes(), "CaseTypeID", "Description"),
+                CourtList = new SelectList(db.GetCourts(), "CourtID", "Name"),
+                TypeList = new SelectList(db.GetTypes(), "TypeID", "Description"),
+                // Populate other SelectList properties similarly
+            };
+            return View(model);
+        }
 
+        // POST: /WardshipRecord/Create
+        [HttpPost]
+        public ActionResult Create(WardshipRecordCreateVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                db.AddWardshipRecord(model.WardshipRecord);
+                return RedirectToAction("Index"); // Redirect to a suitable page after creation
+            }
 
+            // Reload dropdown lists if there's a need to return to the form
+            model.CaseTypeList = new SelectList(db.GetCaseTypes(), "CaseTypeID", "Description", model.WardshipRecord.CaseTypeID);
+            // Reload other SelectList properties similarly
 
+            return View(model);
+        }
 
-    
     }
 }

@@ -1,0 +1,69 @@
+@model Wardship.Models.WardshipRecordCreateVM
+
+@{
+    ViewBag.Title = "Create New Wardship Record";
+}
+
+<h2>Create New Wardship Record</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.ChildSurname)
+        @Html.EditorFor(model => model.WardshipRecord.ChildSurname)
+        @Html.ValidationMessageFor(model => model.WardshipRecord.ChildSurname)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.ChildForenames)
+        @Html.EditorFor(model => model.WardshipRecord.ChildForenames)
+        @Html.ValidationMessageFor(model => model.WardshipRecord.ChildForenames)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.ChildDateofBirth)
+        @Html.EditorFor(model => model.WardshipRecord.ChildDateofBirth)
+        @Html.ValidationMessageFor(model => model.WardshipRecord.ChildDateofBirth)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.DateOfOS)
+        @Html.EditorFor(model => model.WardshipRecord.DateOfOS)
+        @Html.ValidationMessageFor(model => model.WardshipRecord.DateOfOS)
+    </div>
+
+    <!-- Dropdown for CaseType -->
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.CaseTypeID)
+        @Html.DropDownListFor(model => model.WardshipRecord.CaseTypeID, Model.CaseTypeList, "Select Case Type")
+        @Html.ValidationMessageFor(model => model.WardshipRecord.CaseTypeID)
+    </div>
+
+    <!-- Dropdown for Court -->
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.CourtID)
+        @Html.DropDownListFor(model => model.WardshipRecord.CourtID, Model.CourtList, "Select Court")
+        @Html.ValidationMessageFor(model => model.WardshipRecord.CourtID)
+    </div>
+
+    <!-- Additional dropdowns for other properties like Type, Gender, etc. -->
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.TypeID)
+        @Html.DropDownListFor(model => model.WardshipRecord.TypeID, Model.TypeList, "Select Type")
+        @Html.ValidationMessageFor(model => model.WardshipRecord.TypeID)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.WardshipRecord.GenderID)
+        @Html.DropDownListFor(model => model.WardshipRecord.GenderID, Model.GenderList, "Select Gender")
+        @Html.ValidationMessageFor(model => model.WardshipRecord.GenderID)
+    </div>
+
+    <!-- Submit Button -->
+    <input type="submit" value="Create" />
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
