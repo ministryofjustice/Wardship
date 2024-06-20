@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using PagedList;
+using System.Web.Mvc; // Added for SelectListItem
 
 namespace Wardship.Models
 {
@@ -151,93 +152,69 @@ namespace Wardship.Models
     }
 
     public class WardshipRecordCreationModel
-{
-    [Required(ErrorMessage = "Child Surname is required.")]
-    [Display(Name = "Child Surname")]
-    [MaxLength(100)]
-    public string ChildSurname { get; set; }
-
-    [Required(ErrorMessage = "Child Forename is required.")]
-    [Display(Name = "Child Forename")]
-    [MaxLength(100)]
-    public string ChildForenames { get; set; }
-
-    [Required(ErrorMessage = "Child Date of Birth is required.")]
-    [Display(Name = "Child Date of Birth")]
-    [DataType(DataType.Date)]
-    public DateTime? ChildDateOfBirth { get; set; }
-
-    [Required(ErrorMessage = "Gender is required.")]
-    [Display(Name = "Gender")]
-    public int? GenderID { get; set; }
-
-    // Dropdown list items for Gender
-    public List<SelectListItem> GenderList { get; set; }
-
-    // Constructor to initialize the dropdown list
-    public CreateWardshipRecordViewModel()
     {
-        // Initialize the Gender dropdown list
-        GenderList = new List<SelectListItem>
+        [Required(ErrorMessage = "Child Surname is required.")]
+        [Display(Name = "Child Surname")]
+        [MaxLength(100)]
+        public string ChildSurname { get; set; }
+
+        [Required(ErrorMessage = "Child Forename is required.")]
+        [Display(Name = "Child Forename")]
+        [MaxLength(100)]
+        public string ChildForenames { get; set; }
+
+        [Required(ErrorMessage = "Child Date of Birth is required.")]
+        [Display(Name = "Child Date of Birth")]
+        [DataType(DataType.Date)]
+        public DateTime? ChildDateOfBirth { get; set; }
+
+        [Required(ErrorMessage = "Gender is required.")]
+        [Display(Name = "Gender")]
+        public int? GenderID { get; set; }
+
+        // Dropdown list items for Gender
+        public List<SelectListItem> GenderList { get; set; }
+
+        // Constructor to initialize the dropdown list
+        public WardshipRecordCreationModel()
         {
-            new SelectListItem { Value = "1", Text = "Male" },
-            new SelectListItem { Value = "2", Text = "Female" },
-        };
-    }
+            // Initialize the Gender dropdown list
+            GenderList = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "Male" },
+                new SelectListItem { Value = "2", Text = "Female" },
+            };
+        }
 
-    [Required(ErrorMessage = "District Judge is required.")]
-    [Display(Name = "District Judge")]
-    public int? DistrictJudgeID { get; set; }
+        [Required(ErrorMessage = "District Judge is required.")]
+        [Display(Name = "District Judge")]
+        public int? DistrictJudgeID { get; set; }
 
-    // Dropdown list items for District Judges
-    public List<SelectListItem> DistrictJudgeList { get; set; }
+        // Dropdown list items for District Judges
+        public List<SelectListItem> DistrictJudgeList { get; set; }
 
-    // Constructor to initialize the dropdown list
-    public CreateWardshipRecordViewModel(List<DistrictJudge> districtJudges)
-    {
-        // Initialize the District Judge dropdown list from the database
-        DistrictJudgeList = districtJudges.Select(d => new SelectListItem
+        // Constructor to initialize the dropdown list
+        public WardshipRecordCreationModel(List<DistrictJudge> districtJudges)
         {
-            Value = d.DistrictJudgeID.ToString(),
-            Text = d.Name
-        }).ToList();
+            // Initialize the District Judge dropdown list from the database
+            DistrictJudgeList = districtJudges.Select(d => new SelectListItem
+            {
+                Value = d.DistrictJudgeID.ToString(),
+                Text = d.Name
+            }).ToList();
+        }
+
+        [Required(ErrorMessage = "Date Issued is required.")]
+        [Display(Name = "Date Issued")]
+        [DataType(DataType.Date)]
+        public DateTime? DateOfOS { get; set; }
+
+        [Required(ErrorMessage = "Type is required.")]
+        [Display(Name = "Type")]
+        public int? TypeID { get; set; }
+
+        [Required(ErrorMessage = "Court is required.")]
+        [Display(Name = "Court")]
+        public int? CourtID { get; set; }
     }
-
-    [Required(ErrorMessage = "Date Issued is required.")]
-    [Display(Name = "Date Issued")]
-    [DataType(DataType.Date)]
-    public DateTime? DateOfOS { get; set; }
-
-    [Required(ErrorMessage = "Type is required.")]
-    [Display(Name = "Type")]
-    public int? TypeID { get; set; }
-
-    [Required(ErrorMessage = "Court is required.")]
-    [Display(Name = "Court")]
-    public int? CourtID { get; set; }
-}
-
-
-    // public class WardshipRecordCreationModel
-    // {
-    //     public string ChildSurname { get; set; }
-    //     public string ChildForenames { get; set; }
-    //     public string Court { get; set; }
-    //     public DateTime ChildDateOfBirth { get; set; }
-    //     public string Gender { get; set; }
-    //     public DateTime DateIssued { get; set; }
-    //     public string DistrictJudge { get; set; }
-    // }
-
-    // public class WardshipRecordEditModel
-    // {
-    //     public string ChildSurname { get; set; }
-    //     public string ChildForenames { get; set; }
-    //     public string Court { get; set; }
-    //     public DateTime ChildDateOfBirth { get; set; }
-    //     public string Gender { get; set; }
-    //     public DateTime DateIssued { get; set; }
-    //     public string DistrictJudge { get; set; }
-    // }
-
 }
