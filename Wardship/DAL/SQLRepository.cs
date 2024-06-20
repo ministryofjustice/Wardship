@@ -299,5 +299,26 @@ namespace Wardship
                 db.AuditEvents.Add(Audit);
                 db.SaveChanges();
             }
+
+            public IEnumerable<CaseType> GetCaseTypes()
+            {
+                return db.CaseTypes.ToList();
+            }
+
+            public IEnumerable<Court> GetCourts()
+            {
+                return db.Courts.ToList();
+            }
+
+            public IEnumerable<Type> GetTypes()
+            {
+                return db.Types.ToList();
+            }
+
+            public void AddWardshipRecord(WardshipRecord record)
+            {
+                db.WardshipRecords.Add(record);
+                db.SaveChanges();
+            }
     }
 }
