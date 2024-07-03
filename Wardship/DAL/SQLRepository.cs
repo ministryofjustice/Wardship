@@ -302,7 +302,7 @@ namespace Wardship
 
             public IEnumerable<CaseType> GetCaseTypes()
             {
-                return db.CaseType.ToList();
+                return db.CaseTypes.ToList();
             }
 
             public IEnumerable<Court> GetCourts()
