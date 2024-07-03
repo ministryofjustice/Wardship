@@ -44,7 +44,13 @@ namespace Wardship.Controllers
                 CaseTypeList = new SelectList(db.GetCaseTypes(), "CaseTypeID", "Description"),
                 CourtList = new SelectList(db.GetCourts(), "CourtID", "Name"),
                 TypeList = new SelectList(db.GetTypes(), "TypeID", "Description"),
-                // Populate other SelectList properties similarly
+                GenderList = new SelectList(db.GetGenders(), "GenderID", "Description"),
+                DistrictJudgeList = new SelectList(db.GetDistrictJudges(), "JudgeID", "Name"),
+                RecordList = new SelectList(db.GetRecords(), "RecordID", "Description"),
+                LapsedList = new SelectList(db.GetLapsedStatuses(), "LapsedID", "Description"),
+                StatusList = new SelectList(db.GetStatuses(), "StatusID", "Description"),
+                CWOList = new SelectList(db.GetCWOs(), "CWOID", "Name"),
+                CAFCASSList = new SelectList(db.GetCAFCASSes(), "CAFCASSID", "Name")
             };
             return View(model);
         }
@@ -68,3 +74,4 @@ namespace Wardship.Controllers
 
     }
 }
+
