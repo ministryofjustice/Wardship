@@ -85,7 +85,7 @@ namespace Wardship
         IEnumerable<Gender> GetGenders();
         IEnumerable<DistrictJudge> GetDistrictJudges();
         IEnumerable<Record> GetRecords();
-        IEnumerable<LapsedStatus> GetLapsedStatuses();
+        IEnumerable<Lapsed> GetLapsedStatuses();
         IEnumerable<Status> GetStatuses();
         IEnumerable<CWO> GetCWOs();
         IEnumerable<CAFCASS> GetCAFCASSes();

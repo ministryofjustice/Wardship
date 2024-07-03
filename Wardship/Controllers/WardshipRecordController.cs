@@ -47,7 +47,7 @@ namespace Wardship.Controllers
                 GenderList = new SelectList(db.GetGenders(), "GenderID", "Description"),
                 DistrictJudgeList = new SelectList(db.GetDistrictJudges(), "JudgeID", "Name"),
                 RecordList = new SelectList(db.GetRecords(), "RecordID", "Description"),
-                LapsedList = new SelectList(db.GetLapsedStatuses(), "LapsedID", "Description"),
+                LapsedList = new SelectList(db.GetLapsedStatuses(), "LapsedID", "Detail"),
                 StatusList = new SelectList(db.GetStatuses(), "StatusID", "Description"),
                 CWOList = new SelectList(db.GetCWOs(), "CWOID", "Name"),
                 CAFCASSList = new SelectList(db.GetCAFCASSes(), "CAFCASSID", "Name")

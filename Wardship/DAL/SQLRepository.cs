@@ -330,9 +330,9 @@ namespace Wardship
                 return _context.Records.ToList();
             }
 
-            public IEnumerable<LapsedStatus> GetLapsedStatuses()
+            public IEnumerable<Lapsed> GetLapsedStatuses()
             {
-                return _context.LapsedStatuses.ToList();
+                return _context.Lapsed.ToList();
             }
 
             public IEnumerable<Status> GetStatuses()
