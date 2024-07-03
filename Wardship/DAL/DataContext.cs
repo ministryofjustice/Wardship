@@ -73,17 +73,17 @@ namespace Wardship.Models
 
         //ToDo Replace temp objects
         public DbSet<DataUpload> DataUploads { get; set; }
-         public DbSet<WardshipRecord> WardshipRecord { get; set; }
+        public DbSet<WardshipRecord> WardshipRecord { get; set; }
         // Application Specifc Models
-        public DbSet<CaseType> CaseType { get; set; }
+        public DbSet<CaseType> CaseTypes { get; set; }
         public DbSet<Court> Courts { get; set; }
-        public DbSet<Type> Types { get; set; }
-        public DbSet<Gender> Gender { get; set; }
+        public DbSet<Wardship.Models.Type> Types { get; set; }
+        public DbSet<Gender> Genders { get; set; }
         public DbSet<DistrictJudge> DistrictJudges { get; set; }
         public DbSet<Lapsed> Lapsed { get; set; }
-        public DbSet<Status> Status { get; set; }
-        public DbSet<CWO> CWO { get; set; }
-        public DbSet<CAFCASS> CAFCASS { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<CWO> CWOs { get; set; }
+        public DbSet<CAFCASS> CAFCASSes { get; set; }
         public DbSet<Record> Records { get; set; }
       
 
