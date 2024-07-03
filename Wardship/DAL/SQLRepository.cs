@@ -317,37 +317,37 @@ namespace Wardship
 
             public IEnumerable<Gender> GetGenders()
             {
-                return _context.Genders.ToList();
+                return db.Genders.ToList();
             }
 
             public IEnumerable<DistrictJudge> GetDistrictJudges()
             {
-                return _context.DistrictJudges.ToList();
+                return db.DistrictJudges.ToList();
             }
 
             public IEnumerable<Record> GetRecords()
             {
-                return _context.Records.ToList();
+                return db.Records.ToList();
             }
 
             public IEnumerable<Lapsed> GetLapsedStatuses()
             {
-                return _context.Lapsed.ToList();
+                return db.Lapsed.ToList();
             }
 
             public IEnumerable<Status> GetStatuses()
             {
-                return _context.Statuses.ToList();
+                return db.Statuses.ToList();
             }
 
             public IEnumerable<CWO> GetCWOs()
             {
-                return _context.CWOs.ToList();
+                return db.CWOs.ToList();
             }
 
             public IEnumerable<CAFCASS> GetCAFCASSes()
             {
-                return _context.CAFCASSes.ToList();
+                return db.CAFCASSes.ToList();
             }
 
             public void AddWardshipRecord(WardshipRecord record)
