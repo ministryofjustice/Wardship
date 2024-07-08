@@ -78,4 +78,5 @@ namespace Wardship.Controllers
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "CAFCASSName", wardshipRecord.CAFCASSID);
             return View(wardshipRecord);
         }
+    }
 }
