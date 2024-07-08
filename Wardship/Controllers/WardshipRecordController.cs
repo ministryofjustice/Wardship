@@ -52,7 +52,7 @@ namespace Wardship.Controllers
                 CWOList = new SelectList(db.GetCWOs(), "CWOID", "Name"),
                 CAFCASSList = new SelectList(db.GetCAFCASSes(), "CAFCASSID", "Name")
             };
-            return View("Create", model);
+            return View(model);
         }
 
         // POST: /WardshipRecord/Create
