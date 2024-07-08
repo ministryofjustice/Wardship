@@ -52,7 +52,7 @@ namespace Wardship.Controllers
                 CWOList = new SelectList(db.GetCWOs(), "CWOID", "Name"),
                 CAFCASSList = new SelectList(db.GetCAFCASSes(), "CAFCASSID", "Name")
             };
-            return View(model);
+            return View("~/Views/WardshipRecord/Create.cshtml", model);
         }
 
         // POST: /WardshipRecord/Create
@@ -67,11 +67,18 @@ namespace Wardship.Controllers
 
             // Reload dropdown lists if there's a need to return to the form
             model.CaseTypeList = new SelectList(db.GetCaseTypes(), "CaseTypeID", "Description", model.WardshipRecord.CaseTypeID);
-            // Reload other SelectList properties similarly
+            model.CourtList = new SelectList(db.GetCourts(), "CourtID", "Name", model.WardshipRecord.CourtID);
+            model.TypeList = new SelectList(db.GetTypes(), "TypeID", "Description", model.WardshipRecord.TypeID);
+            model.GenderList = new SelectList(db.GetGenders(), "GenderID", "Description", model.WardshipRecord.GenderID);
+            model.DistrictJudgeList = new SelectList(db.GetDistrictJudges(), "JudgeID", "Name", model.WardshipRecord.DistrictJudgeID);
+            model.RecordList = new SelectList(db.GetRecords(), "RecordID", "Description", model.WardshipRecord.RecordID);
+            model.LapsedList = new SelectList(db.GetLapsedStatuses(), "LapsedID", "Detail", model.WardshipRecord.LapsedID);
+            model.StatusList = new SelectList(db.GetStatuses(), "StatusID", "Description", model.WardshipRecord.StatusID);
+            model.CWOList = new SelectList(db.GetCWOs(), "CWOID", "Name", model.WardshipRecord.CWOID);
+            model.CAFCASSList = new SelectList(db.GetCAFCASSes(), "CAFCASSID", "Name", model.WardshipRecord.CAFCASSID);
 
             return View(model);
         }
 
     }
 }
-
