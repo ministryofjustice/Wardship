@@ -39,7 +39,7 @@ namespace Wardship.Controllers
         // GET: /WardshipRecord/Create
         public ActionResult Create()
         {
-            var model = new WardshipRecordCreateVM
+            var model = new WardshipRecord
             {
                 CaseTypeList = new SelectList(db.GetCaseTypes(), "CaseTypeID", "Description"),
                 CourtList = new SelectList(db.GetCourts(), "CourtID", "Name"),
@@ -57,7 +57,7 @@ namespace Wardship.Controllers
 
         // POST: /WardshipRecord/Create
         [HttpPost]
-        public ActionResult Create(WardshipRecordCreateVM model)
+        public ActionResult Create(WardshipRecord model)
         {
             if (ModelState.IsValid)
             {
