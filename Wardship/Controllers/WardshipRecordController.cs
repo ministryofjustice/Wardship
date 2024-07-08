@@ -36,49 +36,47 @@ namespace Wardship.Controllers
             return View(model);
         }
 
-        // GET: /WardshipRecord/Create
+        // GET: WardshipRecord/Create
         public ActionResult Create()
         {
-            var model = new WardshipRecord
-            {
-                CaseTypeList = new SelectList(db.GetCaseTypes(), "CaseTypeID", "Description"),
-                CourtList = new SelectList(db.GetCourts(), "CourtID", "Name"),
-                TypeList = new SelectList(db.GetTypes(), "TypeID", "Description"),
-                GenderList = new SelectList(db.GetGenders(), "GenderID", "Description"),
-                DistrictJudgeList = new SelectList(db.GetDistrictJudges(), "JudgeID", "Name"),
-                RecordList = new SelectList(db.GetRecords(), "RecordID", "Description"),
-                LapsedList = new SelectList(db.GetLapsedStatuses(), "LapsedID", "Detail"),
-                StatusList = new SelectList(db.GetStatuses(), "StatusID", "Description"),
-                CWOList = new SelectList(db.GetCWOs(), "CWOID", "Name"),
-                CAFCASSList = new SelectList(db.GetCAFCASSes(), "CAFCASSID", "Name")
-            };
-            return View(model);
+            // Prepare dropdown lists for the view
+            ViewBag.TypeID = new SelectList(db.Types, "TypeID", "TypeName");
+            ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName");
+            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "StatusName");
+            ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "GenderName");
+            ViewBag.RecordID = new SelectList(db.Records, "RecordID", "RecordName");
+            ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "LapsedName");
+            ViewBag.CWOID = new SelectList(db.CWOs, "CWOID", "CWOName");
+            ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "JudgeName");
+            ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "CaseTypeName");
+            ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "CAFCASSName");
+            return View();
         }
 
-        // POST: /WardshipRecord/Create
+        // POST: WardshipRecord/Create
         [HttpPost]
-        public ActionResult Create(WardshipRecord model)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username")] WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
-                db.AddWardshipRecord(model.WardshipRecord);
-                return RedirectToAction("Index"); // Redirect to a suitable page after creation
+                db.WardshipRecords.Add(wardshipRecord);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
-            // Reload dropdown lists if there's a need to return to the form
-            model.CaseTypeList = new SelectList(db.GetCaseTypes(), "CaseTypeID", "Description", model.WardshipRecord.CaseTypeID);
-            model.CourtList = new SelectList(db.GetCourts(), "CourtID", "Name", model.WardshipRecord.CourtID);
-            model.TypeList = new SelectList(db.GetTypes(), "TypeID", "Description", model.WardshipRecord.TypeID);
-            model.GenderList = new SelectList(db.GetGenders(), "GenderID", "Description", model.WardshipRecord.GenderID);
-            model.DistrictJudgeList = new SelectList(db.GetDistrictJudges(), "JudgeID", "Name", model.WardshipRecord.DistrictJudgeID);
-            model.RecordList = new SelectList(db.GetRecords(), "RecordID", "Description", model.WardshipRecord.RecordID);
-            model.LapsedList = new SelectList(db.GetLapsedStatuses(), "LapsedID", "Detail", model.WardshipRecord.LapsedID);
-            model.StatusList = new SelectList(db.GetStatuses(), "StatusID", "Description", model.WardshipRecord.StatusID);
-            model.CWOList = new SelectList(db.GetCWOs(), "CWOID", "Name", model.WardshipRecord.CWOID);
-            model.CAFCASSList = new SelectList(db.GetCAFCASSes(), "CAFCASSID", "Name", model.WardshipRecord.CAFCASSID);
-
-            return View(model);
+            // If model state is invalid, reload dropdown lists and return the view
+            ViewBag.TypeID = new SelectList(db.Types, "TypeID", "TypeName", wardshipRecord.TypeID);
+            ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName", wardshipRecord.CourtID);
+            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "StatusName", wardshipRecord.StatusID);
+            ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "GenderName", wardshipRecord.GenderID);
+            ViewBag.RecordID = new SelectList(db.Records, "RecordID", "RecordName", wardshipRecord.RecordID);
+            ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "LapsedName", wardshipRecord.LapsedID);
+            ViewBag.CWOID = new SelectList(db.CWOs, "CWOID", "CWOName", wardshipRecord.CWOID);
+            ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "JudgeName", wardshipRecord.DistrictJudgeID);
+            ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "CaseTypeName", wardshipRecord.CaseTypeID);
+            ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "CAFCASSName", wardshipRecord.CAFCASSID);
+            return View(wardshipRecord);
         }
-
     }
 }
