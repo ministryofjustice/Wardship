@@ -42,8 +42,8 @@ namespace Wardship
         #endregion
 
         #region Wardships records and collections
-            IEnumerable<WardshipRecord> WardshipsGetAll();
-            WardshipRecord GetWardshipRecordByID(int id);
+        IEnumerable<WardshipRecord> WardshipsGetAll();
+        WardshipRecord GetWardshipRecordByID(int id);
         #endregion
 
         #region Salutations
@@ -78,21 +78,21 @@ namespace Wardship
         IEnumerable<WardshipRecord> QuickSearchByType(DateTime? DofOS);
         #endregion Quick Search
 
-        #region New Methods
-        IEnumerable<CaseType> GetCaseTypes();
-        IEnumerable<Court> GetCourts();
-        IEnumerable<Wardship.Models.Type> GetTypes();
-        IEnumerable<Gender> GetGenders();
-        IEnumerable<DistrictJudge> GetDistrictJudges();
-        IEnumerable<Record> GetRecords();
-        IEnumerable<Lapsed> GetLapsedStatuses();
-        IEnumerable<Status> GetStatuses();
-        IEnumerable<CWO> GetCWOs();
-        IEnumerable<CAFCASS> GetCAFCASSes();
-        void AddWardshipRecord(WardshipRecord record);
+        #region New Properties
+        IEnumerable<CaseType> CaseTypes { get; }
+        IEnumerable<Court> Courts { get; }
+        IEnumerable<Wardship.Models.Type> Types { get; }
+        IEnumerable<Gender> Genders { get; }
+        IEnumerable<DistrictJudge> DistrictJudges { get; }
+        IEnumerable<Record> Records { get; }
+        IEnumerable<Lapsed> Lapseds { get; }
+        IEnumerable<Status> Statuses { get; }
+        IEnumerable<CWO> CWOs { get; }
+        IEnumerable<CAFCASS> CAFCASSs { get; }
+        IEnumerable<WardshipRecord> WardshipRecords { get; }
+        void SaveChanges();
         #endregion
 
         void AddAuditEvent(AuditEvent Audit);
     }
 }
-
