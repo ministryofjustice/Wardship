@@ -91,6 +91,7 @@ namespace Wardship
         IEnumerable<CAFCASS> CAFCASSs { get; }
         IEnumerable<WardshipRecord> WardshipRecords { get; }
         void SaveChanges();
+        void AddWardshipRecord(WardshipRecord record);
         #endregion
 
         void AddAuditEvent(AuditEvent Audit);

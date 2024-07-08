@@ -60,8 +60,8 @@ namespace Wardship.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.WardshipRecords.Add(wardshipRecord);
-                db.SaveChanges();
+                db.AddWardshipRecord(wardshipRecord); // Use the repository to add the record
+                db.SaveChanges(); // Save changes
                 return RedirectToAction("Index");
             }
 
@@ -78,5 +78,4 @@ namespace Wardship.Controllers
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "CAFCASSName", wardshipRecord.CAFCASSID);
             return View(wardshipRecord);
         }
-    }
 }
