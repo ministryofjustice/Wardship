@@ -1,0 +1,120 @@
+﻿@model Wardship.Models.WardshipRecord
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h1>Wardship record</h1>
+
+<h6>@Html.ActionLink("Wardship Records", "Index", "WardshipRecord", new { id = Model.WardshipCaseID }) > @Model.FileNumber</h6>
+
+<fieldset>
+
+    <legend>Child's Details</legend>
+
+    <div class="display-label">Wardship Number</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FileNumber)
+    </div>
+
+    <div class="display-label">Child Surname</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ChildSurname)
+    </div>
+    <div class="display-label">Child Forenames</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ChildForenames)
+    </div>
+
+    <div class="display-label">Case Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CaseType.Detail)
+    </div>
+    <div class="display-label">Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Type.Detail)
+    </div>
+
+    <div class="display-label">Court</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Court.CourtName)
+    </div>
+
+    <div class="display-label">Child Date of Birth</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ChildDateofBirth)
+@*         @Html.DisplayFor(model => model.Over18) @Html.DisplayFor(model => model.Turned18On)*@
+      
+    </div>
+    
+    <div class="display-label">Gender</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Gender.Detail)
+    </div>
+
+
+    <div class="display-label">Date Issued</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateOfOS)
+    </div>
+
+    <div class="display-label">Record</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Record.Detail)
+    </div>
+
+    <div class="display-label">District judge</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DistrictJudge.Name)
+    </div>
+
+   
+  
+    
+</fieldset>
+
+<fieldset>
+    
+     <legend>Case Status</legend>
+   
+
+    <div class="display-label">Lapse letter sent</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LapseLetterSent)
+    </div>
+
+    <div class="display-label">Lapsed</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Lapsed.Detail)
+    </div>
+
+
+    <div class="display-label">Status</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Status.Detail)
+    </div>
+
+    <div class="display-label">C.W.O. Invloved</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CWO.Detail)
+    </div>
+
+
+    <div class="display-label">First appointment Taken</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstAppointmentDate)
+    </div>
+
+        <div class="display-label">Hearing Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HearingDate)
+    </div>
+
+    <div class="display-label">CAFCASS</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CAFCASS.Detail)
+    </div>
+
+   
+         
+</fieldset>
