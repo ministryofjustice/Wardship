@@ -50,7 +50,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "JudgeName");
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "CaseTypeName");
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "CAFCASSName");
-            return View();
+            return View("Create");
         }
 
         // POST: WardshipRecord/Create
