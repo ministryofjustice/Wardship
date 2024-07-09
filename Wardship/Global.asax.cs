@@ -44,13 +44,6 @@ namespace Wardship
         {
             routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute(
-                    name: "WardshipRecordCreate",
-                    url: "WardshipRecord/Create",
-                    defaults: new { controller = "WardshipRecord", action = "Create" }
-                );
-            
             routes.MapRoute("Audit", "{auditType}/Audit/{id}"
                                 , new
                                 {
