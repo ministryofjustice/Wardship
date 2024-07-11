@@ -139,25 +139,5 @@ namespace Wardship.Models
 
         public IPagedList<WardshipRecord> WardshipResults { get; set; }
     }
-
-    public class WardshipRecordCreateVM
-    {
-        public WardshipRecord WardshipRecord { get; set; }
-        public SelectList CaseTypeList { get; set; }
-        public SelectList CourtList { get; set; }
-        public SelectList TypeList { get; set; }
-        public SelectList GenderList { get; set; }
-        public SelectList DistrictJudgeList { get; set; }
-        public SelectList RecordList { get; set; }
-        public SelectList LapsedList { get; set; }
-        public SelectList StatusList { get; set; }
-        public SelectList CWOList { get; set; }
-        public SelectList CAFCASSList { get; set; }
-
-        public WardshipRecordCreateVM()
-        {
-            WardshipRecord = new WardshipRecord();
-        }
-    }
-
+    
 }
