@@ -40,13 +40,13 @@ namespace Wardship.Controllers
         public ActionResult Create()
         {
             // Prepare dropdown lists for the view
-            ViewBag.TypeID = new SelectList(db.Types, "TypeID", "TypeName");
+            ViewBag.TypeID = new SelectList(db.Types, "TypeID", "Detail");
             ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName");
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "StatusName");
-            ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "GenderName");
-            ViewBag.RecordID = new SelectList(db.Records, "RecordID", "RecordName");
-            ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "LapsedName");
-            ViewBag.CWOID = new SelectList(db.CWOs, "CWOID", "CWOName");
+            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Detail");
+            ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "Detail");
+            ViewBag.RecordID = new SelectList(db.Records, "RecordID", "Detail");
+            ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "Detail");
+            ViewBag.CWOID = new SelectList(db.CWOs, "CWOID", "Detail");
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "JudgeName");
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "CaseTypeName");
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "CAFCASSName");
@@ -66,13 +66,13 @@ namespace Wardship.Controllers
             }
 
             // If model state is invalid, reload dropdown lists and return the view
-            ViewBag.TypeID = new SelectList(db.Types, "TypeID", "TypeName", wardshipRecord.TypeID);
+            ViewBag.TypeID = new SelectList(db.Types, "TypeID", "Detail", wardshipRecord.TypeID);
             ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName", wardshipRecord.CourtID);
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "StatusName", wardshipRecord.StatusID);
-            ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "GenderName", wardshipRecord.GenderID);
-            ViewBag.RecordID = new SelectList(db.Records, "RecordID", "RecordName", wardshipRecord.RecordID);
-            ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "LapsedName", wardshipRecord.LapsedID);
-            ViewBag.CWOID = new SelectList(db.CWOs, "CWOID", "CWOName", wardshipRecord.CWOID);
+            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Detail", wardshipRecord.StatusID);
+            ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "Detail", wardshipRecord.GenderID);
+            ViewBag.RecordID = new SelectList(db.Records, "RecordID", "Detail", wardshipRecord.RecordID);
+            ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "Detail", wardshipRecord.LapsedID);
+            ViewBag.CWOID = new SelectList(db.CWOs, "CWOID", "Detail", wardshipRecord.CWOID);
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "JudgeName", wardshipRecord.DistrictJudgeID);
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "CaseTypeName", wardshipRecord.CaseTypeID);
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "CAFCASSName", wardshipRecord.CAFCASSID);
