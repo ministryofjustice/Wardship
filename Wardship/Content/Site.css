@@ -571,10 +571,10 @@ span.comment
     height:5px;
 }
 
-.editor-label, 
+/* .editor-label, 
 .editor-field {
     width: auto;
-    float: left;
+    float: none;
     margin-right: 10px;
     clear: none;
 }
@@ -585,13 +585,13 @@ span.comment
 
 fieldset {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 fieldset > div {
-    width: 100%;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 fieldset > div > .editor-label {
@@ -605,4 +605,4 @@ fieldset > div > .editor-field {
 input[type="submit"] {
     display: block;
     margin: 20px auto 0;
-}
+} */
