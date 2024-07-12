@@ -110,7 +110,7 @@ namespace Wardship.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(wardshipRecord).State = EntityState.Modified;
+                db.UpdateWardshipRecord(wardshipRecord);
                 db.SaveChanges();
                 return RedirectToAction("Details", "WardshipRecord", new { id = wardshipRecord.WardshipCaseID });
             }
