@@ -337,5 +337,11 @@ namespace Wardship
             db.WardshipRecord.Add(record);
             db.SaveChanges();
         }
+
+        public void UpdateWardshipRecord(WardshipRecord record)
+        {
+            db.Entry(record).State = EntityState.Modified;
+            db.SaveChanges();
+        }
     }
 }
