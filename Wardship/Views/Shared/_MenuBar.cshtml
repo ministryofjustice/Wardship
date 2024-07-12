@@ -9,14 +9,14 @@
                 {
                     case Wardship.AccessLevel.User:
                         <li class="button">@Html.ActionLink("Wardship Records", "Index", "WardshipRecord", new { area = "" }, null)</li>
-                        <li class="button">@Html.ActionLink("Quick Search", "Index", "QuickSearch", new { Area = "" }, null)</li>
                         <li class="button" style="background:none !important;">@Html.ImageLink(Url.Content("~/Content/Images/add.png"), "New Wardship Record", "Create", "WardshipRecord", new { area = "" }, null, null)</li>
+                        <li class="button">@Html.ActionLink("Quick Search", "Index", "QuickSearch", new { Area = "" }, null)</li>
                     break;
                     case Wardship.AccessLevel.Manager:
                     
                         <li class="button">@Html.ActionLink("Wardship Records", "Index", "WardshipRecord", new { area = "" }, null)</li>
-                        <li class="button">@Html.ActionLink("Quick Search", "Index", "QuickSearch", new { Area = "" }, null)</li>
                         <li class="button" style="background:none !important;">@Html.ImageLink(Url.Content("~/Content/Images/add.png"), "New Wardship Record", "Create", "WardshipRecord", new { area = "" }, null, null)</li>
+                        <li class="button">@Html.ActionLink("Quick Search", "Index", "QuickSearch", new { Area = "" }, null)</li>
                         <li class="button">@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null)
                             <ul>
                                 <li>@Html.ActionLink("Users", "Index", "Users", new { area = "Admin" }, null)</li>
@@ -27,8 +27,8 @@
                     case Wardship.AccessLevel.Admin:
 
                             <li class="button">@Html.ActionLink("Wardship Records", "Index", "WardshipRecord", new { area = "" }, null)</li>
-                            <li class="button">@Html.ActionLink("Quick Search", "Index", "QuickSearch", new { Area = "" }, null)</li>
                             <li class="button" style="background:none !important;">@Html.ImageLink(Url.Content("~/Content/Images/add.png"), "New Wardship Record", "Create", "WardshipRecord", new { area = "" }, null, null)</li>
+                            <li class="button">@Html.ActionLink("Quick Search", "Index", "QuickSearch", new { Area = "" }, null)</li>
                             <li class="button">@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null) 
                             <ul>
                                 <li>@Html.ActionLink("Users", "Index", "Users", new { area = "Admin" }, null)</li>
