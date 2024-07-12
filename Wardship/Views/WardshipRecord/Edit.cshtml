@@ -4,8 +4,8 @@
     ViewBag.Title = string.Format("Amend Wardship record {0}", Model.WardshipCaseID);
 }
 <h1>@ViewBag.Title</h1>
-<h6>@Html.ActionLink("Wardship Records","Index") 
-> @Html.ActionLink(Model.WardshipCaseID, "Details", new { id = Model.WardshipCaseID }, null)
+<h6>@Html.ActionLink("Wardship Records", "Index") 
+> @Html.ActionLink(Model.WardshipCaseID.ToString(), "Details", new { id = Model.WardshipCaseID }, null)
 > Edit</h6>
 
 @using (Html.BeginForm()) 
@@ -172,4 +172,4 @@
     <p>
         <input type="submit" value="Save" />
     </p>
-}
+}   

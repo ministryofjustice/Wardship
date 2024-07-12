@@ -26,7 +26,7 @@
 @foreach (var item in Model.WardshipResults) {
     <tr>
         <td>@Html.ImageLink(Url.Content("~/Content/Images/view.png"), "Details", "Details", "WardshipRecord", new { id = item.WardshipCaseID }, null, null)</td>
-        <td>@Html.ImageLink(Url.Content("~/Images/edit.png"), "Edit", "Edit", "WardshipRecord", new { id = item.WardshipCaseID }, null, null)</td> 
+        <td>@Html.ImageLink(Url.Content("~/Content/Images/edit.png"), "Edit", "Edit", "WardshipRecord", new { id = item.WardshipCaseID }, null, null)</td>
         <td>@Html.DisplayFor(modelItem => item.FileNumber)</td>
         <td>@Html.DisplayFor(modelItem => item.ChildForenames)</td>
         <td>@Html.DisplayFor(modelItem => item.ChildSurname)</td>
