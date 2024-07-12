@@ -570,39 +570,3 @@ span.comment
     background-color:Blue;
     height:5px;
 }
-
-/* .editor-label, 
-.editor-field {
-    width: auto;
-    float: none;
-    margin-right: 10px;
-    clear: none;
-}
-
-.editor-field {
-    margin-bottom: 10px;
-}
-
-fieldset {
-    display: flex;
-    flex-direction: column;
-}
-
-fieldset > div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-fieldset > div > .editor-label {
-    width: 20%;
-}
-
-fieldset > div > .editor-field {
-    width: 80%;
-}
-
-input[type="submit"] {
-    display: block;
-    margin: 20px auto 0;
-} */
