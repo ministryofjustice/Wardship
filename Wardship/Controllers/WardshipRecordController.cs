@@ -110,9 +110,9 @@ namespace Wardship.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.UpdateWardshipRecord(wardshipRecord); // Use the repository to update the record
+                db.Entry(wardshipRecord).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "WardshipRecord", new { id = wardshipRecord.WardshipCaseID });
             }
 
             // If model state is invalid, reload dropdown lists and return the view
