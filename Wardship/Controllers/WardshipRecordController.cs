@@ -114,12 +114,11 @@ namespace Wardship.Controllers
         // POST: WardshipRecord/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(WardshipRecord wardshipRecord)
+        public ActionResult Edit([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username")] WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(wardshipRecord).State = EntityState.Modified;
-                db.SaveChanges();
+                db.UpdateWardshipRecord(wardshipRecord); // Use the repository to update the record
                 return RedirectToAction("Details", "WardshipRecord", new { id = wardshipRecord.WardshipCaseID });
             }
 

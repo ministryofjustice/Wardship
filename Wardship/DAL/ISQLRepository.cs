@@ -92,6 +92,7 @@ namespace Wardship
         IEnumerable<WardshipRecord> WardshipRecords { get; }
         void SaveChanges();
         void AddWardshipRecord(WardshipRecord record);
+        void UpdateWardshipRecord(WardshipRecord record);
         #endregion
 
         void AddAuditEvent(AuditEvent Audit);

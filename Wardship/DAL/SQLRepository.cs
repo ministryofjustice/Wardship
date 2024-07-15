@@ -337,5 +337,15 @@ namespace Wardship
             db.WardshipRecord.Add(record);
             db.SaveChanges();
         }
+
+        public void UpdateWardshipRecord(WardshipRecord record)
+        {
+            var existingRecord = db.WardshipRecord.Find(record.WardshipCaseID);
+            if (existingRecord != null)
+            {
+                db.Entry(existingRecord).CurrentValues.SetValues(record);
+                db.SaveChanges();
+            }
+        }
     }
 }
