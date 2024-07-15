@@ -33,6 +33,10 @@ namespace Wardship.Controllers
         public ActionResult Details(int id)
         {
             WardshipRecord model = db.GetWardshipRecordByID(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
             return View(model);
         }
 
@@ -106,11 +110,11 @@ namespace Wardship.Controllers
         // POST: WardshipRecord/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username")] WardshipRecord wardshipRecord)
+        public ActionResult Edit(WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
-                db.UpdateWardshipRecord(wardshipRecord);
+                db.Entry(wardshipRecord).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Details", "WardshipRecord", new { id = wardshipRecord.WardshipCaseID });
             }
