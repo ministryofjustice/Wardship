@@ -61,6 +61,9 @@ namespace Wardship.Models
         public int? StatusID { get; set; } //used for setting the relationship in the DB
         public virtual Status Status { get; set; }//used for the status dropdown
 
+        [Display(Name = "Custom Status Reason")]
+        public string CustomStatusReason { get; set; }
+
         [Display(Name = "Gender")]
         public int? GenderID { get; set; } //used for setting the relationship in the DB
         public virtual Gender Gender { get; set; }//used for the status dropdown

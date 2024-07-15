@@ -48,9 +48,11 @@ namespace Wardship.Controllers
         public ActionResult Create()
         {
             // Prepare dropdown lists for the view
+            var statuses = db.Statuses.ToList();
+            statuses.Add(new Status { StatusID = 0, Detail = "Other" });
+            ViewBag.StatusID = new SelectList(statuses, "StatusID", "Detail");
             ViewBag.TypeID = new SelectList(db.Types, "TypeID", "Detail");
             ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName");
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Detail");
             ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "Detail");
             ViewBag.RecordID = new SelectList(db.Records, "RecordID", "Detail");
             ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "Detail");
@@ -64,7 +66,7 @@ namespace Wardship.Controllers
         // POST: WardshipRecord/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username")] WardshipRecord wardshipRecord)
+        public ActionResult Create([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason")] WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
@@ -74,9 +76,11 @@ namespace Wardship.Controllers
             }
 
             // If model state is invalid, reload dropdown lists and return the view
+            var statuses = db.Statuses.ToList();
+            statuses.Add(new Status { StatusID = 0, Detail = "Other" });
+            ViewBag.StatusID = new SelectList(statuses, "StatusID", "Detail", wardshipRecord.StatusID);
             ViewBag.TypeID = new SelectList(db.Types, "TypeID", "TypeName", wardshipRecord.TypeID);
             ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName", wardshipRecord.CourtID);
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Detail", wardshipRecord.StatusID);
             ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "Detail", wardshipRecord.GenderID);
             ViewBag.RecordID = new SelectList(db.Records, "RecordID", "Detail", wardshipRecord.RecordID);
             ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "Detail", wardshipRecord.LapsedID);
@@ -97,9 +101,11 @@ namespace Wardship.Controllers
             }
 
             // Prepare dropdown lists for the view
+            var statuses = db.Statuses.ToList();
+            statuses.Add(new Status { StatusID = 0, Detail = "Other" });
+            ViewBag.StatusID = new SelectList(statuses, "StatusID", "Detail", wardshipRecord.StatusID);
             ViewBag.TypeID = new SelectList(db.Types, "TypeID", "Detail", wardshipRecord.TypeID);
             ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName", wardshipRecord.CourtID);
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Detail", wardshipRecord.StatusID);
             ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "Detail", wardshipRecord.GenderID);
             ViewBag.RecordID = new SelectList(db.Records, "RecordID", "Detail", wardshipRecord.RecordID);
             ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "Detail", wardshipRecord.LapsedID);
@@ -114,7 +120,7 @@ namespace Wardship.Controllers
         // POST: WardshipRecord/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username")] WardshipRecord wardshipRecord)
+        public ActionResult Edit([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason")] WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
@@ -123,9 +129,11 @@ namespace Wardship.Controllers
             }
 
             // If model state is invalid, reload dropdown lists and return the view
+            var statuses = db.Statuses.ToList();
+            statuses.Add(new Status { StatusID = 0, Detail = "Other" });
+            ViewBag.StatusID = new SelectList(statuses, "StatusID", "Detail", wardshipRecord.StatusID);
             ViewBag.TypeID = new SelectList(db.Types, "TypeID", "TypeName", wardshipRecord.TypeID);
             ViewBag.CourtID = new SelectList(db.Courts, "CourtID", "CourtName", wardshipRecord.CourtID);
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Detail", wardshipRecord.StatusID);
             ViewBag.GenderID = new SelectList(db.Genders, "GenderID", "Detail", wardshipRecord.GenderID);
             ViewBag.RecordID = new SelectList(db.Records, "RecordID", "Detail", wardshipRecord.RecordID);
             ViewBag.LapsedID = new SelectList(db.Lapseds, "LapsedID", "Detail", wardshipRecord.LapsedID);

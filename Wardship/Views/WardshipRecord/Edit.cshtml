@@ -102,6 +102,22 @@
             @Html.DropDownListFor(model => model.DistrictJudgeID, (SelectList)ViewBag.DistrictJudgeID)
             @Html.ValidationMessageFor(model => model.DistrictJudgeID)
         </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StatusID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.StatusID, (SelectList)ViewBag.StatusID, new { @id = "StatusID" })
+            @Html.ValidationMessageFor(model => model.StatusID)
+        </div>
+
+        <div class="editor-label" id="customStatusReasonLabel" style="display:none;">
+            @Html.LabelFor(model => model.CustomStatusReason, "Custom Status Reason")
+        </div>
+        <div class="editor-field" id="customStatusReasonField" style="display:none;">
+            @Html.EditorFor(model => model.CustomStatusReason)
+            @Html.ValidationMessageFor(model => model.CustomStatusReason)
+        </div>
     </fieldset>
 
     <fieldset>
@@ -121,14 +137,6 @@
         <div class="editor-field">
             @Html.DropDownListFor(model => model.LapsedID, (SelectList)ViewBag.LapsedID)
             @Html.ValidationMessageFor(model => model.LapsedID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StatusID, true)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.StatusID, (SelectList)ViewBag.StatusID)
-            @Html.ValidationMessageFor(model => model.StatusID)
         </div>
 
         <div class="editor-label">
@@ -175,3 +183,22 @@
         <input type="submit" value="Save" />
     </p>
 }   
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#StatusID').change(function () {
+                if ($(this).val() == '0') {
+                    $('#customStatusReasonLabel').show();
+                    $('#customStatusReasonField').show();
+                } else {
+                    $('#customStatusReasonLabel').hide();
+                    $('#customStatusReasonField').hide();
+                }
+            });
+
+            // Trigger change event on page load to handle pre-selected value
+            $('#StatusID').change();
+        });
+    </script>
+}
