@@ -340,8 +340,12 @@ namespace Wardship
 
         public void UpdateWardshipRecord(WardshipRecord record)
         {
-            db.Entry(record).State = EntityState.Modified;
-            db.SaveChanges();
+            var existingRecord = db.WardshipRecord.Find(record.WardshipCaseID);
+            if (existingRecord != null)
+            {
+                db.Entry(existingRecord).CurrentValues.SetValues(record);
+                db.SaveChanges();
+            }
         }
     }
 }

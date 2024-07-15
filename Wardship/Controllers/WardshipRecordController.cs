@@ -60,8 +60,8 @@ namespace Wardship.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.AddWardshipRecord(wardshipRecord); // Use the repository to add the record
-                db.SaveChanges(); // Save changes
+                db.AddWardshipRecord(wardshipRecord);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
