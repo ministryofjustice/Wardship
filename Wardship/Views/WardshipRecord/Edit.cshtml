@@ -163,6 +163,8 @@
             @Html.ValidationMessageFor(model => model.CAFCASSID)
         </div>
 
+        @Html.HiddenFor(model => model.WardshipCaseID)
+
         @Html.HiddenFor(model => model.FileDuplicate)
         @Html.HiddenFor(model => model.Xreg)
         @Html.HiddenFor(model => model.Username)
