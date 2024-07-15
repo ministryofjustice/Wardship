@@ -1,11 +1,11 @@
 @model Wardship.Models.WardshipRecord
 
 @{
-    ViewBag.Title = string.Format("Amend Wardship record {0}", Model.FileNumber);
+    ViewBag.Title = string.Format("Amend Wardship record {0}", Model.WardshipCaseID);
 }
 <h1>@ViewBag.Title</h1>
 <h6>@Html.ActionLink("Wardship Records", "Index") 
-> @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.FileNumber }, null)
+> @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.WardshipCaseID }, null)
 > Edit</h6>
 
 @using (Html.BeginForm()) 
