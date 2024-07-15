@@ -3,6 +3,10 @@ using System.Web.Mvc;
 using Wardship.Models;
 using PagedList;
 using TPLibrary.Logger;
+using System;
+using System.Data;
+using System.Data.Entity;
+using System.Configuration;
 
 namespace Wardship.Controllers
 {
