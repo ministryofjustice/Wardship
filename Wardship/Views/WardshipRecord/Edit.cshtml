@@ -8,7 +8,7 @@
 > @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.WardshipCaseID }, null)
 > Edit</h6>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Edit", "WardshipRecord", FormMethod.Post, new { @id = "editForm" })) 
 {
     @Html.ValidationSummary(true)
     @Html.AntiForgeryToken();
