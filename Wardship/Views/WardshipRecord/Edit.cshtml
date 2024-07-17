@@ -102,22 +102,6 @@
             @Html.DropDownListFor(model => model.DistrictJudgeID, (SelectList)ViewBag.DistrictJudgeID)
             @Html.ValidationMessageFor(model => model.DistrictJudgeID)
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StatusID, true)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.StatusID, (SelectList)ViewBag.StatusID, new { @id = "StatusID" })
-            @Html.ValidationMessageFor(model => model.StatusID)
-        </div>
-
-        <div class="editor-label" id="customStatusReasonLabel" style="display:none;">
-            @Html.LabelFor(model => model.CustomStatusReason, "Custom Status Reason")
-        </div>
-        <div class="editor-field" id="customStatusReasonField" style="display:none;">
-            @Html.EditorFor(model => model.CustomStatusReason)
-            @Html.ValidationMessageFor(model => model.CustomStatusReason)
-        </div>
     </fieldset>
 
     <fieldset>
@@ -137,6 +121,22 @@
         <div class="editor-field">
             @Html.DropDownListFor(model => model.LapsedID, (SelectList)ViewBag.LapsedID)
             @Html.ValidationMessageFor(model => model.LapsedID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StatusID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.StatusID, (SelectList)ViewBag.StatusID, new { @id = "StatusID" })
+            @Html.ValidationMessageFor(model => model.StatusID)
+        </div>
+
+        <div class="editor-label" id="customStatusReasonLabel" style="display:none;">
+            @Html.LabelFor(model => model.CustomStatusReason, "Custom Status Reason")
+        </div>
+        <div class="editor-field" id="customStatusReasonField" style="display:none;">
+            @Html.EditorFor(model => model.CustomStatusReason)
+            @Html.ValidationMessageFor(model => model.CustomStatusReason)
         </div>
 
         <div class="editor-label">
