@@ -298,11 +298,6 @@ namespace Wardship
         {
             return db.WardshipRecord.ToList();
         }
-
-        IEnumerable<CAFCASSInvolvedID> ISQLRepository.GetCAFCASSInvolvedIDs()
-        {
-            return db.CAFCASSInvolvedIDs.ToList();
-        }
         #endregion
 
         #region New Properties Implementation
