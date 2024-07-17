@@ -60,6 +60,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name");
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail");
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail");
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolvedIDs, "ID", "Name");
             return View("Create");
         }
 
@@ -88,6 +89,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name", wardshipRecord.DistrictJudgeID);
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail", wardshipRecord.CaseTypeID);
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail", wardshipRecord.CAFCASSID);
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolvedIDs, "ID", "Name", wardshipRecord.CAFCASSInvolvedID);
             return View(wardshipRecord);
         }
 
@@ -113,6 +115,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name", wardshipRecord.DistrictJudgeID);
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail", wardshipRecord.CaseTypeID);
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail", wardshipRecord.CAFCASSID);
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolvedIDs, "ID", "Name", wardshipRecord.CAFCASSInvolvedID);
 
             return View(wardshipRecord);
         }
@@ -141,6 +144,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name", wardshipRecord.DistrictJudgeID);
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail", wardshipRecord.CaseTypeID);
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail", wardshipRecord.CAFCASSID);
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolvedIDs, "ID", "Name", wardshipRecord.CAFCASSInvolvedID);
 
             return View(wardshipRecord);
         }

@@ -298,6 +298,11 @@ namespace Wardship
         {
             return db.WardshipRecord.ToList();
         }
+
+        IEnumerable<CAFCASSInvolvedID> ISQLRepository.GetCAFCASSInvolvedIDs()
+        {
+            return db.CAFCASSInvolvedIDs.ToList();
+        }
         #endregion
 
         #region New Properties Implementation
@@ -312,6 +317,7 @@ namespace Wardship
         public IEnumerable<CWO> CWOs => db.CWOs.ToList();
         public IEnumerable<CAFCASS> CAFCASSs => db.CAFCASSes.ToList();
         public IEnumerable<WardshipRecord> WardshipRecords => db.WardshipRecord.ToList();
+        public IEnumerable<CAFCASSInvolvedID> CAFCASSInvolvedIDs => db.CAFCASSInvolvedIDs.ToList();
         #endregion
 
         #region SaveChanges Implementation
