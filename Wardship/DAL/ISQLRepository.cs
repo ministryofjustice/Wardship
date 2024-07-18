@@ -90,7 +90,7 @@ namespace Wardship
         IEnumerable<CWO> CWOs { get; }
         IEnumerable<CAFCASS> CAFCASSs { get; }
         IEnumerable<WardshipRecord> WardshipRecords { get; }
-        IEnumerable<CAFCASSInvolvedID> CAFCASSInvolvedIDs { get; }
+        // IEnumerable<CAFCASSInvolvedID> CAFCASSInvolvedIDs { get; }
         void SaveChanges();
         void AddWardshipRecord(WardshipRecord record);
         void UpdateWardshipRecord(WardshipRecord record);

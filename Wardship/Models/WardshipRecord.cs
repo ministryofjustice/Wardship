@@ -92,7 +92,7 @@ namespace Wardship.Models
         public int? CAFCASSID { get; set; } //used for setting the relationship in the DB
         public virtual CAFCASS CAFCASS { get; set; }//used for the status dropdown
 
-        public int CAFCASSInvolvedID { get; set; }
+        // public int CAFCASSInvolvedID { get; set; }
 
         [Display(Name = "Lapse Letter Sent")]
         [DataType(DataType.Date)]
@@ -123,7 +123,7 @@ namespace Wardship.Models
         public Status Status { get; set; }
         public CWO CWO { get; set; }
         public CAFCASS CAFCASS { get; set; }
-        public int CAFCASSInvolvedID { get; set; }
+        // public int CAFCASSInvolvedID { get; set; }
     }
 
     public class WardshipRecordVMlistView : ListViewModel
