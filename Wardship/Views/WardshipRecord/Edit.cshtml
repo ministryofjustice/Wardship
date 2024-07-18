@@ -171,14 +171,6 @@
             @Html.ValidationMessageFor(model => model.CAFCASSID)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CAFCASSInvolved, "CAFCASS Involved")
-        </div>
-        <div class="editor-field">
-            @Html.CheckBoxFor(model => model.CAFCASSInvolved)
-            @Html.ValidationMessageFor(model => model.CAFCASSInvolved)
-        </div>
-
         @Html.HiddenFor(model => model.WardshipCaseID)
 
         @Html.HiddenFor(model => model.FileDuplicate)
