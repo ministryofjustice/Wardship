@@ -101,6 +101,14 @@ namespace Wardship.Models
         {
             return base.SaveChanges();
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // Map the CAFCASSInvolved entity to the CAFCASSInvolveds table
+            modelBuilder.Entity<CAFCASSInvolved>().ToTable("CAFCASSInvolveds");
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
     internal static class myDataContextHelper
     {
