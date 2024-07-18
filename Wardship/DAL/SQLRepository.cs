@@ -347,5 +347,39 @@ namespace Wardship
                 db.SaveChanges();
             }
         }
+
+        #region CAFCASSInvolvedIDs
+        public IEnumerable<CAFCASSInvolvedID> GetAllCAFCASSInvolvedIDs()
+        {
+            return db.CAFCASSInvolvedIDs.ToList();
+        }
+
+        public CAFCASSInvolvedID GetCAFCASSInvolvedIDByID(int id)
+        {
+            return db.CAFCASSInvolvedIDs.Find(id);
+        }
+
+        public void AddCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID)
+        {
+            db.CAFCASSInvolvedIDs.Add(cafcassInvolvedID);
+            db.SaveChanges();
+        }
+
+        public void UpdateCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID)
+        {
+            db.Entry(cafcassInvolvedID).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public void DeleteCAFCASSInvolvedID(int id)
+        {
+            var entity = db.CAFCASSInvolvedIDs.Find(id);
+            if (entity != null)
+            {
+                db.CAFCASSInvolvedIDs.Remove(entity);
+                db.SaveChanges();
+            }
+        }
+        #endregion
     }
 }

@@ -96,5 +96,13 @@ namespace Wardship
         #endregion
 
         void AddAuditEvent(AuditEvent Audit);
+
+        #region CAFCASSInvolvedIDs
+        IEnumerable<CAFCASSInvolvedID> GetAllCAFCASSInvolvedIDs();
+        CAFCASSInvolvedID GetCAFCASSInvolvedIDByID(int id);
+        void AddCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID);
+        void UpdateCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID);
+        void DeleteCAFCASSInvolvedID(int id);
+        #endregion
     }
 }
