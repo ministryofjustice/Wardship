@@ -98,11 +98,11 @@ namespace Wardship
         void AddAuditEvent(AuditEvent Audit);
 
         #region CAFCASSInvolvedIDs
-        IEnumerable<CAFCASSInvolvedID> GetAllCAFCASSInvolvedIDs();
-        CAFCASSInvolvedID GetCAFCASSInvolvedIDByID(int id);
-        void AddCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID);
-        void UpdateCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID);
-        void DeleteCAFCASSInvolvedID(int id);
+        IEnumerable<CAFCASSInvolved> GetAllCAFCASSInvolveds();
+        CAFCASSInvolved GetCAFCASSInvolvedByID(int id);
+        void AddCAFCASSInvolved(CAFCASSInvolved cafcassInvolved);
+        void UpdateCAFCASSInvolved(CAFCASSInvolved cafcassInvolved);
+        void DeleteCAFCASSInvolved(int id);
         #endregion
     }
 }

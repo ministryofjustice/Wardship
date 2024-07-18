@@ -349,34 +349,34 @@ namespace Wardship
         }
 
         #region CAFCASSInvolvedIDs
-        public IEnumerable<CAFCASSInvolvedID> GetAllCAFCASSInvolvedIDs()
+        public IEnumerable<CAFCASSInvolved> GetAllCAFCASSInvolveds()
         {
-            return db.CAFCASSInvolvedIDs.ToList();
+            return db.CAFCASSInvolveds.ToList();
         }
 
-        public CAFCASSInvolvedID GetCAFCASSInvolvedIDByID(int id)
+        public CAFCASSInvolved GetCAFCASSInvolvedByID(int id)
         {
-            return db.CAFCASSInvolvedIDs.Find(id);
+            return db.CAFCASSInvolveds.Find(id);
         }
 
-        public void AddCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID)
+        public void AddCAFCASSInvolved(CAFCASSInvolved cafcassInvolved)
         {
-            db.CAFCASSInvolvedIDs.Add(cafcassInvolvedID);
+            db.CAFCASSInvolveds.Add(cafcassInvolved);
             db.SaveChanges();
         }
 
-        public void UpdateCAFCASSInvolvedID(CAFCASSInvolvedID cafcassInvolvedID)
+        public void UpdateCAFCASSInvolved(CAFCASSInvolved cafcassInvolved)
         {
-            db.Entry(cafcassInvolvedID).State = EntityState.Modified;
+            db.Entry(cafcassInvolved).State = EntityState.Modified;
             db.SaveChanges();
         }
 
-        public void DeleteCAFCASSInvolvedID(int id)
+        public void DeleteCAFCASSInvolved(int id)
         {
-            var entity = db.CAFCASSInvolvedIDs.Find(id);
+            var entity = db.CAFCASSInvolveds.Find(id);
             if (entity != null)
             {
-                db.CAFCASSInvolvedIDs.Remove(entity);
+                db.CAFCASSInvolveds.Remove(entity);
                 db.SaveChanges();
             }
         }
