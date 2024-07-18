@@ -85,6 +85,7 @@ namespace Wardship.Models
         public DbSet<CWO> CWOs { get; set; }
         public DbSet<CAFCASS> CAFCASSes { get; set; }
         public DbSet<Record> Records { get; set; }
+        public DbSet<CAFCASSInvolvedID> CAFCASSInvolvedIDs { get; set; }
 
         /// <summary>
         /// Saves changes made to the database context - can be overridden to provide audit function
