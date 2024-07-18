@@ -316,7 +316,7 @@
     <Compile Include="Models\AlertModel.cs" />
     <Compile Include="Models\AuditModels.cs" />
     <Compile Include="Models\CAFCASS.cs" />
-    <!-- <Compile Include="Models\CAFCASSInvolvedID.cs" /> -->
+    <Compile Include="Models\CAFCASSInvolvedID.cs" />
     <Compile Include="Models\CaseType.cs" />
     <Compile Include="Models\Court.cs" />
     <Compile Include="Models\CWO.cs" />
