@@ -92,7 +92,11 @@ namespace Wardship.Models
         public int? CAFCASSID { get; set; } //used for setting the relationship in the DB
         public virtual CAFCASS CAFCASS { get; set; }//used for the status dropdown
 
-        [Display(Name = "CAFCASSInvolved")]
+        {
+        CAFCASSInvolvedID = 1; // Set to No by default
+        }
+        
+        [Display(Name = "CAFCASS Involved")]
         public int? CAFCASSInvolvedID { get; set; } //used for setting the relationship in the DB
         public virtual CAFCASSInvolved CAFCASSInvolved { get; set; }//used for the status dropdown
 
