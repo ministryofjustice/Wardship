@@ -243,3 +243,6 @@ ModelManifest.xml
 #Database not required files
 Wardship.Database/Wardship.Database.jfm
 
+# IntelliJ IDEA project files
+.idea/
+.idea/workspace.xml
