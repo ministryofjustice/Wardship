@@ -83,6 +83,7 @@ namespace Wardship.Models
         public DbSet<Lapsed> Lapsed { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<CWO> CWOs { get; set; }
+        public DbSet<CAFCASSInvolved> CAFCASSInvolveds { get; set; }
         public DbSet<CAFCASS> CAFCASSes { get; set; }
         public DbSet<Record> Records { get; set; }
       

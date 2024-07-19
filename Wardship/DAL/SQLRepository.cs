@@ -310,6 +310,7 @@ namespace Wardship
         public IEnumerable<Lapsed> Lapseds => db.Lapsed.ToList();
         public IEnumerable<Status> Statuses => db.Statuses.ToList();
         public IEnumerable<CWO> CWOs => db.CWOs.ToList();
+        public IEnumerable<CAFCASSInvolved> CAFCASSInvolveds => db.CAFCASSInvolveds.ToList();
         public IEnumerable<CAFCASS> CAFCASSs => db.CAFCASSes.ToList();
         public IEnumerable<WardshipRecord> WardshipRecords => db.WardshipRecord.ToList();
         #endregion

@@ -88,6 +88,7 @@ namespace Wardship
         IEnumerable<Lapsed> Lapseds { get; }
         IEnumerable<Status> Statuses { get; }
         IEnumerable<CWO> CWOs { get; }
+        IEnumerable<CAFCASSInvolved> CAFCASSInvolveds { get; }
         IEnumerable<CAFCASS> CAFCASSs { get; }
         IEnumerable<WardshipRecord> WardshipRecords { get; }
         void SaveChanges();
