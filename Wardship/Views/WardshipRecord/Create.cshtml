@@ -169,6 +169,14 @@
             @Html.ValidationMessageFor(model => model.CAFCASSID)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CAFCASSInvolvedID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.CAFCASSInvolvedID, (SelectList)ViewBag.CAFCASSInvolvedID)
+            @Html.ValidationMessageFor(model => model.CAFCASSInvolvedID)
+        </div>
+
         @Html.HiddenFor(model => model.FileDuplicate)
         @Html.HiddenFor(model => model.Xreg)
         @Html.HiddenFor(model => model.Username)

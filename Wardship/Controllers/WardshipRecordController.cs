@@ -60,13 +60,14 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name");
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail");
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail");
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolveds, "CAFCASSInvolvedID", "Detail");
             return View("Create");
         }
 
         // POST: WardshipRecord/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason")] WardshipRecord wardshipRecord)
+        public ActionResult Create([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,CAFCASSInvolvedID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason")] WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
@@ -88,6 +89,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name", wardshipRecord.DistrictJudgeID);
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail", wardshipRecord.CaseTypeID);
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail", wardshipRecord.CAFCASSID);
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolveds, "CAFCASSInvolvedID", "Detail", wardshipRecord.CAFCASSInvolvedID);
             return View(wardshipRecord);
         }
 
@@ -113,6 +115,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name", wardshipRecord.DistrictJudgeID);
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail", wardshipRecord.CaseTypeID);
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail", wardshipRecord.CAFCASSID);
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolveds, "CAFCASSInvolvedID", "Detail", wardshipRecord.CAFCASSInvolvedID);
 
             return View(wardshipRecord);
         }
@@ -141,6 +144,7 @@ namespace Wardship.Controllers
             ViewBag.DistrictJudgeID = new SelectList(db.DistrictJudges, "DistrictJudgeID", "Name", wardshipRecord.DistrictJudgeID);
             ViewBag.CaseTypeID = new SelectList(db.CaseTypes, "CaseTypeID", "Detail", wardshipRecord.CaseTypeID);
             ViewBag.CAFCASSID = new SelectList(db.CAFCASSs, "CAFCASSID", "Detail", wardshipRecord.CAFCASSID);
+            ViewBag.CAFCASSInvolvedID = new SelectList(db.CAFCASSInvolveds, "CAFCASSInvolvedID", "Detail", wardshipRecord.CAFCASSInvolvedID);
 
             return View(wardshipRecord);
         }
