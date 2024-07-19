@@ -2,7 +2,7 @@ name: Wardship-Modernisation-Platform
 
 on:
   push:
-    branches: [ "master", "RST-6394-simple-create", "staging" ]
+    branches: [ "master", "RST-6394-simple-create-v2", "staging" ]
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   deploy-dev:
-    if: github.ref == 'refs/heads/RST-6394-simple-create'
+    if: github.ref == 'refs/heads/RST-6394-simple-create-v2'
     name: Dev - Build & Deploy
     runs-on: windows-2019
     permissions:
