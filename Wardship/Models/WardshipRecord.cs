@@ -10,12 +10,6 @@ namespace Wardship.Models
 {
     public class WardshipRecord
     {
-        // Constructor to set default values
-        public WardshipRecord()
-        {
-            CAFCASSInvolvedID = 1; // Defaults to No
-        }
-
         [Key]
         public int WardshipCaseID { get; set; }
 
