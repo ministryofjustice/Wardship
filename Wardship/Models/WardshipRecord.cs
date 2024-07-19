@@ -10,6 +10,12 @@ namespace Wardship.Models
 {
     public class WardshipRecord
     {
+        // Constructor to set default values
+        public WardshipRecord()
+        {
+            CAFCASSInvolvedID = 1; // Defaults to No
+        }
+
         [Key]
         public int WardshipCaseID { get; set; }
 
@@ -92,10 +98,6 @@ namespace Wardship.Models
         public int? CAFCASSID { get; set; } //used for setting the relationship in the DB
         public virtual CAFCASS CAFCASS { get; set; }//used for the status dropdown
 
-        {
-        CAFCASSInvolvedID = 1; // Set to No by default
-        }
-        
         [Display(Name = "CAFCASS Involved")]
         public int? CAFCASSInvolvedID { get; set; } //used for setting the relationship in the DB
         public virtual CAFCASSInvolved CAFCASSInvolved { get; set; }//used for the status dropdown
