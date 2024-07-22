@@ -109,6 +109,8 @@ namespace Wardship.Models
         public DateTime? HearingDate { get; set; }
 
         public string Username { get; set; }
+
+        public bool Deleted { get; set; }
     }
 
     public class WardshipRecordVM

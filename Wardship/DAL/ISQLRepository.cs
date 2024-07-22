@@ -97,5 +97,6 @@ namespace Wardship
         #endregion
 
         void AddAuditEvent(AuditEvent Audit);
+        void MarkWardshipRecordAsDeleted(int id);
     }
 }
