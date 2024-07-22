@@ -526,7 +526,6 @@
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="SQL Scripts\01 - CreateTables.sql" />
     <Content Include="Views\WardshipRecord\Create.cshtml" />
-    <Content Include="Views\WardshipRecord\Delete.cshtml" />
     <Content Include="Views\WardshipRecord\Edit.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

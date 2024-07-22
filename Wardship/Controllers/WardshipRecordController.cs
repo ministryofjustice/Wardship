@@ -144,25 +144,5 @@ namespace Wardship.Controllers
 
             return View(wardshipRecord);
         }
-
-        // GET: WardshipRecord/Delete/5
-        public ActionResult Delete(int id)
-        {
-            var record = db.GetWardshipRecordByID(id);
-            if (record == null)
-            {
-                return HttpNotFound();
-            }
-            return View(record);
-        }
-
-        // POST: WardshipRecord/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            db.MarkWardshipRecordAsDeleted(id);
-            return RedirectToAction("Index");
-        }
     }
 }
