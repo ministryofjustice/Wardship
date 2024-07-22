@@ -108,6 +108,9 @@ namespace Wardship.Models
         [DataType(DataType.Date)]
         public DateTime? HearingDate { get; set; }
 
+        [Display(Name = "Deleted?")]
+        public bool Deleted { get; set; }
+
         public string Username { get; set; }
     }
 
