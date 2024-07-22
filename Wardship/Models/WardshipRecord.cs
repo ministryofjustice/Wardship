@@ -109,7 +109,7 @@ namespace Wardship.Models
         public DateTime? HearingDate { get; set; }
 
         [Display(Name = "Deleted")]
-        public string Deleted { get; set; }
+        public bool Deleted { get; set; }
 
         public string Username { get; set; }
     }
