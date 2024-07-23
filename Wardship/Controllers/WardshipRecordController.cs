@@ -67,7 +67,7 @@ namespace Wardship.Controllers
         // POST: WardshipRecord/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,CAFCASSInvolvedID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason,Deleted")] WardshipRecord wardshipRecord)
+        public ActionResult Create([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,CAFCASSInvolvedID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason")] WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +123,7 @@ namespace Wardship.Controllers
         // POST: WardshipRecord/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,CAFCASSInvolvedID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason,Deleted")] WardshipRecord wardshipRecord)
+        public ActionResult Edit([Bind(Include = "WardshipCaseID,ChildSurname,ChildForenames,ChildDateofBirth,DateOfOS,FileNumber,FileDuplicate,Xreg,TypeID,CourtID,StatusID,GenderID,RecordID,LapsedID,CWOID,DistrictJudgeID,CaseTypeID,CAFCASSID,CAFCASSInvolvedID,LapseLetterSent,FirstAppointmentDate,HearingDate,Username,CustomStatusReason")] WardshipRecord wardshipRecord)
         {
             if (ModelState.IsValid)
             {
