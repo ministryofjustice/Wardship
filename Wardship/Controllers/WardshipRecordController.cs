@@ -27,7 +27,7 @@ namespace Wardship.Controllers
         // GET: /Wardship/ using model to return the whole data so we know the number of records and pageing info
         public ActionResult Index(WardshipRecordVMlistView model)
         {
-            var ListofWardships = db.WardshipsGetAll();
+            var ListofWardships = db.WardshipsGetAll().Where(w => !w.Deleted.HasValue || w.Deleted == false);
             model.WardshipResults = ListofWardships.OrderByDescending(s => s.WardshipCaseID).ToPagedList(model.page ?? 1, 30);// used with paging 
 
             return View("Index", model);
