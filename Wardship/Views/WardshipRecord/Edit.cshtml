@@ -4,9 +4,7 @@
     ViewBag.Title = string.Format("Amend Wardship record {0}", Model.WardshipCaseID);
 }
 <h1>@ViewBag.Title</h1>
-<h6>@Html.ActionLink("Wardship Records", "Index") 
-> @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.WardshipCaseID }, null)
-> Edit</h6>
+<h6>@Html.ActionLink("Wardship Records", "Index") > @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.WardshipCaseID }, null) > Edit</h6>
 
 @using (Html.BeginForm("Edit", "WardshipRecord", FormMethod.Post, new { @id = "editForm" })) 
 {
@@ -67,7 +65,7 @@
             @Html.LabelFor(model => model.ChildDateofBirth, true)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ChildDateofBirth)
+            @Html.EditorFor(model => model.ChildDateofBirth, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
             @Html.ValidationMessageFor(model => model.ChildDateofBirth)
         </div>
 
@@ -83,7 +81,7 @@
             @Html.LabelFor(model => model.DateOfOS, true)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.DateOfOS)
+            @Html.EditorFor(model => model.DateOfOS, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
             @Html.ValidationMessageFor(model => model.DateOfOS)
         </div>
 
@@ -111,7 +109,7 @@
             @Html.LabelFor(model => model.LapseLetterSent, true)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.LapseLetterSent)
+            @Html.EditorFor(model => model.LapseLetterSent, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
             @Html.ValidationMessageFor(model => model.LapseLetterSent)
         </div>
 
@@ -151,7 +149,7 @@
             @Html.LabelFor(model => model.FirstAppointmentDate, true)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.FirstAppointmentDate)
+            @Html.EditorFor(model => model.FirstAppointmentDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
             @Html.ValidationMessageFor(model => model.FirstAppointmentDate)
         </div>
 
@@ -159,7 +157,7 @@
             @Html.LabelFor(model => model.HearingDate, true)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.HearingDate)
+            @Html.EditorFor(model => model.HearingDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
             @Html.ValidationMessageFor(model => model.HearingDate)
         </div>
 
@@ -172,12 +170,10 @@
         </div>
 
         @Html.HiddenFor(model => model.WardshipCaseID)
-
         @Html.HiddenFor(model => model.FileDuplicate)
         @Html.HiddenFor(model => model.Xreg)
         @Html.HiddenFor(model => model.Username)
         @Html.HiddenFor(model => model.Deleted)
-
     </fieldset>
 
     <p>
