@@ -264,27 +264,27 @@ namespace Wardship
         #region QuickSearch
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByNumber(string p)
         {
-            return db.WardshipRecord.Where(x => x.FileNumber.ToLower().Contains(p.ToLower())).ToList();
+            return db.WardshipRecord.Where(x => x.FileNumber.ToLower().Contains(p.ToLower()) && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
 
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchSurname(string p)
         {
-            return db.WardshipRecord.Where(x => x.ChildSurname.ToLower().Contains(p.ToLower())).ToList();
+            return db.WardshipRecord.Where(x => x.ChildSurname.ToLower().Contains(p.ToLower()) && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
 
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByForename(string p)
         {
-            return db.WardshipRecord.Where(x => x.ChildForenames.ToLower().Contains(p.ToLower())).ToList();
+            return db.WardshipRecord.Where(x => x.ChildForenames.ToLower().Contains(p.ToLower()) && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
 
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByDOB(DateTime? DOB)
         {
-            return db.WardshipRecord.Where(x => x.ChildDateofBirth == DOB).ToList();
+            return db.WardshipRecord.Where(x => x.ChildDateofBirth == DOB && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
 
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByType(DateTime? DofOS)
         {
-            return db.WardshipRecord.Where(x => x.DateOfOS == DofOS).ToList();
+            return db.WardshipRecord.Where(x => x.DateOfOS == DofOS && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
         #endregion
 
