@@ -246,3 +246,5 @@ Wardship.Database/Wardship.Database.jfm
 # IntelliJ IDEA project files
 .idea/
 .idea/workspace.xml
+
+.vscode/
