@@ -32,8 +32,7 @@ namespace Wardship.Models
         [Display(Name = "Child Date Of Birth"), DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? ChildDateofBirth { get; set; }
 
-        [Display(Name = "Date Issued")]
-        [DataType(DataType.Date)]
+        [Display(Name = "Date Issued"), DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? DateOfOS { get; set; }
 
         [MaxLength(15), Display(Name = "File Number")]
@@ -95,16 +94,13 @@ namespace Wardship.Models
         public int? CAFCASSInvolvedID { get; set; } //used for setting the relationship in the DB
         public virtual CAFCASSInvolved CAFCASSInvolved { get; set; }//used for the status dropdown
 
-        [Display(Name = "Lapse Letter Sent")]
-        [DataType(DataType.Date)]
+        [Display(Name = "Lapse Letter Sent"), DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? LapseLetterSent { get; set; }
 
-        [Display(Name = "First Appointment Date")]
-        [DataType(DataType.Date)]
+        [Display(Name = "First Appointment Date"), DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? FirstAppointmentDate { get; set; }
 
-        [Display(Name = "Hearing Date")]
-        [DataType(DataType.Date)]
+        [Display(Name = "Hearing Date"), DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? HearingDate { get; set; }
 
         public string Username { get; set; }

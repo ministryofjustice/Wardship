@@ -100,12 +100,6 @@ namespace Wardship.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.ChildDateofBirth = wardshipRecord.ChildDateofBirth;
-            ViewBag.DateOfOS = wardshipRecord.DateOfOS;
-            ViewBag.LapseLetterSent = wardshipRecord.LapseLetterSent;
-            ViewBag.FirstAppointmentDate = wardshipRecord.FirstAppointmentDate;
-            ViewBag.HearingDate = wardshipRecord.HearingDate;
-
             // Prepare dropdown lists for the view
             var statuses = db.Statuses.ToList();
             statuses.Add(new Status { StatusID = 0, Detail = "Other" });
