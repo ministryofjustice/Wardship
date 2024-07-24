@@ -49,7 +49,7 @@
             @Html.LabelFor(model => model.TypeID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.TypeID, (SelectList)ViewBag.TypeID)
+            @Html.DropDownList("TypeID", "Select a Type")
             @Html.ValidationMessageFor(model => model.TypeID)
         </div>
 
@@ -57,7 +57,7 @@
             @Html.LabelFor(model => model.CourtID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.CourtID, (SelectList)ViewBag.CourtID)
+            @Html.DropDownList("CourtID", "Select a Court")
             @Html.ValidationMessageFor(model => model.CourtID)
         </div>
 
@@ -73,7 +73,7 @@
             @Html.LabelFor(model => model.GenderID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.GenderID, (SelectList)ViewBag.GenderID)
+            @Html.DropDownList("GenderID", "Select a Gender")
             @Html.ValidationMessageFor(model => model.GenderID)
         </div>
 
@@ -97,7 +97,7 @@
             @Html.Label("DistrictJudgeID", "Judge")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.DistrictJudgeID, (SelectList)ViewBag.DistrictJudgeID)
+            @Html.DropDownList("DistrictJudgeID", "Select a Judge")
             @Html.ValidationMessageFor(model => model.DistrictJudgeID)
         </div>
     </fieldset>
@@ -117,7 +117,7 @@
             @Html.LabelFor(model => model.LapsedID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.LapsedID, (SelectList)ViewBag.LapsedID)
+            @Html.DropDownList("LapsedID", "Select a Lapsed status")
             @Html.ValidationMessageFor(model => model.LapsedID)
         </div>
 
@@ -125,7 +125,7 @@
             @Html.LabelFor(model => model.StatusID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.StatusID, (SelectList)ViewBag.StatusID, new { @id = "StatusID" })
+            @Html.DropDownList("StatusID", (SelectList)ViewBag.StatusID, new { @id = "StatusID" })
             @Html.ValidationMessageFor(model => model.StatusID)
         </div>
 
@@ -141,7 +141,7 @@
             @Html.LabelFor(model => model.CWOID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.CWOID, (SelectList)ViewBag.CWOID)
+            @Html.DropDownList("CWOID", (SelectList)ViewBag.CWOID)
             @Html.ValidationMessageFor(model => model.CWOID)
         </div>
 
@@ -165,7 +165,7 @@
             @Html.LabelFor(model => model.CAFCASSInvolvedID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.CAFCASSInvolvedID, (SelectList)ViewBag.CAFCASSInvolvedID)
+            @Html.DropDownList("CAFCASSInvolvedID", (SelectList)ViewBag.CAFCASSInvolvedID)
             @Html.ValidationMessageFor(model => model.CAFCASSInvolvedID)
         </div>
 
