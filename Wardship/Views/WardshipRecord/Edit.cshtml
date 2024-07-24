@@ -41,7 +41,7 @@
             @Html.LabelFor(model => model.CaseTypeID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownList(model => model.CaseTypeID, String.Empty)
+            @Html.DropDownList("CaseTypeID", "Select a Case Type")
             @Html.ValidationMessageFor(model => model.CaseTypeID)
         </div>
 
