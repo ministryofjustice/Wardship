@@ -125,7 +125,7 @@
             @Html.LabelFor(model => model.StatusID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("StatusID", (SelectList)ViewBag.StatusID, new { @id = "StatusID" })
+            @Html.DropDownList("StatusID", "Select a Status", new { @id = "StatusID" })
             @Html.ValidationMessageFor(model => model.StatusID)
         </div>
 
@@ -141,7 +141,7 @@
             @Html.LabelFor(model => model.CWOID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("CWOID", (SelectList)ViewBag.CWOID)
+            @Html.DropDownList("CWOID", "Select a CWO status")
             @Html.ValidationMessageFor(model => model.CWOID)
         </div>
 
@@ -165,7 +165,7 @@
             @Html.LabelFor(model => model.CAFCASSInvolvedID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("CAFCASSInvolvedID", (SelectList)ViewBag.CAFCASSInvolvedID)
+            @Html.DropDownList("CAFCASSInvolvedID", "Select a CAFCASS Involved status")
             @Html.ValidationMessageFor(model => model.CAFCASSInvolvedID)
         </div>
 
