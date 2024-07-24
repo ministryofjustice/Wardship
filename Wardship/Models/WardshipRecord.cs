@@ -29,8 +29,7 @@ namespace Wardship.Models
             get { return string.Format("{0} {1}", ChildForenames, ChildSurname); }
         }
 
-        [Display(Name = "Child Date Of Birth")]
-        [DataType(DataType.Date)]
+        [Display(Name = "Child Date Of Birth"), DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? ChildDateofBirth { get; set; }
 
         [Display(Name = "Date Issued")]
