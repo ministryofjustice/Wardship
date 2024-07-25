@@ -1,0 +1,56 @@
+@model Wardship.Models.Report
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Index", "Report", FormMethod.Post, new { autocomplete = "off" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        <legend>Report Results</legend>
+
+        <p>Report period: @Model.ReportBegin.ToShortDateString() to @Model.ReportFinal.ToShortDateString()</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>File Number</th>
+                    <th>Child Name</th>
+                    <th>Date Issued</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.WardshipRecordsList != null && Model.WardshipRecordsList.Any())
+                {
+                    foreach (var record in Model.WardshipRecordsList)
+                    {
+                        <tr>
+                            <td>@record.FileNumber</td>
+                            <td>@record.ChildOutputName</td>
+                            <td>@record.DateOfOS?.ToShortDateString()</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No records found for the specified date range.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @{
+            int totalItems = Model.WardshipRecordsList?.Count() ?? 0;
+        }
+
+        <p>Total number of items: @totalItems</p>
+
+        <p>
+            <input type="submit" value="Generate Another Report" />
+        </p>
+    </fieldset>
+}

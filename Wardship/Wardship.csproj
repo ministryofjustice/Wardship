@@ -290,6 +290,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Attributes\CustomAttributes.cs" />
     <Compile Include="Controllers\QuickSearchController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\WardshipRecordController.cs" />
     <Compile Include="DAL\DataContext.cs" />
     <Compile Include="Classes\DateTimeFunctions.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="Models\Lapsed.cs" />
     <Compile Include="Models\QuickSearch.cs" />
     <Compile Include="Models\Record.cs" />
+    <Compile Include="Models\Report.cs" />
     <Compile Include="Models\Salutation.cs" />
     <Compile Include="Models\ErrorModels.cs" />
     <Compile Include="Models\FAQModels.cs" />
@@ -525,6 +527,8 @@
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="SQL Scripts\01 - CreateTables.sql" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\Report.cshtml" />
     <Content Include="Views\WardshipRecord\Create.cshtml" />
     <Content Include="Views\WardshipRecord\Edit.cshtml" />
     <Content Include="Web.config">
