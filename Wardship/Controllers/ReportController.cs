@@ -6,8 +6,6 @@ using TPLibrary.Logger;
 
 namespace Wardship.Controllers
 {
-    [Authorize]
-    [ValidateAntiForgeryToken]
     public class ReportController : Controller
     {
         private readonly ISQLRepository db;
@@ -25,19 +23,12 @@ namespace Wardship.Controllers
         {
             try
             {
-                var user = User as ICurrentUser;
-                if ((user.AccessLevel == AccessLevel.Manager) ||
-                        (user.AccessLevel == AccessLevel.Admin))
+                var model = new Report
                 {
-                    var model = new Report
-                    {
-                        ReportBegin = Convert.ToDateTime("01/01/2013"),
-                        ReportFinal = DateTime.Today
-                    };
-                    return View(model);
-                }
-                else
-                    return HttpNotFound();
+                    ReportBegin = Convert.ToDateTime("01/01/2013"),
+                    ReportFinal = DateTime.Today
+                };
+                return View(model);
             }
             catch (Exception ex)
             {
