@@ -122,10 +122,10 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.StatusID)
+            @Html.LabelFor(model => model.StatusID, true)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.StatusID, (SelectList)ViewBag.StatusID, "Select a Status")
+            @Html.DropDownList("StatusID", "Select a Status")
             @Html.ValidationMessageFor(model => model.StatusID)
         </div>
 
