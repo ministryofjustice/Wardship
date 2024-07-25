@@ -11,7 +11,7 @@ using System.Configuration;
 namespace Wardship.Controllers
 {
     [Authorize]
-    [ValidateAntiForgeryTokenOnAllPosts]
+    [ValidateAntiForgeryToken]
 
     public class WardshipRecordController : Controller
     {

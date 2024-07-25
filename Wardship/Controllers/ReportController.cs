@@ -1,19 +1,20 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using DACP.Models;
+using Wardship.Models;
+using Wardship.Attributes;
 using TPLibrary.Logger;
 
-namespace DACP.Controllers
+namespace Wardship.Controllers
 {
     [Authorize]
-    [ValidateAntiForgeryTokenOnAllPosts]
+    [ValidateAntiForgeryToken]
     public class ReportController : Controller
     {
-        private readonly ISourceRepository db;
+        private readonly ISQLRepository db;
         private readonly ICloudWatchLogger _logger;
 
-        public ReportController(ISourceRepository repository, ICloudWatchLogger logger)
+        public ReportController(ISQLRepository repository, ICloudWatchLogger logger)
         {
             db = repository;
             _logger = logger;
