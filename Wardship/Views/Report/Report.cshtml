@@ -44,7 +44,7 @@
         </table>
 
         @{
-            int totalItems = Model.WardshipRecordsList?.Count() ?? 0;
+            int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
         }
 
         <p>Total number of items: @totalItems</p>
