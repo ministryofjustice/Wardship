@@ -39,12 +39,12 @@
                             <td>@record.FileNumber</td>
                             <td>@record.ChildSurname</td>
                             <td>@record.ChildForenames</td>
-                            <td>@record.Gender</td>
-                            <td>@record.ChildDateofBirth</td>
-                            <td>@record.CaseType</td>
-                            <td>@record.Type</td>
-                            <td>@record.Record</td>
-                            <td>@record.DistrictJudge</td>
+                            <td>@record.Gender.Detail</td>
+                            <td>@(record.ChildDateofBirth.HasValue ? record.ChildDateofBirth.Value.ToShortDateString() : "")</td>
+                            <td>@record.CaseType.Detail</td>
+                            <td>@record.Type.Detail</td>
+                            <td>@record.Record.Detail</td>
+                            <td>@record.DistrictJudge.Name</td>
                         </tr>
                     }
                 }
