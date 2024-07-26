@@ -11,7 +11,6 @@ using System.Configuration;
 namespace Wardship.Controllers
 {
     [Authorize]
-    [ValidateAntiForgeryToken]
 
     public class WardshipRecordController : Controller
     {
