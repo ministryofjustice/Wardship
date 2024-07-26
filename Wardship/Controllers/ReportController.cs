@@ -3,6 +3,8 @@ using System.Linq;
 using System.Web.Mvc;
 using Wardship.Models;
 using TPLibrary.Logger;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace Wardship.Controllers
 {
@@ -59,5 +61,56 @@ namespace Wardship.Controllers
             return View(model);
         }
 
+        public ActionResult ExportToExcel(DateTime beginDate, DateTime endDate)
+        {
+            var wardshipRecords = db.WardshipsGetAll()
+                .Where(w => w.DateOfOS >= beginDate && w.DateOfOS <= endDate)
+                .ToList();
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Report");
+
+                // Add headers
+                worksheet.Cell(1, 1).Value = "Date Issued";
+                worksheet.Cell(1, 2).Value = "Wardship Number";
+                worksheet.Cell(1, 3).Value = "Child Surname";
+                worksheet.Cell(1, 4).Value = "Child Forenames";
+                worksheet.Cell(1, 5).Value = "Gender";
+                worksheet.Cell(1, 6).Value = "Child Date of Birth";
+                worksheet.Cell(1, 7).Value = "Case Type";
+                worksheet.Cell(1, 8).Value = "Type";
+                worksheet.Cell(1, 9).Value = "Record";
+                worksheet.Cell(1, 10).Value = "Judge";
+
+                // Add data
+                for (int i = 0; i < wardshipRecords.Count; i++)
+                {
+                    var record = wardshipRecords[i];
+                    var row = i + 2;
+                    worksheet.Cell(row, 1).Value = record.DateOfOS?.ToShortDateString() ?? "";
+                    worksheet.Cell(row, 2).Value = record.FileNumber ?? "";
+                    worksheet.Cell(row, 3).Value = record.ChildSurname ?? "";
+                    worksheet.Cell(row, 4).Value = record.ChildForenames ?? "";
+                    worksheet.Cell(row, 5).Value = record.Gender?.Detail ?? "";
+                    worksheet.Cell(row, 6).Value = record.ChildDateofBirth?.ToShortDateString() ?? "";
+                    worksheet.Cell(row, 7).Value = record.CaseType?.Detail ?? "";
+                    worksheet.Cell(row, 8).Value = record.Type?.Detail ?? "";
+                    worksheet.Cell(row, 9).Value = record.Record?.Detail ?? "";
+                    worksheet.Cell(row, 10).Value = record.DistrictJudge?.Name ?? "";
+                }
+
+                // Auto-fit columns
+                worksheet.Columns().AdjustToContents();
+
+                // Generate the Excel file
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    var fileName = $"WardshipReport_{beginDate:yyyyMMdd}-{endDate:yyyyMMdd}.xlsx";
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                }
+            }
     }
 }

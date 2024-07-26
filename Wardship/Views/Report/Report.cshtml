@@ -65,6 +65,7 @@
 
         <p>
             <input type="submit" value="Generate Another Report" />
+            @Html.ActionLink("Send to Excel", "ExportToExcel", "Report", new { beginDate = Model.ReportBegin, endDate = Model.ReportFinal }, new { @class = "btn btn-primary" })
         </p>
     </fieldset>
 }
