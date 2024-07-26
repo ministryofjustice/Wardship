@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-@using (Html.BeginForm("Index", "Report", FormMethod.Post, new { autocomplete = "off" }))
+@using (Html.BeginForm("Index", "Report", FormMethod.Get, new { autocomplete = "off" }))
 {
     @Html.ValidationSummary(true)
     @Html.AntiForgeryToken()
@@ -17,9 +17,16 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>File Number</th>
-                    <th>Child Name</th>
                     <th>Date Issued</th>
+                    <th>Wardship Number</th>
+                    <th>Child Surname</th>
+                    <th>Child Forenames</th>
+                    <th>Gender</th>
+                    <th>Child Date of Birth</th>
+                    <th>Case Type</th>
+                    <th>Type</th>
+                    <th>Record</th>
+                    <th>Judge</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,9 +35,16 @@
                     foreach (var record in Model.WardshipRecordsList)
                     {
                         <tr>
+                            <td>@(record.DateOfOS.HasValue ? record.DateOfOS.Value.ToShortDateString() : "")</td>
                             <td>@record.FileNumber</td>
-                            <td>@record.ChildOutputName</td>
-                            <td>@record.DateOfOS?.ToShortDateString()</td>
+                            <td>@record.ChildSurname</td>
+                            <td>@record.ChildForenames</td>
+                            <td>@record.Gender</td>
+                            <td>@record.ChildDateofBirth</td>
+                            <td>@record.CaseType</td>
+                            <td>@record.Type</td>
+                            <td>@record.Record</td>
+                            <td>@record.DistrictJudge</td>
                         </tr>
                     }
                 }
@@ -47,7 +61,7 @@
             int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
         }
 
-        <p>Total number of items: @totalItems</p>
+        <p>Total number of records found: @totalItems</p>
 
         <p>
             <input type="submit" value="Generate Another Report" />
