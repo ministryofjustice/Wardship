@@ -573,11 +573,11 @@ span.comment
 
 .btn {
     display: inline-block;
-    border: none;
+    border: 1px solid #000000;  /* Thin black border */
     margin: 0;
-    background-color: #ffffff;
+    background-color: #f0f0f0;  /* Light gray background */
     cursor: pointer;
-    color: #666666;
+    color: #000000;  /* Black text */
     text-decoration: none;
     vertical-align: middle;
     font-size: 1em;
@@ -591,13 +591,12 @@ span.comment
 }
 
 .btn:hover {
-    color: #ffffff;
-    background-color: #0070e0;
+    background-color: #e0e0e0;  /* Slightly darker gray on hover */
 }
 
 /* For disabled buttons */
 .btn[disabled] {
-    color: #FFFFFF;
-    background-color: #0070e0;
+    background-color: #d0d0d0;  /* Even darker gray for disabled state */
+    color: #666666;  /* Dark gray text for disabled state */
     cursor: default;
 }
