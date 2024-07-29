@@ -572,11 +572,32 @@ span.comment
 }
 
 .btn {
-    color: #FFFFFF !important;
-    background-color: #0070e0;
+    display: inline-block;
+    border: none;
+    margin: 0;
+    background-color: #ffffff;
     cursor: pointer;
-    font-size: 1em;
-    padding: 0.5em 0.3em;
-    overflow: visible;
+    color: #666666;
+    text-decoration: none;
     vertical-align: middle;
+    font-size: 1em;
+    background-image: none;
+    border-radius: 2px;
+    padding: 3px 7px;
+    text-align: center;
+    height: 35px;
+    min-width: 40px;
+    overflow: visible;
+}
+
+.btn:hover {
+    color: #ffffff;
+    background-color: #0070e0;
+}
+
+/* For disabled buttons */
+.btn[disabled] {
+    color: #FFFFFF;
+    background-color: #0070e0;
+    cursor: default;
 }
