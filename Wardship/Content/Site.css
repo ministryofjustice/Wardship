@@ -574,5 +574,9 @@ span.comment
 .btn {
     color: #FFFFFF !important;
     background-color: #0070e0;
-    cursor: default;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 0.5em 0.3em;
+    overflow: visible;
+    vertical-align: middle;
 }
