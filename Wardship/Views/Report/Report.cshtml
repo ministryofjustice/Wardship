@@ -1,0 +1,74 @@
+@model Wardship.Models.Report
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Index", "Report", FormMethod.Get, new { autocomplete = "off" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        <legend>Report Results</legend>
+
+        <p>Report period: @Model.ReportBegin.ToShortDateString() to @Model.ReportFinal.ToShortDateString()</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date Issued</th>
+                    <th>Wardship Number</th>
+                    <th>Child Surname</th>
+                    <th>Child Forenames</th>
+                    <th>Gender</th>
+                    <th>Child Date of Birth</th>
+                    <th>Case Type</th>
+                    <th>Type</th>
+                    <th>Record</th>
+                    <th>Judge</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.WardshipRecordsList != null && Model.WardshipRecordsList.Any())
+                {
+                    foreach (var record in Model.WardshipRecordsList)
+                    {
+                        <tr>
+                            <td>@(record.DateOfOS.HasValue ? record.DateOfOS.Value.ToShortDateString() : "")</td>
+                            <td>@record.FileNumber</td>
+                            <td>@record.ChildSurname</td>
+                            <td>@record.ChildForenames</td>
+                            <td>@record.Gender.Detail</td>
+                            <td>@(record.ChildDateofBirth.HasValue ? record.ChildDateofBirth.Value.ToShortDateString() : "")</td>
+                            <td>@record.CaseType.Detail</td>
+                            <td>@record.Type.Detail</td>
+                            <td>@record.Record.Detail</td>
+                            <td>@record.DistrictJudge.Name</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No records found for the specified date range.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @{
+            int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
+        }
+
+        <p>Total number of records found: @totalItems</p>
+
+        <p>
+            <input type="submit" value="Send to Excel" class="btn" 
+            onclick="window.location.href='@Url.Action("ExportToExcel", "Report", new { beginDate = Model.ReportBegin, endDate = Model.ReportFinal })'; return false;" />
+        </p>
+        <p>
+            <input type="submit" value="Generate Another Report" class="btn" />
+        </p>
+    </fieldset>
+}
