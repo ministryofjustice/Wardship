@@ -570,3 +570,9 @@ span.comment
     background-color:Blue;
     height:5px;
 }
+
+.btn {
+    color: #FFFFFF !important;
+    background-color: #0070e0;
+    cursor: default;
+}
