@@ -64,12 +64,11 @@
         <p>Total number of records found: @totalItems</p>
 
         <p>
-            <input type="submit" value="Generate Another Report" class="btn" />
-            @* @Html.ActionLink("Send to Excel", "ExportToExcel", "Report", new { beginDate = Model.ReportBegin, endDate = Model.ReportFinal }, new { @class = "btn btn-primary" }) *@
-        </p>
-        <p>
             <input type="submit" value="Send to Excel" class="btn" 
             onclick="window.location.href='@Url.Action("ExportToExcel", "Report", new { beginDate = Model.ReportBegin, endDate = Model.ReportFinal })'; return false;" />
+        </p>
+        <p>
+            <input type="submit" value="Generate Another Report" class="btn" />
         </p>
     </fieldset>
 }
