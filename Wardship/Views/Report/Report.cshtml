@@ -2,6 +2,14 @@
 
 @{
     ViewBag.Title = "Index";
+    int pageSize = 20; // Number of items per page
+    int currentPage = 1;
+    if (ViewBag.CurrentPage != null)
+    {
+        currentPage = (int)ViewBag.CurrentPage;
+    }
+    int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
+    int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 }
 
 @using (Html.BeginForm("Index", "Report", FormMethod.Get, new { autocomplete = "off" }))
@@ -32,7 +40,7 @@
             <tbody>
                 @if (Model.WardshipRecordsList != null && Model.WardshipRecordsList.Any())
                 {
-                    foreach (var record in Model.WardshipRecordsList)
+                    foreach (var record in Model.WardshipRecordsList.Skip((currentPage - 1) * pageSize).Take(pageSize))
                     {
                         <tr>
                             <td>@(record.DateOfOS.HasValue ? record.DateOfOS.Value.ToShortDateString() : "")</td>
@@ -62,6 +70,30 @@
         }
 
         <p>Total number of records found: @totalItems</p>
+
+        <div class="pagination">
+            @if (currentPage > 1)
+            {
+                <a href="@Url.Action("Index", "Report", new { page = currentPage - 1, beginDate = Model.ReportBegin, endDate = Model.ReportFinal })">&laquo; Previous</a>
+            }
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                if (i == currentPage)
+                {
+                    <span class="current-page">@i</span>
+                }
+                else
+                {
+                    <a href="@Url.Action("Index", "Report", new { page = i, beginDate = Model.ReportBegin, endDate = Model.ReportFinal })">@i</a>
+                }
+            }
+
+            @if (currentPage < totalPages)
+            {
+                <a href="@Url.Action("Index", "Report", new { page = currentPage + 1, beginDate = Model.ReportBegin, endDate = Model.ReportFinal })">Next &raquo;</a>
+            }
+        </div>
 
         <p>
             <input type="submit" value="Send to Excel" class="btn" 
