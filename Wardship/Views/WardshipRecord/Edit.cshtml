@@ -4,7 +4,18 @@
     ViewBag.Title = string.Format("Amend Wardship record {0}", Model.WardshipCaseID);
 }
 <h1>@ViewBag.Title</h1>
-<h6>@Html.ActionLink("Wardship Records", "Index") > @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.WardshipCaseID }, null) > Edit</h6>
+<h6>
+    @Html.ActionLink("Wardship Records", "Index") > 
+    @if (Model != null && Model.FileNumber != null)
+    {
+        @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.WardshipCaseID }, null)
+    }
+    else
+    {
+        @Html.ActionLink("N/A", "Details", new { id = Model != null ? Model.WardshipCaseID : (object)null }, null)
+    }
+    > Edit
+</h6>
 
 @using (Html.BeginForm("Edit", "WardshipRecord", FormMethod.Post, new { @id = "editForm" })) 
 {
