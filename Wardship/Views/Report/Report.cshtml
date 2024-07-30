@@ -22,6 +22,8 @@
 
         <p>Report period: @Model.ReportBegin.ToShortDateString() to @Model.ReportFinal.ToShortDateString()</p>
 
+        <p>Total number of records found: @totalItems</p>
+
         <table class="table">
             <thead>
                 <tr>
@@ -64,12 +66,6 @@
                 }
             </tbody>
         </table>
-
-        @{
-            int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
-        }
-
-        <p>Total number of records found: @totalItems</p>
 
         <div class="pagination">
             @if (currentPage > 1)
