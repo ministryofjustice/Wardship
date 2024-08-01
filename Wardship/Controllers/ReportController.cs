@@ -53,8 +53,7 @@ namespace Wardship.Controllers
                 int pageNumber = (page ?? 1);
                 model.WardshipRecordsList = wardshipRecords.ToPagedList(pageNumber, pageSize);
 
-                ViewBag.AntiForgeryToken = HttpContext.Request.Cookies[AntiForgeryConfig.CookieName]?.Value
-                    ?? "";
+                ViewBag.AntiForgeryToken = GetAntiForgeryToken();
 
                 return View("Report", model);
             }
@@ -65,6 +64,14 @@ namespace Wardship.Controllers
             }
 
             return View(model);
+        }
+
+        private string GetAntiForgeryToken()
+        {
+            var tokenHtml = Html.AntiForgeryToken().ToString();
+            var tokenStartIndex = tokenHtml.IndexOf("value=\"") + 7;
+            var tokenEndIndex = tokenHtml.IndexOf("\"", tokenStartIndex);
+            return tokenHtml.Substring(tokenStartIndex, tokenEndIndex - tokenStartIndex);
         }
 
         [HttpPost]
