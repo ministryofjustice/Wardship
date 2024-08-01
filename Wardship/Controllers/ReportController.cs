@@ -6,6 +6,7 @@ using TPLibrary.Logger;
 using ClosedXML.Excel;
 using System.IO;
 using PagedList;
+using System.Web.Helpers;
 
 namespace Wardship.Controllers
 {
@@ -68,10 +69,7 @@ namespace Wardship.Controllers
 
         private string GetAntiForgeryToken()
         {
-            var tokenHtml = Html.AntiForgeryToken().ToString();
-            var tokenStartIndex = tokenHtml.IndexOf("value=\"") + 7;
-            var tokenEndIndex = tokenHtml.IndexOf("\"", tokenStartIndex);
-            return tokenHtml.Substring(tokenStartIndex, tokenEndIndex - tokenStartIndex);
+            return AntiForgery.GetTokens(null).Value;
         }
 
         [HttpPost]
