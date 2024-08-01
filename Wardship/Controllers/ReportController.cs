@@ -69,7 +69,9 @@ namespace Wardship.Controllers
 
         private string GetAntiForgeryToken()
         {
-            return AntiForgery.GetTokens(null).Value;
+            string cookieToken, formToken;
+            AntiForgery.GetTokens(null, out cookieToken, out formToken);
+            return cookieToken + ":" + formToken;
         }
 
         [HttpPost]
