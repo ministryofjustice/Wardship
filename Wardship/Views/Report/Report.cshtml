@@ -64,7 +64,12 @@
             </tbody>
         </table>
 
-        @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Report", "Report", Model, Model.WardshipRecordsList, ViewBag.AntiForgeryToken))
+        @{
+            var antiForgeryToken = ViewBag.AntiForgeryToken as string ?? "";
+            var pagedList = Model.WardshipRecordsList ?? new PagedList<WardshipRecord>(new List<WardshipRecord>(), 1, 20);
+        }
+
+        @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Report", "Report", Model, pagedList, antiForgeryToken))
 
         <p>
             <input type="submit" value="Send to Excel" class="btn" 

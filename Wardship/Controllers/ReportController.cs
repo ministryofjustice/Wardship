@@ -53,6 +53,9 @@ namespace Wardship.Controllers
                 int pageNumber = (page ?? 1);
                 model.WardshipRecordsList = wardshipRecords.ToPagedList(pageNumber, pageSize);
 
+                ViewBag.AntiForgeryToken = HttpContext.Request.Cookies[AntiForgeryConfig.CookieName]?.Value
+                    ?? "";
+
                 return View("Report", model);
             }
 
