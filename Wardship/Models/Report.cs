@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using PagedList;
 
 namespace Wardship.Models
 {
     public class Report
     {
-        public List<WardshipRecord> WardshipRecordsList { get; set; }
+        public IPagedList<WardshipRecord> WardshipRecordsList { get; set; }
 
         [Display(Name = "Begin Report From")]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]

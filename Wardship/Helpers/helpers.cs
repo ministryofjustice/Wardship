@@ -1961,6 +1961,101 @@ namespace Wardship.Helpers
             }
         }
 
+        public static MvcHtmlString ReportPaging(this HtmlHelper htmlHelper, string actionName, string controllerName, Report model, IPagedList pagedList, string token)
+        {
+            if (pagedList.PageCount > 1)
+            {
+                string imagePath = VirtualPathUtility.ToAbsolute("~/Images/");
+
+                MvcHtmlString firstBtn;
+                MvcHtmlString prevBtn;
+                MvcHtmlString nextBtn;
+                MvcHtmlString lastBtn;
+                MvcHtmlString pageBtn;
+                MvcHtmlString recBtn;
+                TagBuilder divTag = new TagBuilder("div");
+                TagBuilder form = new TagBuilder("form");
+                form.MergeAttribute("action", htmlHelper.ViewContext.HttpContext.Request.Url.PathAndQuery);
+                form.MergeAttribute("method", "post");
+
+                // Add hidden fields for report parameters
+                TagBuilder reportBegin = new TagBuilder("input");
+                reportBegin.Attributes.Add("type", "hidden");
+                reportBegin.Attributes.Add("name", "ReportBegin");
+                reportBegin.Attributes.Add("value", model.ReportBegin.ToString("yyyy-MM-dd"));
+                form.InnerHtml += reportBegin.ToString();
+
+                TagBuilder reportFinal = new TagBuilder("input");
+                reportFinal.Attributes.Add("type", "hidden");
+                reportFinal.Attributes.Add("name", "ReportFinal");
+                reportFinal.Attributes.Add("value", model.ReportFinal.ToString("yyyy-MM-dd"));
+                form.InnerHtml += reportFinal.ToString();
+
+                // Add CSRF token
+                TagBuilder csrfToken = new TagBuilder("input");
+                csrfToken.Attributes.Add("type", "hidden");
+                csrfToken.Attributes.Add("name", "__RequestVerificationToken");
+                csrfToken.Attributes.Add("value", token);
+                form.InnerHtml += csrfToken.ToString();
+
+                string pageText = string.Format("Page {0} of {1}", pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber, pagedList.PageCount);
+                pageBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" value=\"{0}\" class=\"pageButton text\" disabled=\"disabled\" style=\"width:100px !important;\">{0}</button>", pageText));
+                if (pagedList.HasPreviousPage)
+                {
+                    firstBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img first enabled\" value=\"{0}\">{0}</button>", 1));
+                    prevBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img prev enabled\" value=\"{0}\">{0}</button>", pagedList.PageNumber - 1));
+                }
+                else
+                {
+                    firstBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img first disabled\" disabled=\"disabled\" value=\"{0}\">{0}</button>", 1));
+                    prevBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img prev disabled\" disabled=\"disabled\" value=\"\">&nbsp;</button>", ""));
+                }
+                if (pagedList.HasNextPage)
+                {
+                    lastBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img last enabled\" value=\"{0}\">{0}</button>", pagedList.PageCount));
+                    nextBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img next enabled\" value=\"{0}\">{0}</button>", pagedList.PageNumber + 1));
+                }
+                else
+                {
+                    lastBtn = MvcHtmlString.Create("<button type=\"submit\" name=\"page\" class=\"pageButton img last disabled\" disabled=\"disabled\" value=\"x\">x</button>");
+                    nextBtn = MvcHtmlString.Create("<button type=\"submit\" name=\"page\" class=\"pageButton img next disabled\" disabled=\"disabled\" value=\"x\">x</button>");
+                }
+
+                form.InnerHtml += pageBtn;
+                form.InnerHtml += firstBtn;
+                form.InnerHtml += prevBtn;
+
+                List<string> pages = generic.pagingDisplay(pagedList.PageCount, pagedList.PageNumber);
+
+                foreach (var page in pages)
+                {
+                    MvcHtmlString pageLoopBtn;
+                    if (page == "..." || page == pagedList.PageNumber.ToString())
+                    {
+                        pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton text number\" disabled=\"disabled\" value=\"{0}\">{0}</button>", page.ToString()));
+                    }
+                    else
+                    {
+                        pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton\" value=\"{0}\">{0}</button>", page.ToString()));
+                    }
+                    form.InnerHtml += pageLoopBtn.ToString();
+                }
+
+                string recCount = string.Format("{0} record{1}", pagedList.TotalItemCount, pagedList.TotalItemCount == 1 ? "" : "s");
+                recBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" value=\"{0}\" class=\"pageButton text\" disabled=\"disabled\" style=\"width:100px !important;\">{0}</button>", recCount));
+
+                form.InnerHtml += nextBtn;
+                form.InnerHtml += lastBtn;
+                form.InnerHtml += recBtn;
+                divTag.InnerHtml = form.ToString();
+                return MvcHtmlString.Create(form.ToString());
+            }
+            else
+            {
+                return MvcHtmlString.Create("");
+            }
+        }
+
         #endregion
 
     }

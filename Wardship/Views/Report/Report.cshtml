@@ -14,6 +14,12 @@
 
         <p>Report period: @Model.ReportBegin.ToShortDateString() to @Model.ReportFinal.ToShortDateString()</p>
 
+        @{
+            int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
+        }
+
+        <p>Total number of records found: @totalItems</p>
+
         <table class="table">
             <thead>
                 <tr>
@@ -57,16 +63,20 @@
             </tbody>
         </table>
 
-        @{
-            int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
-        }
-
-        <p>Total number of records found: @totalItems</p>
+        @Html.ReportPaging("Report", "Report", Model, Model.WardshipRecordsList, ViewBag.AntiForgeryToken)
 
         <p>
             <input type="submit" value="Send to Excel" class="btn" 
             onclick="window.location.href='@Url.Action("ExportToExcel", "Report", new { beginDate = Model.ReportBegin, endDate = Model.ReportFinal })'; return false;" />
         </p>
+
+        @using (Html.BeginForm("ExportToExcel", "Report", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.ReportBegin)
+            @Html.HiddenFor(m => m.ReportFinal)
+            <input type="submit" value="Export to Excel" class="btn btn-primary" />
+        }
+        
         <p>
             <input type="submit" value="Generate Another Report" class="btn" />
         </p>

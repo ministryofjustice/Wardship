@@ -5,6 +5,7 @@ using Wardship.Models;
 using TPLibrary.Logger;
 using ClosedXML.Excel;
 using System.IO;
+using PagedList;
 
 namespace Wardship.Controllers
 {
@@ -41,14 +42,16 @@ namespace Wardship.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(Report model)
+        public ActionResult Index(Report model, int? page)
         {
             if (ModelState.IsValid && model.IsValidDateRange())
             {
                 var wardshipRecords = db.WardshipsGetAll()
                     .Where(w => w.DateOfOS >= model.ReportBegin && w.DateOfOS <= model.ReportFinal);
 
-                model.WardshipRecordsList = wardshipRecords.ToList();
+                int pageSize = 20; // You can adjust this value as needed
+                int pageNumber = (page ?? 1);
+                model.WardshipRecordsList = wardshipRecords.ToPagedList(pageNumber, pageSize);
 
                 return View("Report", model);
             }
@@ -61,10 +64,29 @@ namespace Wardship.Controllers
             return View(model);
         }
 
-        public ActionResult ExportToExcel(DateTime beginDate, DateTime endDate)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Report(Report model, int? page)
+        {
+            if (ModelState.IsValid && model.IsValidDateRange())
+            {
+                var wardshipRecords = db.WardshipsGetAll()
+                    .Where(w => w.DateOfOS >= model.ReportBegin && w.DateOfOS <= model.ReportFinal);
+
+                int pageSize = 20; // Keep this consistent with the Index action
+                int pageNumber = (page ?? 1);
+                model.WardshipRecordsList = wardshipRecords.ToPagedList(pageNumber, pageSize);
+
+                return View(model);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ExportToExcel(Report model)
         {
             var wardshipRecords = db.WardshipsGetAll()
-                .Where(w => w.DateOfOS >= beginDate && w.DateOfOS <= endDate)
+                .Where(w => w.DateOfOS >= model.ReportBegin && w.DateOfOS <= model.ReportFinal)
                 .ToList();
 
             using (var workbook = new XLWorkbook())
@@ -108,7 +130,7 @@ namespace Wardship.Controllers
                 {
                     workbook.SaveAs(stream);
                     var content = stream.ToArray();
-                    var fileName = $"WardshipReport_{beginDate:yyyyMMdd}-{endDate:yyyyMMdd}.xlsx";
+                    var fileName = $"WardshipReport_{model.ReportBegin:yyyyMMdd}-{model.ReportFinal:yyyyMMdd}.xlsx";
                     return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
                 }
             }
