@@ -1,3 +1,4 @@
+@using Wardship.Helpers
 @model Wardship.Models.Report
 
 @{
@@ -63,7 +64,7 @@
             </tbody>
         </table>
 
-        @Html.ReportPaging("Report", "Report", Model, Model.WardshipRecordsList, ViewBag.AntiForgeryToken)
+        @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Report", "Report", Model, Model.WardshipRecordsList, ViewBag.AntiForgeryToken))
 
         <p>
             <input type="submit" value="Send to Excel" class="btn" 
@@ -76,7 +77,7 @@
             @Html.HiddenFor(m => m.ReportFinal)
             <input type="submit" value="Export to Excel" class="btn btn-primary" />
         }
-        
+
         <p>
             <input type="submit" value="Generate Another Report" class="btn" />
         </p>
