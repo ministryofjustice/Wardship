@@ -2,7 +2,7 @@ name: Wardship-Modernisation-Platform
 
 on:
   push:
-    branches: [ "master", "RST-update-report", "staging" ]
+    branches: [ "master", "RST-add-report-pagination", "staging-v2" ]
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   deploy-dev:
-    if: github.ref == 'refs/heads/RST-update-report'
+    if: github.ref == 'refs/heads/RST-add-report-pagination'
     name: Dev - Build & Deploy
     runs-on: windows-2019
     permissions:
@@ -82,7 +82,7 @@ jobs:
           aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
 
   deploy-preprod:
-    if: github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/staging-v2'
     name: Preprod - Build & Deploy
     runs-on: windows-2019
     permissions:
