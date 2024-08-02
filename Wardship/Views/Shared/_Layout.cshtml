@@ -53,6 +53,7 @@
         });
     </script>
 
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     @{Html.RenderAction("DisplayAlerts", "Home", new { area=""});}
