@@ -43,16 +43,19 @@ namespace Wardship.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(Report model, int? page)
+        public ActionResult Index(Report model, int page = 1)
         {
             if (ModelState.IsValid && model.IsValidDateRange())
             {
                 var wardshipRecords = db.WardshipsGetAll()
                     .Where(w => w.DateOfOS >= model.ReportBegin && w.DateOfOS <= model.ReportFinal);
 
+                int totalRecords = wardshipRecords.Count();
+                
                 int pageSize = 20;
-                int pageNumber = (page ?? 1);
-                model.WardshipRecordsList = wardshipRecords.ToPagedList(pageNumber, pageSize);
+                model.WardshipRecordsList = wardshipRecords.ToPagedList(page, pageSize);
+                
+                ViewBag.TotalRecords = totalRecords;
 
                 return View("Report", model);
             }

@@ -1080,7 +1080,12 @@ namespace Wardship.Helpers
                 }
             }
 
-            string recCount = string.Format("{0} record{1}", pagedList.TotalItemCount, pagedList.TotalItemCount == 1 ? "" : "s");
+            int totalRecords = 0;
+            if (htmlHelper.ViewContext.ViewData["TotalRecords"] != null)
+            {
+                totalRecords = (int)htmlHelper.ViewContext.ViewData["TotalRecords"];
+            }
+            string recCount = string.Format("{0} record{1}", totalRecords, totalRecords == 1 ? "" : "s");
             recBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" value=\"{0}\" class=\"pageButton text\" disabled=\"disabled\" style=\"width:100px !important;\">{0}</button>", recCount));
 
             form.InnerHtml += nextBtn;

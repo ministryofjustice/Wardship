@@ -20,7 +20,11 @@
         <p>Report period: @Model.ReportBegin.ToShortDateString() to @Model.ReportFinal.ToShortDateString()</p>
 
         @{
-            int totalItems = Model.WardshipRecordsList != null ? Model.WardshipRecordsList.Count() : 0;
+            int totalItems = 0;
+            if (ViewBag.TotalRecords != null)
+            {
+                totalItems = (int)ViewBag.TotalRecords;
+            }
         }
 
         <p>Total number of records found: @totalItems</p>
