@@ -1010,7 +1010,7 @@ namespace Wardship.Helpers
 
         public static MvcHtmlString ReportPaging(this HtmlHelper htmlHelper, string actionName, string controllerName, Report model, IPagedList<WardshipRecord> pagedList, string token)
         {
-            if (pagedList == null || pagedList.PageCount <= 1)
+            if (pagedList == null || pagedList.Count == 0 || pagedList.PageCount == 0)
             {
                 return MvcHtmlString.Empty;
             }
@@ -1075,20 +1075,23 @@ namespace Wardship.Helpers
             form.InnerHtml += firstBtn;
             form.InnerHtml += prevBtn;
 
-            List<string> pages = generic.pagingDisplay(pagedList.PageCount, pagedList.PageNumber);
-
-            foreach (var page in pages)
+            if (pagedList.PageCount > 0 && pagedList.PageNumber > 0)
             {
-                MvcHtmlString pageLoopBtn;
-                if (page == "..." || page == pagedList.PageNumber.ToString())
+                List<string> pages = generic.pagingDisplay(pagedList.PageCount, pagedList.PageNumber);
+
+                foreach (var page in pages)
                 {
-                    pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton text number\" disabled=\"disabled\" value=\"{0}\">{0}</button>", page.ToString()));
+                    MvcHtmlString pageLoopBtn;
+                    if (page == "..." || page == pagedList.PageNumber.ToString())
+                    {
+                        pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton text number\" disabled=\"disabled\" value=\"{0}\">{0}</button>", page.ToString()));
+                    }
+                    else
+                    {
+                        pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton\" value=\"{0}\">{0}</button>", page.ToString()));
+                    }
+                    form.InnerHtml += pageLoopBtn.ToString();
                 }
-                else
-                {
-                    pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton\" value=\"{0}\">{0}</button>", page.ToString()));
-                }
-                form.InnerHtml += pageLoopBtn.ToString();
             }
 
             string recCount = string.Format("{0} record{1}", pagedList.TotalItemCount, pagedList.TotalItemCount == 1 ? "" : "s");

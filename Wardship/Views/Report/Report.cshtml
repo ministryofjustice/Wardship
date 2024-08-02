@@ -67,11 +67,19 @@
         </table>
 
         @{
-            var antiForgeryToken = ViewBag.AntiForgeryToken as string ?? "";
-            var pagedList = Model.WardshipRecordsList ?? new PagedList<WardshipRecord>(new List<WardshipRecord>(), 1, 20);
+            string antiForgeryToken = "";
+            if (ViewBag.AntiForgeryToken != null)
+            {
+                antiForgeryToken = ViewBag.AntiForgeryToken.ToString();
+            }
+
+            var pagedList = Model.WardshipRecordsList;
         }
 
-        @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Report", "Report", Model, pagedList, antiForgeryToken))
+        @if (pagedList != null && pagedList.Count > 0)
+        {
+            @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Report", "Report", Model, pagedList, antiForgeryToken))
+        }
 
         <p>
             <input type="submit" value="Send to Excel" class="btn" 
