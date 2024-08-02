@@ -1082,13 +1082,17 @@ namespace Wardship.Helpers
                 foreach (var page in pages)
                 {
                     MvcHtmlString pageLoopBtn;
-                    if (page == "..." || page == pagedList.PageNumber.ToString())
+                    if (page == "...")
                     {
-                        pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton text number\" disabled=\"disabled\" value=\"{0}\">{0}</button>", page.ToString()));
+                        pageLoopBtn = MvcHtmlString.Create($"<span class=\"pageButton text\">{page}</span>");
+                    }
+                    else if (page == pagedList.PageNumber.ToString())
+                    {
+                        pageLoopBtn = MvcHtmlString.Create($"<span class=\"pageButton text current\">{page}</span>");
                     }
                     else
                     {
-                        pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton\" value=\"{0}\">{0}</button>", page.ToString()));
+                        pageLoopBtn = MvcHtmlString.Create($"<button type=\"submit\" name=\"page\" class=\"pageButton\" value=\"{page}\">{page}</button>");
                     }
                     form.InnerHtml += pageLoopBtn.ToString();
                 }
