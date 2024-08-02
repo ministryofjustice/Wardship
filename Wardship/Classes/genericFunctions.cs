@@ -25,7 +25,17 @@ namespace Wardship
         /// <returns></returns>
         internal static List<string> pagingDisplay(int pageCount, int pageCurrent)
         {
-            int maxPages = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["displaypages"]);
+            string displayPagesString = System.Configuration.ConfigurationManager.AppSettings["displaypages"];
+            int maxPages = 10; // Default value if the setting is missing or invalid
+
+            if (!string.IsNullOrEmpty(displayPagesString))
+            {
+                if (!int.TryParse(displayPagesString, out maxPages))
+                {
+                    maxPages = 10; // Use default if parsing fails
+                }
+            }
+
             return pagingDisplay(pageCount, pageCurrent, maxPages);
         }
         /// <summary>
