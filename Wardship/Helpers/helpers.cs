@@ -1016,83 +1016,80 @@ namespace Wardship.Helpers
             }
 
             string imagePath = VirtualPathUtility.ToAbsolute("~/Images/");
+            TagBuilder divTag = new TagBuilder("div");
+            divTag.AddCssClass("PagedList-pager");
+            TagBuilder list = new TagBuilder("ul");
 
-            MvcHtmlString firstBtn;
-            MvcHtmlString prevBtn;
-            MvcHtmlString nextBtn;
-            MvcHtmlString lastBtn;
-            MvcHtmlString pageBtn;
-            MvcHtmlString recBtn;
+            TagBuilder liPage = new TagBuilder("li");
+            liPage.InnerHtml = string.Format("Page {0} of {1}", pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber, pagedList.PageCount);
+            list.InnerHtml += liPage.ToString();
 
-            TagBuilder form = new TagBuilder("form");
-            form.MergeAttribute("action", htmlHelper.ViewContext.HttpContext.Request.Url.PathAndQuery);
-            form.MergeAttribute("method", "post");
-
-            string pageText = string.Format("Page {0} of {1}", pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber, pagedList.PageCount);
-            pageBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" value=\"{0}\" class=\"pageButton text\" disabled=\"disabled\" style=\"width:100px !important;\">{0}</button>", pageText));
-            
             if (pagedList.HasPreviousPage)
             {
-                firstBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img first enabled\" value=\"{0}\">{0}</button>", 1));
-                prevBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img prev enabled\" value=\"{0}\">{0}</button>", pagedList.PageNumber - 1));
+                list.InnerHtml += CreatePageLink(htmlHelper, imagePath + "page_first_enabled.png", "<< First Page", actionName, controllerName, 1);
+                list.InnerHtml += CreatePageLink(htmlHelper, imagePath + "page_prev_enabled.png", "< Previous Page", actionName, controllerName, pagedList.PageNumber - 1);
             }
             else
             {
-                firstBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img first disabled\" disabled=\"disabled\" value=\"{0}\">{0}</button>", 1));
-                prevBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img prev disabled\" disabled=\"disabled\" value=\"\">&nbsp;</button>", ""));
+                list.InnerHtml += CreateDisabledImage(htmlHelper, imagePath + "page_first_disabled.png", "<< First Page");
+                list.InnerHtml += CreateDisabledImage(htmlHelper, imagePath + "page_prev_disabled.png", "< Previous Page");
             }
-            
+
+            List<string> pages = generic.pagingDisplay(pagedList.PageCount, pagedList.PageNumber);
+            foreach (var page in pages)
+            {
+                TagBuilder pageLoop = new TagBuilder("li");
+                if (page == "...")
+                {
+                    pageLoop.AddCssClass("PageEllipsis");
+                    pageLoop.InnerHtml = page;
+                }
+                else if (page == pagedList.PageNumber.ToString())
+                {
+                    pageLoop.AddCssClass("PageNonSelectable");
+                    pageLoop.InnerHtml = page;
+                }
+                else
+                {
+                    pageLoop.AddCssClass("PageSelectable");
+                    pageLoop.InnerHtml = CreatePageLink(htmlHelper, actionName, controllerName, int.Parse(page)).ToString();
+                }
+                list.InnerHtml += pageLoop.ToString();
+            }
+
             if (pagedList.HasNextPage)
             {
-                lastBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img last enabled\" value=\"{0}\">{0}</button>", pagedList.PageCount));
-                nextBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton img next enabled\" value=\"{0}\">{0}</button>", pagedList.PageNumber + 1));
+                list.InnerHtml += CreatePageLink(htmlHelper, imagePath + "page_next_enabled.png", "Next Page >", actionName, controllerName, pagedList.PageNumber + 1);
+                list.InnerHtml += CreatePageLink(htmlHelper, imagePath + "page_last_enabled.png", "Last Page >>", actionName, controllerName, pagedList.PageCount);
             }
             else
             {
-                lastBtn = MvcHtmlString.Create("<button type=\"submit\" name=\"page\" class=\"pageButton img last disabled\" disabled=\"disabled\" value=\"x\">x</button>");
-                nextBtn = MvcHtmlString.Create("<button type=\"submit\" name=\"page\" class=\"pageButton img next disabled\" disabled=\"disabled\" value=\"x\">x</button>");
+                list.InnerHtml += CreateDisabledImage(htmlHelper, imagePath + "page_next_disabled.png", "Next Page >");
+                list.InnerHtml += CreateDisabledImage(htmlHelper, imagePath + "page_last_disabled.png", "Last Page >>");
             }
 
-            form.InnerHtml += pageBtn;
-            form.InnerHtml += firstBtn;
-            form.InnerHtml += prevBtn;
+            int totalRecords = (int)(htmlHelper.ViewContext.ViewData["TotalRecords"] ?? 0);
+            TagBuilder liRecords = new TagBuilder("li");
+            liRecords.InnerHtml = string.Format("{0} record{1}", totalRecords, totalRecords == 1 ? "" : "s");
+            list.InnerHtml += liRecords.ToString();
 
-            if (pagedList.PageCount > 0 && pagedList.PageNumber > 0)
-            {
-                List<string> pages = generic.pagingDisplay(pagedList.PageCount, pagedList.PageNumber);
+            divTag.InnerHtml = list.ToString();
+            return MvcHtmlString.Create(divTag.ToString());
+        }
 
-                foreach (var page in pages)
-                {
-                    MvcHtmlString pageLoopBtn;
-                    if (page == "...")
-                    {
-                        pageLoopBtn = MvcHtmlString.Create($"<span class=\"pageButton text\">{page}</span>");
-                    }
-                    else if (page == pagedList.PageNumber.ToString())
-                    {
-                        pageLoopBtn = MvcHtmlString.Create($"<span class=\"pageButton text current\">{page}</span>");
-                    }
-                    else
-                    {
-                        pageLoopBtn = MvcHtmlString.Create($"<button type=\"submit\" name=\"page\" class=\"pageButton\" value=\"{page}\">{page}</button>");
-                    }
-                    form.InnerHtml += pageLoopBtn.ToString();
-                }
-            }
+        private static MvcHtmlString CreatePageLink(HtmlHelper htmlHelper, string imagePath, string altText, string actionName, string controllerName, int pageNumber)
+        {
+            return htmlHelper.ImageLink(imagePath, altText, actionName, controllerName, new { page = pageNumber }, null, null);
+        }
 
-            int totalRecords = 0;
-            if (htmlHelper.ViewContext.ViewData["TotalRecords"] != null)
-            {
-                totalRecords = (int)htmlHelper.ViewContext.ViewData["TotalRecords"];
-            }
-            string recCount = string.Format("{0} record{1}", totalRecords, totalRecords == 1 ? "" : "s");
-            recBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" value=\"{0}\" class=\"pageButton text\" disabled=\"disabled\" style=\"width:100px !important;\">{0}</button>", recCount));
+        private static MvcHtmlString CreatePageLink(HtmlHelper htmlHelper, string actionName, string controllerName, int pageNumber)
+        {
+            return htmlHelper.ActionLink(pageNumber.ToString(), actionName, controllerName, new { page = pageNumber }, null);
+        }
 
-            form.InnerHtml += nextBtn;
-            form.InnerHtml += lastBtn;
-            form.InnerHtml += recBtn;
-
-            return MvcHtmlString.Create(form.ToString());
+        private static MvcHtmlString CreateDisabledImage(HtmlHelper htmlHelper, string imagePath, string altText)
+        {
+            return MvcHtmlString.Create(htmlHelper.Image(imagePath, altText, null));
         }
 
         #endregion

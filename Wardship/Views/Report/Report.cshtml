@@ -3,6 +3,10 @@
 @using PagedList
 @model Wardship.Models.Report
 
+@section Styles {
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+}
+
 @{
     ViewBag.Title = "Index";
 }
@@ -84,8 +88,5 @@
             <input type="submit" value="Export to Excel" class="btn btn-primary" />
         }
 
-        <p>
-            <input type="submit" value="Generate Another Report" class="btn" />
-        </p>
     </fieldset>
 }
