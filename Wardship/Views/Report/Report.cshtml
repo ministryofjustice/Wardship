@@ -11,6 +11,8 @@
 {
     @Html.ValidationSummary(true)
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ReportBegin)
+    @Html.HiddenFor(m => m.ReportFinal)
 
     <fieldset>
         <legend>Report Results</legend>
@@ -66,19 +68,9 @@
             </tbody>
         </table>
 
-        @{
-            string antiForgeryToken = "";
-            if (ViewBag.AntiForgeryToken != null)
-            {
-                antiForgeryToken = ViewBag.AntiForgeryToken.ToString();
-            }
-
-            var pagedList = Model.WardshipRecordsList;
-        }
-
-        @if (pagedList != null && pagedList.Count > 0)
+        @if (Model.WardshipRecordsList != null && Model.WardshipRecordsList.Count > 0)
         {
-            @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Report", "Report", Model, pagedList, antiForgeryToken))
+            @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Index", "Report", Model, Model.WardshipRecordsList))
         }
 
         @using (Html.BeginForm("ExportToExcel", "Report", FormMethod.Post))

@@ -50,11 +50,9 @@ namespace Wardship.Controllers
                 var wardshipRecords = db.WardshipsGetAll()
                     .Where(w => w.DateOfOS >= model.ReportBegin && w.DateOfOS <= model.ReportFinal);
 
-                int pageSize = 20; // You can adjust this value as needed
+                int pageSize = 20;
                 int pageNumber = (page ?? 1);
                 model.WardshipRecordsList = wardshipRecords.ToPagedList(pageNumber, pageSize);
-
-                ViewBag.AntiForgeryToken = GetAntiForgeryToken();
 
                 return View("Report", model);
             }
