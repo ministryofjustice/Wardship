@@ -52,7 +52,7 @@ namespace Wardship.Controllers
 
                 int totalRecords = wardshipRecords.Count();
                 
-                int pageSize = 20;
+                int pageSize = 30;
                 model.WardshipRecordsList = wardshipRecords.ToPagedList(page, pageSize);
                 
                 ViewBag.TotalRecords = totalRecords;
@@ -84,7 +84,7 @@ namespace Wardship.Controllers
                 var wardshipRecords = db.WardshipsGetAll()
                     .Where(w => w.DateOfOS >= model.ReportBegin && w.DateOfOS <= model.ReportFinal);
 
-                int pageSize = 20; // Keep this consistent with the Index action
+                int pageSize = 30; // Keep this consistent with the Index action
                 int pageNumber = (page ?? 1);
                 model.WardshipRecordsList = wardshipRecords.ToPagedList(pageNumber, pageSize);
 
