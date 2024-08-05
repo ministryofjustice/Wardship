@@ -81,7 +81,7 @@ namespace Wardship
             //Current page must be in the middle then!
             for (int i = 1; i <= pageCount; i++)
             {
-                if ((i <= 3) || (i >= pageCount - 2) || ((i >= (pageCurrent - 2)) && (i <= (pageCurrent + 2))))
+                if ((i <= 3) || (i >= pageCount - 2) || ((i >= (pageCurrent - 2)) && (i <= (pageCurrent + 2))) || i == pageCurrent)
                 {
                     pages.Add(i.ToString());
                 }
