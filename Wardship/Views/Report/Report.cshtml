@@ -6,6 +6,8 @@
 @{
     ViewBag.Title = "Index";
 }
+<link href="@Url.Content("~/Content/newPagedListButtons.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
 
 @using (Html.BeginForm("Index", "Report", FormMethod.Post, new { autocomplete = "off" }))
 {
