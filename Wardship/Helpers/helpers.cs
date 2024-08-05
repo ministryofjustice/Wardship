@@ -1057,7 +1057,7 @@ namespace Wardship.Helpers
                 MvcHtmlString pageLoopBtn;
                 if (page == "...")
                 {
-                    pageLoopBtn = MvcHtmlString.Create(string.Format("<span class=\"pageButton text\">{0}</span>", page));
+                    pageLoopBtn = MvcHtmlString.Create(string.Format("<button type=\"submit\" name=\"page\" class=\"pageButton text number\" disabled=\"disabled\" value=\"{0}\">{0}</button>", page));
                 }
                 else if (page == pagedList.PageNumber.ToString())
                 {
