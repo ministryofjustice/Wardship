@@ -460,12 +460,20 @@ namespace Wardship.Extensions
                 for (var pageIndex = _startPageIndex; pageIndex <= _endPageIndex; pageIndex++)
                 {
                     var text = pageIndex.ToString();
-                    if (pageIndex == _pageIndex && !string.IsNullOrEmpty(_pagerOptions.CurrentPageNumberFormatString))
-                        text = string.Format(_pagerOptions.CurrentPageNumberFormatString, text);
-                    else if (!string.IsNullOrEmpty(_pagerOptions.PageNumberFormatString))
-                        text = string.Format(_pagerOptions.PageNumberFormatString, text);
-                    var item = new PagerItem(text, pageIndex, false, PagerItemType.NumericPage);
-                    results.Add(item);
+                    if (pageIndex == _pageIndex)
+                    {
+                        if (!string.IsNullOrEmpty(_pagerOptions.CurrentPageNumberFormatString))
+                            text = string.Format(_pagerOptions.CurrentPageNumberFormatString, text);
+                        var item = new PagerItem(text, pageIndex, false, PagerItemType.NumericPage);
+                        results.Add(item);
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(_pagerOptions.PageNumberFormatString))
+                            text = string.Format(_pagerOptions.PageNumberFormatString, text);
+                        var item = new PagerItem(text, pageIndex, false, PagerItemType.NumericPage);
+                        results.Add(item);
+                    }
                 }
             }
 

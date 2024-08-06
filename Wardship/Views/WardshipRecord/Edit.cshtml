@@ -1,0 +1,212 @@
+@model Wardship.Models.WardshipRecord
+
+@{
+    ViewBag.Title = string.Format("Amend Wardship record {0}", Model.WardshipCaseID);
+}
+<h1>@ViewBag.Title</h1>
+<h6>
+    @Html.ActionLink("Wardship Records", "Index") > 
+    @if (Model != null && Model.FileNumber != null)
+    {
+        @Html.ActionLink(Model.FileNumber.ToString(), "Details", new { id = Model.WardshipCaseID }, null)
+    }
+    else
+    {
+        @Html.ActionLink("N/A", "Details", new { id = Model != null ? Model.WardshipCaseID : (object)null }, null)
+    }
+    > Edit
+</h6>
+
+@using (Html.BeginForm("Edit", "WardshipRecord", FormMethod.Post, new { @id = "editForm" })) 
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken();
+    <fieldset>
+        <legend>@ViewBag.Title</legend>
+
+        <div class="editor-label">
+            @Html.Label("FileNumber", "Wardship number")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FileNumber)
+            @Html.ValidationMessageFor(model => model.FileNumber)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ChildSurname, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ChildSurname)
+            @Html.ValidationMessageFor(model => model.ChildSurname)
+        </div>
+    
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ChildForenames, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ChildForenames)
+            @Html.ValidationMessageFor(model => model.ChildForenames)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CaseTypeID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CaseTypeID", "Select a Case Type")
+            @Html.ValidationMessageFor(model => model.CaseTypeID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TypeID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("TypeID", "Select a Type")
+            @Html.ValidationMessageFor(model => model.TypeID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CourtID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CourtID", "Select a Court")
+            @Html.ValidationMessageFor(model => model.CourtID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ChildDateofBirth, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ChildDateofBirth, new { htmlAttributes = new { @value = ViewBag.ChildDateofBirth } })
+            @Html.ValidationMessageFor(model => model.ChildDateofBirth)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GenderID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("GenderID", "Select a Gender")
+            @Html.ValidationMessageFor(model => model.GenderID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateOfOS, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateOfOS, new { htmlAttributes = new { @value = ViewBag.DateOfOS } })
+            @Html.ValidationMessageFor(model => model.DateOfOS)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RecordID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.RecordID, (SelectList)ViewBag.RecordID)
+            @Html.ValidationMessageFor(model => model.RecordID)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("DistrictJudgeID", "Judge")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("DistrictJudgeID", "Select a Judge")
+            @Html.ValidationMessageFor(model => model.DistrictJudgeID)
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Case Status</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LapseLetterSent, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LapseLetterSent)
+            @Html.ValidationMessageFor(model => model.LapseLetterSent)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LapsedID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("LapsedID", "Select a Lapsed status")
+            @Html.ValidationMessageFor(model => model.LapsedID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StatusID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("StatusID", "Select a Status")
+            @Html.ValidationMessageFor(model => model.StatusID)
+        </div>
+
+        <div class="editor-label" id="customStatusReasonLabel" style="display:none;">
+            @Html.LabelFor(model => model.CustomStatusReason, "Custom Status Reason")
+        </div>
+        <div class="editor-field" id="customStatusReasonField" style="display:none;">
+            @Html.EditorFor(model => model.CustomStatusReason)
+            @Html.ValidationMessageFor(model => model.CustomStatusReason)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CWOID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CWOID", "Select a CWO status")
+            @Html.ValidationMessageFor(model => model.CWOID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FirstAppointmentDate, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstAppointmentDate)
+            @Html.ValidationMessageFor(model => model.FirstAppointmentDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HearingDate, true)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.HearingDate)
+            @Html.ValidationMessageFor(model => model.HearingDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CAFCASSInvolvedID, true)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CAFCASSInvolvedID", "Select a CAFCASS Involved status")
+            @Html.ValidationMessageFor(model => model.CAFCASSInvolvedID)
+        </div>
+
+        @Html.HiddenFor(model => model.WardshipCaseID)
+        @Html.HiddenFor(model => model.FileDuplicate)
+        @Html.HiddenFor(model => model.Xreg)
+        @Html.HiddenFor(model => model.Username)
+        @Html.HiddenFor(model => model.Deleted)
+    </fieldset>
+
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+}   
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#StatusID').change(function () {
+                if ($(this).val() == '6') {
+                    $('#customStatusReasonLabel').show();
+                    $('#customStatusReasonField').show();
+                } else {
+                    $('#customStatusReasonLabel').hide();
+                    $('#customStatusReasonField').hide();
+                }
+            });
+
+            // Trigger change event on page load to handle pre-selected value
+            $('#StatusID').change();
+        });
+    </script>
+}

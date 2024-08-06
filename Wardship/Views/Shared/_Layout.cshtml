@@ -17,6 +17,7 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.10.3.custom.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
 
     @RenderSection("head", false)
     @*<script type='text/javascript'>
@@ -53,6 +54,7 @@
         });
     </script>
 
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     @{Html.RenderAction("DisplayAlerts", "Home", new { area=""});}
@@ -74,5 +76,6 @@
             </p>
         </div>
     </div>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -44,14 +44,13 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.ChildDateofBirth)
 @*         @Html.DisplayFor(model => model.Over18) @Html.DisplayFor(model => model.Turned18On)*@
-      
+
     </div>
     
     <div class="display-label">Gender</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Gender.Detail)
     </div>
-
 
     <div class="display-label">Date Issued</div>
     <div class="display-field">
@@ -63,20 +62,16 @@
         @Html.DisplayFor(model => model.Record.Detail)
     </div>
 
-    <div class="display-label">District judge</div>
+    <div class="display-label">Judge</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.DistrictJudge.Name)
     </div>
-
-   
-  
     
 </fieldset>
 
 <fieldset>
     
-     <legend>Case Status</legend>
-   
+    <legend>Case Status</legend>
 
     <div class="display-label">Lapse letter sent</div>
     <div class="display-field">
@@ -88,33 +83,36 @@
         @Html.DisplayFor(model => model.Lapsed.Detail)
     </div>
 
-
     <div class="display-label">Status</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Status.Detail)
     </div>
 
-    <div class="display-label">C.W.O. Invloved</div>
+    @if (Model.StatusID == 6) {
+        <div class="display-label">Custom Status Reason</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CustomStatusReason)
+        </div>
+    }
+
+    <div class="display-label">C.W.O. Involved</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CWO.Detail)
     </div>
-
 
     <div class="display-label">First appointment Taken</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FirstAppointmentDate)
     </div>
 
-        <div class="display-label">Hearing Date</div>
+    <div class="display-label">Hearing Date</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.HearingDate)
     </div>
 
-    <div class="display-label">CAFCASS</div>
+    <div class="display-label">CAFCASS Involved</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CAFCASS.Detail)
+        @Html.DisplayFor(model => model.CAFCASSInvolved.Detail)
     </div>
 
-   
-         
 </fieldset>

@@ -6,7 +6,6 @@ using Wardship.Models;
 using System.Security.Principal;
 using System.Data;
 using System.Data.Entity;
-
 using TPLibrary.Logger;
 
 namespace Wardship
@@ -14,7 +13,6 @@ namespace Wardship
     public class SQLRepository : ISQLRepository
     {
         DataContext db = new DataContext();
-
         private readonly ICloudWatchLogger _logger;
 
         public SQLRepository(ICloudWatchLogger logger)
@@ -46,8 +44,6 @@ namespace Wardship
 
         void ISQLRepository.FAQUpdate(FAQ faq)
         {
-            // db.Entry(control).State = EntityState.Modified;
-
             var tmpFAQ = db.FAQs.Single(f => f.faqID == faq.faqID);
             tmpFAQ.answer = faq.answer;
             tmpFAQ.loggedInUser = faq.loggedInUser;
@@ -74,14 +70,17 @@ namespace Wardship
         {
             return db.ADGroups.ToList();
         }
+
         IEnumerable<User> ISQLRepository.GetAllUsers()
         {
             return db.Users.ToList();
         }
+
         ADGroup ISQLRepository.GetGroupByID(int id)
         {
             return db.ADGroups.Find(id);
         }
+
         AccessLevel ISQLRepository.UserAccessLevel(IPrincipal User)
         {
             try
@@ -93,13 +92,13 @@ namespace Wardship
                 IEnumerable<ADGroup> ADGroups = db.ADGroups;
                 foreach (var group in ADGroups.OrderByDescending(g => g.RoleStrength))
                 {
-
                     if (User.IsInRole(group.Name))
                     {
                         grpLvl = (AccessLevel)group.RoleStrength;
                         break;
                     }
                 }
+
                 //Not in a group?  Try loading a user object
                 string userName = ((string)User.Identity.Name).Split('\\').Last();
                 User usr = db.Users.FirstOrDefault(x => x.Name.ToLower() == userName.ToLower());
@@ -111,6 +110,7 @@ namespace Wardship
                         return (AccessLevel)usrLvl;
                     }
                 }
+
                 return grpLvl ?? AccessLevel.Denied;
             }
             catch (Exception ex)
@@ -119,6 +119,7 @@ namespace Wardship
                 return AccessLevel.Denied;
             }
         }
+
         string ISQLRepository.curUserDisplay(IPrincipal User)
         {
             string userName = ((string)User.Identity.Name).Split('\\').Last();
@@ -136,11 +137,13 @@ namespace Wardship
             }
             return User.Identity.Name;
         }
+
         void ISQLRepository.UserAdd(User model)
         {
             db.Entry(model).State = EntityState.Added;
             db.SaveChanges();
         }
+
         IEnumerable<Role> ISQLRepository.GetAllRoles()
         {
             ICurrentUser usr = new ICurrentUser(HttpContext.Current.User.Identity);
@@ -158,20 +161,20 @@ namespace Wardship
         {
             return db.Users.Find(id);
         }
+
         User ISQLRepository.GetUserByName(string Name)
         {
-            User usr = db.Users.Single(x=>x.Name.ToLower()==Name.ToLower());
+            User usr = db.Users.Single(x => x.Name.ToLower() == Name.ToLower());
             usr.LastActive = DateTime.Now;
             db.SaveChanges();
             return usr;
         }
+
         void ISQLRepository.UpdateUser(User model)
         {
             db.Entry(model).State = EntityState.Modified;
             db.SaveChanges();
         }
-
-
         #endregion
        
         #region Alerts
@@ -179,19 +182,23 @@ namespace Wardship
         {
             return db.Alerts.Where(x => x.Live == true && x.WarnStart <= DateTime.Now);
         }
+
         IEnumerable<Alert> ISQLRepository.getAllAlerts()
         {
             return db.Alerts;
         }
+
         void ISQLRepository.CreateAlert(Alert model)
         {
             db.Entry(model).State = EntityState.Added;
             db.SaveChanges();
         }
+
         Alert ISQLRepository.getAlertbyID(int id)
         {
             return db.Alerts.Find(id);
         }
+
         void ISQLRepository.updateAlert(Alert model)
         {
             db.Entry(model).State = EntityState.Modified;
@@ -204,6 +211,7 @@ namespace Wardship
         {
             return db.Courts;
         }
+
         Court ISQLRepository.getCourtByID(int id)
         {
             return db.Courts.Find(id);
@@ -227,22 +235,25 @@ namespace Wardship
         {
             return db.WordTemplate.Where(x => x.active == true);
         }
+
         WordTemplate ISQLRepository.GetTemplateByID(int id)
         {
             return db.WordTemplate.Find(id);
         }
+
         void ISQLRepository.UpdateTemplate(WordTemplate model)
         {
             WordTemplate oldTemplate = db.WordTemplate.Find(model.templateID);
-
             db.Entry(oldTemplate).CurrentValues.SetValues(model);
             db.SaveChanges();
         }
+
         void ISQLRepository.DeactivateTemplate(WordTemplate model)
         {
             db.Entry(model).State = EntityState.Modified;
             db.SaveChanges();
         }
+
         void ISQLRepository.AddNewTemplate(WordTemplate model)
         {
             db.Entry(model).State = EntityState.Added;
@@ -251,53 +262,91 @@ namespace Wardship
         #endregion
 
         #region QuickSearch
-        public IEnumerable<WardshipRecord> QuickSearchByNumber(string p)
+        IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByNumber(string p)
         {
-           return db.WardshipRecord.Where(x =>x.FileNumber.ToLower().Contains(p.ToLower())).ToList();
+            return db.WardshipRecord.Where(x => x.FileNumber.ToLower().Contains(p.ToLower()) && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
 
         IEnumerable<WardshipRecord> ISQLRepository.QuickSearchSurname(string p)
         {
-            return db.WardshipRecord.Where(x => x.ChildSurname.ToLower().Contains(p.ToLower())).ToList();
+            return db.WardshipRecord.Where(x => x.ChildSurname.ToLower().Contains(p.ToLower()) && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
 
-        public IEnumerable<WardshipRecord> QuickSearchByForename(string p)
+        IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByForename(string p)
         {
-            return db.WardshipRecord.Where(x => x.ChildForenames.ToLower().Contains(p.ToLower())).ToList();
-        }
-        public IEnumerable<WardshipRecord> QuickSearchByDOB(DateTime? DOB)
-        {
-            return db.WardshipRecord.Where(x => x.ChildDateofBirth == DOB).ToList();
+            return db.WardshipRecord.Where(x => x.ChildForenames.ToLower().Contains(p.ToLower()) && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
 
-        public IEnumerable<WardshipRecord> QuickSearchByType(DateTime? DofOS)
+        IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByDOB(DateTime? DOB)
         {
-            return db.WardshipRecord.Where(x => x.DateOfOS == DofOS).ToList();
+            return db.WardshipRecord.Where(x => x.ChildDateofBirth == DOB && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
         }
-       
 
+        IEnumerable<WardshipRecord> ISQLRepository.QuickSearchByType(DateTime? DofOS)
+        {
+            return db.WardshipRecord.Where(x => x.DateOfOS == DofOS && (!x.Deleted.HasValue || x.Deleted == false)).ToList();
+        }
         #endregion
 
         #region Wardships records and collections
-            public WardshipRecord GetWardshipRecordByID(int id)
-            {
-                return db.WardshipRecord.FirstOrDefault(d => d.WardshipCaseID == id);
-            }
-            public IEnumerable<WardshipRecord> WardshipsGetAll()
-            {
-                return db.WardshipRecord.ToList();
-            }
+        WardshipRecord ISQLRepository.GetWardshipRecordByID(int id)
+        {
+            return db.WardshipRecord.FirstOrDefault(d => d.WardshipCaseID == id);
+        }
+
+        IEnumerable<WardshipRecord> ISQLRepository.WardshipsGetAll()
+        {
+            return db.WardshipRecord.ToList();
+        }
         #endregion
 
-            void IDisposable.Dispose()
-            {
+        #region New Properties Implementation
+        public IEnumerable<CaseType> CaseTypes => db.CaseTypes.ToList();
+        public IEnumerable<Court> Courts => db.Courts.ToList();
+        public IEnumerable<Wardship.Models.Type> Types => db.Types.ToList();
+        public IEnumerable<Gender> Genders => db.Genders.ToList();
+        public IEnumerable<DistrictJudge> DistrictJudges => db.DistrictJudges.ToList();
+        public IEnumerable<Record> Records => db.Records.ToList();
+        public IEnumerable<Lapsed> Lapseds => db.Lapsed.ToList();
+        public IEnumerable<Status> Statuses => db.Statuses.ToList();
+        public IEnumerable<CWO> CWOs => db.CWOs.ToList();
+        public IEnumerable<CAFCASSInvolved> CAFCASSInvolveds => db.CAFCASSInvolveds.ToList();
+        public IEnumerable<CAFCASS> CAFCASSs => db.CAFCASSes.ToList();
+        public IEnumerable<WardshipRecord> WardshipRecords => db.WardshipRecord.ToList();
+        #endregion
 
-            }
+        #region SaveChanges Implementation
+        public void SaveChanges()
+        {
+            db.SaveChanges();
+        }
+        #endregion
 
-            public void AddAuditEvent(AuditEvent Audit)
+        void IDisposable.Dispose()
+        {
+            db.Dispose();
+        }
+
+        public void AddAuditEvent(AuditEvent Audit)
+        {
+            db.AuditEvents.Add(Audit);
+            db.SaveChanges();
+        }
+
+        public void AddWardshipRecord(WardshipRecord record)
+        {
+            db.WardshipRecord.Add(record);
+            db.SaveChanges();
+        }
+
+        public void UpdateWardshipRecord(WardshipRecord record)
+        {
+            var existingRecord = db.WardshipRecord.Find(record.WardshipCaseID);
+            if (existingRecord != null)
             {
-                db.AuditEvents.Add(Audit);
+                db.Entry(existingRecord).CurrentValues.SetValues(record);
                 db.SaveChanges();
             }
+        }
     }
 }
