@@ -25,7 +25,17 @@ namespace Wardship
         /// <returns></returns>
         internal static List<string> pagingDisplay(int pageCount, int pageCurrent)
         {
-            int maxPages = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["displaypages"]);
+            string displayPagesString = System.Configuration.ConfigurationManager.AppSettings["displaypages"];
+            int maxPages = 10; // Default value if the setting is missing or invalid
+
+            if (!string.IsNullOrEmpty(displayPagesString))
+            {
+                if (!int.TryParse(displayPagesString, out maxPages))
+                {
+                    maxPages = 10; // Use default if parsing fails
+                }
+            }
+
             return pagingDisplay(pageCount, pageCurrent, maxPages);
         }
         /// <summary>
@@ -41,7 +51,7 @@ namespace Wardship
             List<string> pages = new List<string>();
 
             //show all
-            if (pageCount < maxPages)
+            if (pageCount <= maxPages)
             {
                 for (int i = 1; i <= pageCount; i++)
                 {
@@ -49,37 +59,41 @@ namespace Wardship
                 }
                 return pages;
             }
+
             // set halfway break points
             int halfSplitFirstHalfMax = (maxPages - 1) / 2;
             int halfSplitSecondHalfMin = (pageCount - halfSplitFirstHalfMax) + 1;
+
             if ((pageCurrent <= halfSplitFirstHalfMax) || (pageCurrent >= halfSplitSecondHalfMin))
             {
                 for (int i = 1; i <= pageCount; i++)
                 {
-                    if ((i <= halfSplitFirstHalfMax) || (i >= halfSplitSecondHalfMin))
+                    if ((i <= halfSplitFirstHalfMax) || (i >= halfSplitSecondHalfMin) || i == pageCurrent)
                     {
                         pages.Add(i.ToString());
                     }
-                    else
+                    else if (pages.Last() != "...")
                     {
                         pages.Add("...");
-                        i = halfSplitSecondHalfMin - 1;
                     }
                 }
-                return pages;
             }
-            //Current page must be in the middle then!
-            for (int i = 1; i <= pageCount; i++)
+            else
             {
-                if ((i <= 3) || (i >= pageCount - 2) || ((i >= (pageCurrent - 2)) && (i <= (pageCurrent + 2))))
+                //Current page is in the middle
+                for (int i = 1; i <= pageCount; i++)
                 {
-                    pages.Add(i.ToString());
-                }
-                else if (pages.Last().ToString() != "...")
-                {
-                    pages.Add("...");
+                    if ((i <= 3) || (i >= pageCount - 2) || ((i >= (pageCurrent - 2)) && (i <= (pageCurrent + 2))))
+                    {
+                        pages.Add(i.ToString());
+                    }
+                    else if (pages.Last() != "...")
+                    {
+                        pages.Add("...");
+                    }
                 }
             }
+
             return pages;
         }
 
