@@ -79,23 +79,23 @@
             @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Index", "Report", Model, Model.WardshipRecordsList))
         }
 
-        <br />
-
-        <div class="export-container">
-            @using (Html.BeginForm("ExportToExcel", "Report", FormMethod.Post))
-            {
-                @Html.HiddenFor(m => m.ReportBegin)
-                @Html.HiddenFor(m => m.ReportFinal)
-                <input type="submit" value="Export to Excel" class="btn btn-primary" />
-            }
-        </div>
-
-        <style>
-            .export-container {
-                text-align: left;
-                margin-top: 10px;
-            }
-        </style>
-
     </fieldset>
+
+    <br />
+
+    <div class="export-container">
+        @using (Html.BeginForm("ExportToExcel", "Report", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.ReportBegin)
+            @Html.HiddenFor(m => m.ReportFinal)
+            <input type="submit" value="Export to Excel" class="btn btn-primary" />
+        }
+    </div>
+
+    <style>
+        .export-container {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
 }
