@@ -1,0 +1,101 @@
+@using Wardship.Helpers
+@using Wardship.Models
+@using PagedList
+@model Wardship.Models.Report
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="@Url.Content("~/Content/newPagedListButtons.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+
+@using (Html.BeginForm("Index", "Report", FormMethod.Post, new { autocomplete = "off" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ReportBegin)
+    @Html.HiddenFor(m => m.ReportFinal)
+
+    <fieldset>
+        <legend>Report Results</legend>
+
+        <p>Report period: @Model.ReportBegin.ToShortDateString() to @Model.ReportFinal.ToShortDateString()</p>
+
+        @{
+            int totalItems = 0;
+            if (ViewBag.TotalRecords != null)
+            {
+                totalItems = (int)ViewBag.TotalRecords;
+            }
+        }
+
+        <p>Total number of records found: @totalItems</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date Issued</th>
+                    <th>Wardship Number</th>
+                    <th>Child Surname</th>
+                    <th>Child Forenames</th>
+                    <th>Gender</th>
+                    <th>Child Date of Birth</th>
+                    <th>Case Type</th>
+                    <th>Type</th>
+                    <th>Record</th>
+                    <th>Judge</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.WardshipRecordsList != null && Model.WardshipRecordsList.Any())
+                {
+                    foreach (var record in Model.WardshipRecordsList)
+                    {
+                        <tr>
+                            <td>@(record.DateOfOS.HasValue ? record.DateOfOS.Value.ToShortDateString() : "")</td>
+                            <td>@record.FileNumber</td>
+                            <td>@record.ChildSurname</td>
+                            <td>@record.ChildForenames</td>
+                            <td>@(record.Gender != null ? record.Gender.Detail : "")</td>
+                            <td>@(record.ChildDateofBirth.HasValue ? record.ChildDateofBirth.Value.ToShortDateString() : "")</td>
+                            <td>@(record.CaseType != null ? record.CaseType.Detail : "")</td>
+                            <td>@(record.Type != null ? record.Type.Detail : "")</td>
+                            <td>@(record.Record != null ? record.Record.Detail : "")</td>
+                            <td>@(record.DistrictJudge != null ? record.DistrictJudge.Name : "")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">No records found for the specified date range.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.WardshipRecordsList != null && Model.WardshipRecordsList.Count > 0)
+        {
+            @(Wardship.Helpers.HtmlHelperExtensions.ReportPaging(Html, "Index", "Report", Model, Model.WardshipRecordsList))
+        }
+
+    </fieldset>
+
+    <br />
+
+    <div class="export-container">
+        @using (Html.BeginForm("ExportToExcel", "Report", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.ReportBegin)
+            @Html.HiddenFor(m => m.ReportFinal)
+            <input type="submit" value="Export to Excel" class="btn btn-primary" />
+        }
+    </div>
+
+    <style>
+        .export-container {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+}

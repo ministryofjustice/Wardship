@@ -570,3 +570,33 @@ span.comment
     background-color:Blue;
     height:5px;
 }
+
+.btn {
+    display: inline-block;
+    border: 1px solid #000000;  /* Thin black border */
+    margin: 0;
+    background-color: #f0f0f0;  /* Light gray background */
+    cursor: pointer;
+    color: #000000;  /* Black text */
+    text-decoration: none;
+    vertical-align: middle;
+    font-size: 1em;
+    background-image: none;
+    border-radius: 2px;
+    padding: 3px 7px;
+    text-align: center;
+    height: 35px;
+    min-width: 40px;
+    overflow: visible;
+}
+
+.btn:hover {
+    background-color: #e0e0e0;  /* Slightly darker gray on hover */
+}
+
+/* For disabled buttons */
+.btn[disabled] {
+    background-color: #d0d0d0;  /* Even darker gray for disabled state */
+    color: #666666;  /* Dark gray text for disabled state */
+    cursor: default;
+}
