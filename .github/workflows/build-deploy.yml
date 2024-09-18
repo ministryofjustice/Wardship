@@ -118,7 +118,7 @@ jobs:
           msbuild "Wardship.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}/WebApp.zip" /p:DeployIisAppPath="Default Web Site"
 
       - name: Publish Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: webapp
           path: ${{ github.workspace }}/WebApp.zip
