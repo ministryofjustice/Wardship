@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - staging
-      - 'RST-*'
+      - 'RST-test-deploy-dev'
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   deploy-dev:
-    if: github.ref == 'refs/heads/RST-*'
+    if: github.ref == 'refs/heads/RST-test-deploy-dev'
     name: Dev - Build & Deploy
     runs-on: windows-2019
     permissions:
