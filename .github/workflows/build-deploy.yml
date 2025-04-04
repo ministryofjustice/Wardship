@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - staging
-      - 'RST-**'
+      - 'RST-*'
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   deploy-dev:
-    if: github.ref == 'refs/heads/RST-**'
+    if: startsWith(github.ref, 'refs/heads/RST-')
     name: Dev - Build & Deploy
     runs-on: windows-2019
     permissions:
@@ -53,7 +53,7 @@ jobs:
           msbuild "Wardship.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}/WebApp.zip" /p:DeployIisAppPath="Default Web Site"
 
       - name: Publish Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: webapp
           path: ${{ github.workspace }}/WebApp.zip
@@ -118,7 +118,7 @@ jobs:
           msbuild "Wardship.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}/WebApp.zip" /p:DeployIisAppPath="Default Web Site"
 
       - name: Publish Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: webapp
           path: ${{ github.workspace }}/WebApp.zip
@@ -183,7 +183,7 @@ jobs:
           msbuild "Wardship.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}/WebApp.zip" /p:DeployIisAppPath="Default Web Site"
 
       - name: Publish Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: webapp
           path: ${{ github.workspace }}/WebApp.zip
