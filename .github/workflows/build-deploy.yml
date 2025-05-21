@@ -48,16 +48,11 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore
 
-      - name: Inject Secret keys into application
+      - name: Inject Secrets into application
         run: |
           (Get-Content -Path "Wardship/ApplicationInsights.config" -Raw) -replace '__APPINSIGHTS_INSTRUMENTATION_KEY__', '${{ secrets.APPINSIGHTS_INSTRUMENTATION_KEY }}' | Set-Content -Path "Wardship/ApplicationInsights.config"
         shell: powershell
          
-      - name: Debugging ApplicationInsights.config 
-        run: Get-Content -Path "Wardship/ApplicationInsights.config"
-        shell: powershell
-
-
       - name: Build and Publish
         run: |
           msbuild "Wardship.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}/WebApp.zip" /p:DeployIisAppPath="Default Web Site"
