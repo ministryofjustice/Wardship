@@ -45,6 +45,10 @@ jobs:
           choco install netfx-4.6.1-devpack -y
         shell: powershell
 
+      - name: Install .NET Framework 4.8 Developer Pack
+        run: choco install netfx-4.8-devpack -y
+        shell: powershell
+
       - name: Restore NuGet packages
         run: nuget restore
 
@@ -110,6 +114,10 @@ jobs:
           choco install netfx-4.6.1-devpack -y
         shell: powershell
 
+      - name: Install .NET Framework 4.8 Developer Pack
+        run: choco install netfx-4.8-devpack -y
+        shell: powershell
+
       - name: Restore NuGet packages
         run: nuget restore
 
@@ -173,6 +181,10 @@ jobs:
       - name: Install .NET Framework 4.6.1 Developer Pack
         run: |
           choco install netfx-4.6.1-devpack -y
+        shell: powershell
+
+      - name: Install .NET Framework 4.8 Developer Pack
+        run: choco install netfx-4.8-devpack -y
         shell: powershell
 
       - name: Restore NuGet packages
