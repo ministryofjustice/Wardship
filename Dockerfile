@@ -1,5 +1,6 @@
 # Pull the Windows Server IIS base image
-FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
+# Redploy
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2022
 
 # Create a directory for your application
 WORKDIR C:/app
@@ -17,7 +18,7 @@ RUN powershell -Command " \
 
 # Download ServiceMonitor
 RUN powershell -Command " \
-    Invoke-WebRequest -Uri 'https://dotnetbinaries.blob.core.windows.net/servicemonitor/2.0.1.6/ServiceMonitor.exe' -OutFile 'C:\ServiceMonitor.exe' \
+    Invoke-WebRequest -Uri 'https://github.com/microsoft/IIS.ServiceMonitor/releases/download/v2.0.1.10/ServiceMonitor.exe' -OutFile 'C:\ServiceMonitor.exe' \
     "
 
 # Expose the IIS port
