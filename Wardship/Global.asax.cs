@@ -76,7 +76,8 @@ namespace Wardship
         }
         protected void Application_Start(object sender, EventArgs e)
         {
-            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072 | (SecurityProtocolType)12288 | (SecurityProtocolType)48; // only allow TLSV1.2, TLSV1.3 and SSL3
+            _cloudWatchLogger.LogInfo("Application_Startup (dotnet 4.8 upgrade)...");
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             ViewEngines.Engines.Clear();
