@@ -22,7 +22,7 @@ jobs:
   deploy-dev:
     if: startsWith(github.ref, 'refs/heads/RST-')
     name: Dev - Build & Deploy
-    runs-on: windows-2019
+    runs-on: windows-2022
     permissions:
       contents: write
       issues: write
@@ -43,6 +43,10 @@ jobs:
       - name: Install .NET Framework 4.6.1 Developer Pack
         run: |
           choco install netfx-4.6.1-devpack -y
+        shell: powershell
+
+      - name: Install .NET Framework 4.8 Developer Pack
+        run: choco install netfx-4.8-devpack -y
         shell: powershell
 
       - name: Restore NuGet packages
@@ -87,7 +91,7 @@ jobs:
   deploy-preprod:
     if: github.ref == 'refs/heads/staging'
     name: Preprod - Build & Deploy
-    runs-on: windows-2019
+    runs-on: windows-2022
     permissions:
       contents: write
       issues: write
@@ -108,6 +112,10 @@ jobs:
       - name: Install .NET Framework 4.6.1 Developer Pack
         run: |
           choco install netfx-4.6.1-devpack -y
+        shell: powershell
+
+      - name: Install .NET Framework 4.8 Developer Pack
+        run: choco install netfx-4.8-devpack -y
         shell: powershell
 
       - name: Restore NuGet packages
@@ -152,7 +160,7 @@ jobs:
   deploy-prod:
     if: github.ref == 'refs/heads/master'
     name: Prod - Build & Deploy
-    runs-on: windows-2019
+    runs-on: windows-2022
     permissions:
       contents: write
       issues: write
@@ -173,6 +181,10 @@ jobs:
       - name: Install .NET Framework 4.6.1 Developer Pack
         run: |
           choco install netfx-4.6.1-devpack -y
+        shell: powershell
+
+      - name: Install .NET Framework 4.8 Developer Pack
+        run: choco install netfx-4.8-devpack -y
         shell: powershell
 
       - name: Restore NuGet packages
