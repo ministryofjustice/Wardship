@@ -46,8 +46,8 @@ namespace Wardship.Models
 
         [Required, MaxLength(80), Display(Name = "Document Name")]
         public string templateName { get; set; }
-        [Required]
         public string templateXML { get; set; }
+        public byte[] templateDOTX { get; set; }
         public bool active { get; set; }
         public DateTime? deactivated { get; set; }
         [MaxLength(50)]
@@ -68,7 +68,7 @@ namespace Wardship.Models
 
             WardshipDataID = Wardshipdata.WardshipCaseID;
             Path = string.Format(serverPath + "{0}", Wardshipdata.WardshipCaseID);
-            fileName = string.Format("SCD26Location-{0}.doc", Wardshipdata.WardshipCaseID);
+            fileName = string.Format("SCD26Location-{0}.docx", Wardshipdata.WardshipCaseID);
             fullName = string.Format("{0}\\{1}", Path, fileName);
             //Ensure folder exists to create outoput
             //if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
@@ -78,7 +78,7 @@ namespace Wardship.Models
         {
             WardshipDataID = Wardshipdata.WardshipCaseID;
             Path = string.Format(serverPath + "{0}", Wardshipdata.WardshipCaseID);
-            fileName = string.Format("{0}-{1}.doc", template.templateName, Wardshipdata.WardshipCaseID);
+            fileName = string.Format("{0}-{1}.docx", template.templateName, Wardshipdata.WardshipCaseID);
             fullName = string.Format("{0}\\{1}", Path, fileName);
             //Ensure folder exists to create outoput
             //if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
