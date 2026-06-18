@@ -31,7 +31,7 @@ namespace Wardship.Areas.Admin.Controllers
 
         public ActionResult Open(int id)
         {
-            WordTemplate WordTemplate = db.GetTemplateByID(id);
+            WordTemplate template = db.GetTemplateByID(id);
             return File(template.templateDOTX, "application/vnd.openxmlformats-officedocument.wordprocessingml.template", template.templateName + ".dotx"); 
         }
         public ActionResult Create()
