@@ -72,6 +72,12 @@ namespace Wardship.Areas.Admin.Controllers
                     return View(model);
                 }
             }
+            catch (NotUploaded ex)
+            {
+                model.ErrorMessage = genericFunctions.GetLowestError(ex);
+                model.UploadSuccessful = false;
+                return View(model);  // returns to form with error message visible
+            }
             catch (Exception ex)
             {
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
