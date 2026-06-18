@@ -59,6 +59,9 @@ namespace Wardship.Areas.Admin.Controllers
                         fileBytes = ms.ToArray();
                     }
 
+                    if (!SensitivityLabelValidator.HasSensitivityLabel(fileBytes))
+                        throw new NotUploaded("The template must have a Microsoft sensitivity label applied before uploading. Please open the file in Word, apply the appropriate label, and re-upload.");
+
                     model.Template.templateDOTX = fileBytes;
                     model.Template.active = true;
                     db.AddNewTemplate(model.Template);
@@ -101,10 +104,12 @@ namespace Wardship.Areas.Admin.Controllers
                 //Tests before uploading
                 if (model.uploadFile != null)
                 {
-                    if (!Path.GetExtension(model.uploadFile.FileName.ToLower()).EndsWith("dotx")) {
-                         throw new NotUploaded("Please select a .dotx file to upload"); 
-                         }
-                    if (model.uploadFile.ContentLength == 0) {
+                    if (!Path.GetExtension(model.uploadFile.FileName.ToLower()).EndsWith("dotx"))
+                    {
+                        throw new NotUploaded("Please select a .dotx file to upload");
+                    }
+                    if (model.uploadFile.ContentLength == 0)
+                    {
                         throw new NotUploaded("The selected file appears to be empty, please select a different file and re-try");
                         }
                     //Upload
