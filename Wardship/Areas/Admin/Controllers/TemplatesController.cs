@@ -79,7 +79,7 @@ namespace Wardship.Areas.Admin.Controllers
             {
                 model.ErrorMessage = genericFunctions.GetLowestError(ex);
                 model.UploadSuccessful = false;
-                return View(model);  // returns to form with error message visible
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -119,6 +119,10 @@ namespace Wardship.Areas.Admin.Controllers
                         model.uploadFile.InputStream.CopyTo(ms);
                         fileBytes = ms.ToArray();
                     }
+
+                    if (!SensitivityLabelValidator.HasSensitivityLabel(fileBytes))
+                        throw new NotUploaded("The template must have a Microsoft sensitivity label applied before uploading. Please open the file in Word, apply the appropriate label, and re-upload.");
+
                     model.Template.templateDOTX = fileBytes;
                 }
                 else
@@ -128,6 +132,12 @@ namespace Wardship.Areas.Admin.Controllers
 
                 db.UpdateTemplate(model.Template);
                 return RedirectToAction("Index");
+            }
+            catch (NotUploaded ex)
+            {
+                model.ErrorMessage = genericFunctions.GetLowestError(ex);
+                model.UploadSuccessful = false;
+                return View(model);
             }
             catch (Exception ex)
             {
