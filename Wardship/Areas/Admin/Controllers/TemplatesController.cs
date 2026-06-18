@@ -172,7 +172,6 @@ namespace Wardship.Areas.Admin.Controllers
                 model.active = false;
                 model.deactivated = DateTime.Now;
                 model.deactivatedBy = ((Wardship.ICurrentUser)User).DisplayName;
-                //model.templateXML = null;
                 db.UpdateTemplate(model);
                 return RedirectToAction("Index");
             }

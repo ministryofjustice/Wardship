@@ -296,6 +296,7 @@
     </Compile>
     <Compile Include="Helpers\AjaxPagerHelper.cs" />
     <Compile Include="Helpers\helpers.cs" />
+    <Compile Include="Helpers\SensitivityLabelValidator.cs" />
     <Compile Include="Infrastructure\ControllersInstaller.cs" />
     <Compile Include="Infrastructure\PresentationLayerInstaller.cs" />
     <Compile Include="Infrastructure\WindsorControllerFactory.cs" />
