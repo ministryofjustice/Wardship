@@ -164,14 +164,14 @@ namespace Wardship.Controllers
 
                 // Resolve child name
                 string childName = string.Empty;
-                if (wardshipCaseID != 0 && wardshipRecord != null)
+                if (WardshipCaseID != 0 && WardshipRecord != null)
                 {
-                    if (wardshipRecord.ChildForenames != null && wardshipRecord.ChildSurname != null)
-                        childName = wardshipRecord.ChildOutputName.ToString();
-                    else if (wardshipRecord.ChildForenames == null && wardshipRecord.ChildSurname != null)
-                        childName = wardshipRecord.ChildSurname;
-                    else if (wardshipRecord.ChildForenames != null && wardshipRecord.ChildSurname == null)
-                        childName = wardshipRecord.ChildForenames;
+                    if (WardshipRecord.ChildForenames != null && WardshipRecord.ChildSurname != null)
+                        childName = WardshipRecord.ChildOutputName.ToString();
+                    else if (WardshipRecord.ChildForenames == null && WardshipRecord.ChildSurname != null)
+                        childName = WardshipRecord.ChildSurname;
+                    else if (WardshipRecord.ChildForenames != null && WardshipRecord.ChildSurname == null)
+                        childName = WardshipRecord.ChildForenames;
                 }
                 else
                 {
@@ -187,7 +187,7 @@ namespace Wardship.Controllers
                     }
                 }
 
-                replacements.Add("||CHILDFULLNAME||", childName);
+                replacementFields.Add("||CHILDFULLNAME||", childName);
 
                 byte[] fileBytes = GenerateDocument(template.templateDOTX, replacementFields);
 
