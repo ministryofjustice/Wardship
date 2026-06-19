@@ -199,7 +199,7 @@ namespace Wardship.Controllers
             {
                 // redirect to error page
                 ErrorModel errModel = new ErrorModel(2);
-                errModel.ErrorMessage = string.Format("Could not load SearchTemplate {0}", RefNum);
+                errModel.ErrorMessage = string.Format("Could not generate document due to {0} ", ex.Message);
                 TempData["ErrorModel"] = errModel;
                 _logger.LogError(ex, $"Exception in QuickSearchController in Print method, for user {User.Identity.Name}");
                 return RedirectToAction("IndexByModel", "Error", new { area = "", model = errModel ?? null });
@@ -224,6 +224,12 @@ namespace Wardship.Controllers
 
                     var body = wordDoc.MainDocumentPart.Document.Body;
 
+                    if (replacementFields.ContainsKey("||ADDRESS||"))
+                    {
+                        ReplaceTextWithLineBreaks(body, "||ADDRESS||", replacementFields["||ADDRESS||"]);
+                        replacementFields.Remove("||ADDRESS||");
+                    }
+
                     foreach (var text in body.Descendants<Text>())
                     {
                         foreach (var replacement in replacementFields)
@@ -241,6 +247,32 @@ namespace Wardship.Controllers
             }
         }
 
-  
+        private void ReplaceTextWithLineBreaks(Body body, string placeholder, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                foreach (var text in body.Descendants<Text>().Where(t => t.Text.Contains(placeholder)).ToList())
+                {
+                    text.Text = text.Text.Replace(placeholder, string.Empty);
+                }
+                return;
+            }
+
+            var lines = value.Split(new[] { "\n" }, StringSplitOptions.None);
+
+            foreach (var text in body.Descendants<Text>().Where(t => t.Text.Contains(placeholder)).ToList())
+            {
+                var run = text.Parent as Run;
+                if (run == null) continue;
+
+                text.Text = text.Text.Replace(placeholder, lines[0]);
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    run.Append(new Break());
+                    run.Append(new Text(lines[i]));
+                }
+            }
+        }
     }
 }

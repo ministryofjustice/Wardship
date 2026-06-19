@@ -61,7 +61,7 @@ namespace Wardship.Models
         {
             get
             {
-                return string.Join("\v", populatedLines.Where(l => l != null));
+                return string.Join("\n", populatedLines.Where(l => l != null));
             }
         }
 
