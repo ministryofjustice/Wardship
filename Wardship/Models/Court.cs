@@ -74,7 +74,7 @@ namespace Wardship.Models
         {
             get
             {
-                return string.Join("\n", popLines.ToArray());
+                return string.Join("\n", populatedLines.Where(l => l != null));
             }
         }
 
