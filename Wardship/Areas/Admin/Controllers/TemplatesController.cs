@@ -44,7 +44,6 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(TemplateEdit model)
         {
-            var xml = string.Empty;
             try
             {
                 //Tests before uploading

@@ -68,20 +68,13 @@ namespace Wardship.Models
             }
         }
 
-        /// <summary>
-        /// PrintAddressMultiLine return all populated address lines separated with &lt;w:br/> tags for export to XML documents
-        /// </summary>
+
         [Display(Name = "Address")]
         public virtual string PrintAddressMultiLine
         {
             get
             {
-                List<string> popLines = new List<string>();
-                foreach (var line in populatedLines)
-                {
-                    popLines.Add(SecurityElement.Escape(line));
-                }
-                return string.Join("<w:br/>", popLines.ToArray());
+                return string.Join("\n", popLines.ToArray());
             }
         }
 
