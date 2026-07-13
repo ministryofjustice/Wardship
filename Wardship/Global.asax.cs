@@ -85,9 +85,9 @@ namespace Wardship
             ViewEngines.Engines.Add(new WebFormViewEngine());
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-            //Database.SetInitializer<DataContext>(null);
-            Database.SetInitializer(
-               new MigrateDatabaseToLatestVersion<DataContext, Migrations.Configuration>());
+            Database.SetInitializer<DataContext>(null);
+            // Database.SetInitializer(
+            //    new MigrateDatabaseToLatestVersion<DataContext, Migrations.Configuration>());
             BootstrapContainer();
             ServiceLayer.UnitOfWorkHelper.CurrentDataStore = new HttpContextDataStore();
         }
