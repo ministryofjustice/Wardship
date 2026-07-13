@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using PagedList;
-using System.Security;
 
 
 namespace Wardship.Models
@@ -58,17 +57,11 @@ namespace Wardship.Models
             }
         }
 
-        //Security element replaces invalid xml with equivilant when using the address block above
         public virtual string printAddressMultiLine
         {
             get
             {
-                List<string> PopulateLines = new List<string>();
-                foreach (var line in populatedLines)
-                {
-                    PopulateLines.Add(SecurityElement.Escape(line));
-                }
-                return string.Join("<w:br/>", PopulateLines.ToArray());
+                return string.Join("\n", populatedLines.Where(l => l != null));
             }
         }
 

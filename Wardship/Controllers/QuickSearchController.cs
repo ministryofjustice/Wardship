@@ -1,10 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Wardship.Models;
 using PagedList;
 using System.Xml;
 using System.Text;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using TPLibrary.Logger;
 
 namespace Wardship.Controllers
@@ -146,70 +151,55 @@ namespace Wardship.Controllers
                 //Load The Template object
                 WordTemplate template = db.GetTemplateByID(RefNum);
 
-                //Create XML object for Template & put data in
-                XmlDocument xDoc = new XmlDocument();
 
-                //Set XML data of doument from template object
-                xDoc.InnerXml = template.templateXML;
-
-                //Applicant address
-                xDoc.InnerXml = xDoc.InnerXml.Replace("||ADDRESS||", model.printAddressMultiLine);
-                //References
-                xDoc.InnerXml = xDoc.InnerXml.Replace("||DATE||", DateTime.Today.ToShortDateString());
-
-                if (WardshipCaseID != 0)
+                //Build replacement dictonary
+                var replacementFields = new Dictionary<string, string>
                 {
-                  
-               
-                    //some child names can be blank
+                    //Applicant address
+                    { "||ADDRESS||", model.printAddressMultiLine ?? string.Empty },
+                    //References
+                    { "||DATE||", DateTime.Today.ToShortDateString() },
+                    //USERNAME
+                    { "||USERNAME||", (User as Wardship.ICurrentUser).DisplayName }
+                };
+
+                // Resolve child name
+                string childName = string.Empty;
+                if (WardshipCaseID != 0 && WardshipRecord != null)
+                {
                     if (WardshipRecord.ChildForenames != null && WardshipRecord.ChildSurname != null)
-                    {
-                        xDoc.InnerXml = xDoc.InnerXml.Replace("||CHILDFULLNAME||", WardshipRecord.ChildOutputName.ToString());
-                    }
-                    if (WardshipRecord.ChildForenames == null && WardshipRecord.ChildSurname != null)
-                    {
-                        xDoc.InnerXml = xDoc.InnerXml.Replace("||CHILDFULLNAME||", WardshipRecord.ChildSurname.ToString());
-                    }
-                    if (WardshipRecord.ChildForenames != null && WardshipRecord.ChildSurname == null)
-                    {
-                        xDoc.InnerXml = xDoc.InnerXml.Replace("||CHILDFULLNAME||", WardshipRecord.ChildForenames.ToString());
-                    }
-
+                        childName = WardshipRecord.ChildOutputName.ToString();
+                    else if (WardshipRecord.ChildForenames == null && WardshipRecord.ChildSurname != null)
+                        childName = WardshipRecord.ChildSurname;
+                    else if (WardshipRecord.ChildForenames != null && WardshipRecord.ChildSurname == null)
+                        childName = WardshipRecord.ChildForenames;
                 }
-
                 else
                 {
-                    AuditEvent Auditmodel = new AuditEvent();
-                    Auditmodel = db.AuditEventsGetAll().LastOrDefault();
-
-                    if (Auditmodel.ChildForenames != null && Auditmodel.ChildSurname != null)
+                    AuditEvent auditModel = db.AuditEventsGetAll().LastOrDefault();
+                    if (auditModel != null)
                     {
-                        xDoc.InnerXml = xDoc.InnerXml.Replace("||CHILDFULLNAME||", Auditmodel.ChildOutputName.ToString());
+                        if (auditModel.ChildForenames != null && auditModel.ChildSurname != null)
+                            childName = auditModel.ChildOutputName.ToString();
+                        else if (auditModel.ChildForenames == null && auditModel.ChildSurname != null)
+                            childName = auditModel.ChildSurname;
+                        else if (auditModel.ChildForenames != null && auditModel.ChildSurname == null)
+                            childName = auditModel.ChildForenames;
                     }
-                    if (Auditmodel.ChildForenames == null && Auditmodel.ChildSurname != null)
-                    {
-                        xDoc.InnerXml = xDoc.InnerXml.Replace("||CHILDFULLNAME||", Auditmodel.ChildSurname.ToString());
-                    }
-                    if (Auditmodel.ChildForenames != null && Auditmodel.ChildSurname == null)
-                    {
-                        xDoc.InnerXml = xDoc.InnerXml.Replace("||CHILDFULLNAME||", Auditmodel.ChildForenames.ToString());
-                    }
-
                 }
-               
 
-                //USERNAME
-                xDoc.InnerXml = xDoc.InnerXml.Replace("||USERNAME||", (User as Wardship.ICurrentUser).DisplayName);
+                replacementFields.Add("||CHILDFULLNAME||", childName);
+
+                byte[] fileBytes = GenerateDocument(template.templateDOTX, replacementFields);
 
                 //Return saved document (to the screen with the data embedded....)
-                return File(ConvertToBytes(xDoc), "application/msword", template.templateName + ".doc"); //return byte version
-
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", template.templateName + ".docx"); //return byte version
             }
             catch (Exception ex)
             {
                 // redirect to error page
                 ErrorModel errModel = new ErrorModel(2);
-                errModel.ErrorMessage = string.Format("Could not load SearchTemplate {0}", RefNum);
+                errModel.ErrorMessage = string.Format("Could not generate document due to {0} ", ex.Message);
                 TempData["ErrorModel"] = errModel;
                 _logger.LogError(ex, $"Exception in QuickSearchController in Print method, for user {User.Identity.Name}");
                 return RedirectToAction("IndexByModel", "Error", new { area = "", model = errModel ?? null });
@@ -219,14 +209,70 @@ namespace Wardship.Controllers
         }
 
 
-
-        public static byte[] ConvertToBytes(XmlDocument doc)
+        private byte[] GenerateDocument(byte[] templateBytes, Dictionary<string, string> replacementFields)
         {
-            Encoding encoding = Encoding.UTF8;
-            byte[] docAsBytes = encoding.GetBytes(doc.OuterXml);
-            return docAsBytes;
+            // Copy template bytes into a new stream so it produces a .docx output
+            using (var outputStream = new MemoryStream())
+            {
+                outputStream.Write(templateBytes, 0, templateBytes.Length);
+                outputStream.Position = 0;
+
+                using (var wordDoc = WordprocessingDocument.Open(outputStream, true))
+                {
+                    // Convert from template to document
+                    wordDoc.ChangeDocumentType(WordprocessingDocumentType.Document);
+
+                    var body = wordDoc.MainDocumentPart.Document.Body;
+
+                    if (replacementFields.ContainsKey("||ADDRESS||"))
+                    {
+                        ReplaceTextWithLineBreaks(body, "||ADDRESS||", replacementFields["||ADDRESS||"]);
+                        replacementFields.Remove("||ADDRESS||");
+                    }
+
+                    foreach (var text in body.Descendants<Text>())
+                    {
+                        foreach (var replacement in replacementFields)
+                        {
+                            if (text.Text.Contains(replacement.Key))
+                            {
+                                text.Text = text.Text.Replace(replacement.Key, replacement.Value); 
+                            }
+                        }
+                    }
+                    wordDoc.MainDocumentPart.Document.Save();
+                }
+
+                return outputStream.ToArray();
+            }
         }
 
-  
+        private void ReplaceTextWithLineBreaks(Body body, string placeholder, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                foreach (var text in body.Descendants<Text>().Where(t => t.Text.Contains(placeholder)).ToList())
+                {
+                    text.Text = text.Text.Replace(placeholder, string.Empty);
+                }
+                return;
+            }
+
+            var lines = value.Split(new[] { "\n" }, StringSplitOptions.None);
+
+            foreach (var text in body.Descendants<Text>().Where(t => t.Text.Contains(placeholder)).ToList())
+            {
+                var run = text.Parent as Run;
+                if (run == null) continue;
+
+                text.Text = text.Text.Replace(placeholder, lines[0]);
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    run.Append(new Break());
+                    run.Append(new Text(lines[i]));
+                }
+            }
+        }
     }
 }

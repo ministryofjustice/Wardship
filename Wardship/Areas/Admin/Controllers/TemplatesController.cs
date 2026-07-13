@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using Wardship.Models;
+using Wardship.Helpers;
 using System.IO;
 using System.Xml;
 using System.Web.ModelBinding;
@@ -31,10 +32,8 @@ namespace Wardship.Areas.Admin.Controllers
 
         public ActionResult Open(int id)
         {
-            WordTemplate WordTemplate = db.GetTemplateByID(id);
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.InnerXml = WordTemplate.templateXML;
-            return File(genericFunctions.ConvertToBytes(xDoc), "application/msword", WordTemplate.templateName + ".xml"); 
+            WordTemplate template = db.GetTemplateByID(id);
+            return File(template.templateDOTX, "application/vnd.openxmlformats-officedocument.wordprocessingml.template", template.templateName + ".dotx"); 
         }
         public ActionResult Create()
         {
@@ -45,24 +44,25 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(TemplateEdit model)
         {
-            var xml = string.Empty;
             try
             {
                 //Tests before uploading
                 if (model.uploadFile != null)
                 {
-                    if (!Path.GetExtension(model.uploadFile.FileName.ToLower()).EndsWith("xml")) { throw new NotUploaded("Please select an XML file to upload"); }
+                    if (!Path.GetExtension(model.uploadFile.FileName.ToLower()).EndsWith("dotx")) { throw new NotUploaded("Please select a .dotx file to upload"); }
                     if (model.uploadFile.ContentLength == 0) { throw new NotUploaded("The selected file appears to be empty, please select a different file and re-try"); }
                     //Upload
-                    var fileName = Path.Combine("C:\\WardshipUploads", Path.GetFileName(model.uploadFile.FileName));
-                    (new FileInfo(fileName)).Directory.Create();
-                    model.uploadFile.SaveAs(fileName); //Save to uploads folder     
-                    XmlDocument document = new XmlDocument();
-                    document.Load(fileName);
-                    xml = document.InnerXml;
-                    //Delete file
-                    System.IO.File.Delete(fileName);
-                    model.Template.templateXML = xml;
+                    byte[] fileBytes;
+                    using (var ms = new MemoryStream())
+                    {
+                        model.uploadFile.InputStream.CopyTo(ms);
+                        fileBytes = ms.ToArray();
+                    }
+
+                    if (!SensitivityLabelValidator.HasSensitivityLabel(fileBytes))
+                        throw new NotUploaded("The template must have a Microsoft sensitivity label applied before uploading. Please open the file in Word, apply the appropriate label, and re-upload.");
+
+                    model.Template.templateDOTX = fileBytes;
                     model.Template.active = true;
                     db.AddNewTemplate(model.Template);
                     return RedirectToAction("Index");
@@ -74,6 +74,12 @@ namespace Wardship.Areas.Admin.Controllers
                     ModelState.AddModelError("Error", "Please select a template file");
                     return View(model);
                 }
+            }
+            catch (NotUploaded ex)
+            {
+                model.ErrorMessage = genericFunctions.GetLowestError(ex);
+                model.UploadSuccessful = false;
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -93,32 +99,45 @@ namespace Wardship.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(TemplateEdit model)
         {
-            WordTemplate oldTemplate = db.GetTemplateByID(model.Template.templateID);
-
-            var xml = string.Empty;
             try
             {
                 //Tests before uploading
                 if (model.uploadFile != null)
                 {
-                    if (!Path.GetExtension(model.uploadFile.FileName.ToLower()).EndsWith("xml")) { throw new NotUploaded("Please select an XML file to upload"); }
-                    if (model.uploadFile.ContentLength == 0) { throw new NotUploaded("The selected file appears to be empty, please select a different file and re-try"); }
+                    if (!Path.GetExtension(model.uploadFile.FileName.ToLower()).EndsWith("dotx"))
+                    {
+                        throw new NotUploaded("Please select a .dotx file to upload");
+                    }
+                    if (model.uploadFile.ContentLength == 0)
+                    {
+                        throw new NotUploaded("The selected file appears to be empty, please select a different file and re-try");
+                        }
                     //Upload
-                    var fileName = Path.Combine("C:\\WardshipUploads", Path.GetFileName(model.uploadFile.FileName));
-                    model.uploadFile.SaveAs(fileName); //Save to uploads folder     
-                    XmlDocument document = new XmlDocument();
-                    document.Load(fileName);
-                    xml = document.InnerXml;
-                    //Delete file
-                    System.IO.File.Delete(fileName);
+                    byte[] fileBytes;
+                    using (var ms = new MemoryStream())
+                    {
+                        model.uploadFile.InputStream.CopyTo(ms);
+                        fileBytes = ms.ToArray();
+                    }
+
+                    if (!SensitivityLabelValidator.HasSensitivityLabel(fileBytes))
+                        throw new NotUploaded("The template must have a Microsoft sensitivity label applied before uploading. Please open the file in Word, apply the appropriate label, and re-upload.");
+
+                    model.Template.templateDOTX = fileBytes;
                 }
                 else
                 {
-                    xml = db.GetTemplateByID(model.Template.templateID).templateXML;
+                    model.Template.templateDOTX = db.GetTemplateByID(model.Template.templateID).templateDOTX;
                 }
-                model.Template.templateXML = xml;
+
                 db.UpdateTemplate(model.Template);
                 return RedirectToAction("Index");
+            }
+            catch (NotUploaded ex)
+            {
+                model.ErrorMessage = genericFunctions.GetLowestError(ex);
+                model.UploadSuccessful = false;
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -153,7 +172,6 @@ namespace Wardship.Areas.Admin.Controllers
                 model.active = false;
                 model.deactivated = DateTime.Now;
                 model.deactivatedBy = ((Wardship.ICurrentUser)User).DisplayName;
-                //model.templateXML = null;
                 db.UpdateTemplate(model);
                 return RedirectToAction("Index");
             }

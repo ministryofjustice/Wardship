@@ -67,7 +67,7 @@ namespace Wardship.Models
         public DbSet<Alert> Alerts { get; set; }
 
         /// <summary>
-        /// List of Templates in XML format
+        /// List of Templates in DOTX format
         /// </summary>
         public DbSet<WordTemplate> WordTemplate { get; set; }
 
