@@ -46,7 +46,6 @@ namespace Wardship.Models
 
         [Required, MaxLength(80), Display(Name = "Document Name")]
         public string templateName { get; set; }
-        public string templateXML { get; set; }
         [Required]
         public byte[] templateDOTX { get; set; }
         public bool active { get; set; }
