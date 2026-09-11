@@ -365,9 +365,6 @@
     <Content Include="Content\Images\house.png" />
     <Content Include="Content\Images\house_add.png" />
     <Content Include="Content\Images\information.png" />
-    <Content Include="Content\Images\jHtmlArea.png" />
-    <Content Include="Content\Images\jHtmlArea_Toolbar_Group_BG.png" />
-    <Content Include="Content\Images\jHtmlArea_Toolbar_Group__Btn_Select_BG.png" />
     <Content Include="Content\Images\key.png" />
     <Content Include="Content\Images\lock.png" />
     <Content Include="Content\Images\lock_open.png" />
