@@ -490,8 +490,6 @@
     <Content Include="Scripts\default.js" />
     <Content Include="Scripts\excanvas.js" />
     <Content Include="Scripts\excanvas.min.js" />
-    <Content Include="Scripts\jHtmlArea-0.7.0.min-vsdoc.js" />
-    <Content Include="Scripts\jHtmlArea-0.7.0.min.js" />
     <Content Include="Scripts\jHtmlArea-0.8.js" />
     <Content Include="Scripts\jHtmlArea-0.8.min.js" />
     <Content Include="Scripts\jHtmlArea.ColorPickerMenu-0.8.js" />
