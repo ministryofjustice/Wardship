@@ -413,7 +413,6 @@
     <Content Include="Content\img\nav_right_corner_bottom.gif" />
     <Content Include="Content\img\quote.png" />
     <Content Include="Content\img\white-pixel.gif" />
-    <Content Include="Content\jHtmlArea.css" />
     <Content Include="Content\jHtmlArea\jHtmlArea.ColorPickerMenu.css" />
     <Content Include="Content\jHtmlArea\jHtmlArea.css" />
     <Content Include="Content\jHtmlArea\jHtmlArea.Editor.css" />
