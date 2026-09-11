@@ -473,9 +473,6 @@
     <Content Include="Content\tooltip.css" />
     <Content Include="Global.asax" />
     <Content Include="ReadMe.txt" />
-    <Content Include="Scripts\default.js" />
-    <Content Include="Scripts\excanvas.js" />
-    <Content Include="Scripts\excanvas.min.js" />
     <Content Include="Scripts\jHtmlArea-0.8.js" />
     <Content Include="Scripts\jHtmlArea-0.8.min.js" />
     <Content Include="Scripts\jHtmlArea.ColorPickerMenu-0.8.js" />
