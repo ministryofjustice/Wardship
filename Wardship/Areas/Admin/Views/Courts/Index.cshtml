@@ -68,7 +68,7 @@
     // Remark: all this javascript could be placed in a separate js file
     // to avoid cluttering the views
     $(document).ready(function () {
-        $(".openDialog").live("click", function (e) {
+        $(document).on("click", ".openDialog", function (e) {
             e.preventDefault();
             var title = 'Delete ' + this.data_title + '?';
             $('#dialog').load(this.href, function () {
