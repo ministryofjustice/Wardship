@@ -2,30 +2,58 @@
 using System.Data.Entity;
 using System.Reflection;
 using System;
+using Npgsql;
 
 namespace Wardship.Models
 {
     public class DataContext : DbContext
     {
+        private const string DbNameVariable = "DB_NAME";
+        private const string UsernameVariable = "RDS_USERNAME";
+        private const string PasswordVariable = "RDS_PASSWORD";
+        private const string HostnameVariable = "RDS_HOSTNAME";
+        private const string PortVariable = "RDS_PORT";
+        private const string DataContextNameSetting = "DataContextName";
+        private const string ReadOnlyFlagField = "_bReadOnly";
         public static string GetRDSConnectionString()
         {
             var appConfig = ConfigurationManager.AppSettings;
-
-            string dbname = Environment.GetEnvironmentVariable("DB_NAME");
+            string dbname = Environment.GetEnvironmentVariable(DbNameVariable);
             if (!string.IsNullOrEmpty(dbname))
             {
-                string username = Environment.GetEnvironmentVariable("RDS_USERNAME");
-                string password = Environment.GetEnvironmentVariable("RDS_PASSWORD");
-                string hostname = Environment.GetEnvironmentVariable("RDS_HOSTNAME");
-                string port = Environment.GetEnvironmentVariable("RDS_PORT");
                 var settings = ConfigurationManager.ConnectionStrings[1];
                 var fi = typeof(ConfigurationElement).GetField(
-                              "_bReadOnly",
+                              ReadOnlyFlagField,
                               BindingFlags.Instance | BindingFlags.NonPublic);
                 fi.SetValue(settings, false);
-                settings.ConnectionString = "Server=" + hostname + ";port=" + port + ";database=" + dbname + ";user id=" + username + ";password=" + password;
+                settings.ConnectionString = BuildRDSConnectionString(dbname);
             }
-            return appConfig["DataContextName"];
+            return appConfig[DataContextNameSetting];
+        }
+
+        /// <summary>
+        /// Builds the RDS connection string from the environment variables supplied by the task definition.
+        /// TLS is requested explicitly because RDS for PostgreSQL 15 and later default rds.force_ssl to 1.
+        /// </summary>
+        private static string BuildRDSConnectionString(string dbname)
+        {
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                Host = Environment.GetEnvironmentVariable(HostnameVariable),
+                Database = dbname,
+                Username = Environment.GetEnvironmentVariable(UsernameVariable),
+                Password = Environment.GetEnvironmentVariable(PasswordVariable),
+                SslMode = SslMode.Require,
+                TrustServerCertificate = true
+            };
+
+            int port;
+            if (int.TryParse(Environment.GetEnvironmentVariable(PortVariable), out port))
+            {
+                builder.Port = port;
+            }
+
+            return builder.ConnectionString;
         }
 
         public DataContext()
