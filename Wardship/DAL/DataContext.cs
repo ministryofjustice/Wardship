@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
-using System.Reflection;
 using System;
 using Npgsql;
 
@@ -14,21 +13,31 @@ namespace Wardship.Models
         private const string HostnameVariable = "RDS_HOSTNAME";
         private const string PortVariable = "RDS_PORT";
         private const string DataContextNameSetting = "DataContextName";
-        private const string ReadOnlyFlagField = "_bReadOnly";
-        public static string GetRDSConnectionString()
+
+        /// <summary>
+        /// The connection string is resolved once per process: the environment does not change after the container starts.
+        /// </summary>
+        private static readonly Lazy<string> ConnectionString = new Lazy<string>(ResolveConnectionString);
+
+        /// <summary>
+        /// Uses the RDS environment variables when DB_NAME is set (AWS), otherwise the Web.config connection string (local development).
+        /// </summary>
+        private static string ResolveConnectionString()
         {
-            var appConfig = ConfigurationManager.AppSettings;
             string dbname = Environment.GetEnvironmentVariable(DbNameVariable);
             if (!string.IsNullOrEmpty(dbname))
             {
-                var settings = ConfigurationManager.ConnectionStrings[1];
-                var fi = typeof(ConfigurationElement).GetField(
-                              ReadOnlyFlagField,
-                              BindingFlags.Instance | BindingFlags.NonPublic);
-                fi.SetValue(settings, false);
-                settings.ConnectionString = BuildRDSConnectionString(dbname);
+                return BuildRDSConnectionString(dbname);
             }
-            return appConfig[DataContextNameSetting];
+
+            string name = ConfigurationManager.AppSettings[DataContextNameSetting];
+            var settings = string.IsNullOrEmpty(name) ? null : ConfigurationManager.ConnectionStrings[name];
+            if (settings == null)
+            {
+                throw new ConfigurationErrorsException(
+                    $"{DbNameVariable} is not set and no connection string named '{name}' (appSetting {DataContextNameSetting}) was found in Web.config.");
+            }
+            return settings.ConnectionString;
         }
 
         /// <summary>
@@ -39,25 +48,43 @@ namespace Wardship.Models
         {
             var builder = new NpgsqlConnectionStringBuilder
             {
-                Host = Environment.GetEnvironmentVariable(HostnameVariable),
+                Host = GetRequiredVariable(HostnameVariable),
                 Database = dbname,
-                Username = Environment.GetEnvironmentVariable(UsernameVariable),
-                Password = Environment.GetEnvironmentVariable(PasswordVariable),
+                Username = GetRequiredVariable(UsernameVariable),
+                Password = GetRequiredVariable(PasswordVariable),
                 SslMode = SslMode.Require,
                 TrustServerCertificate = true
             };
 
-            int port;
-            if (int.TryParse(Environment.GetEnvironmentVariable(PortVariable), out port))
+            string portValue = Environment.GetEnvironmentVariable(PortVariable);
+            if (!string.IsNullOrWhiteSpace(portValue))
             {
+                int port;
+                if (!int.TryParse(portValue.Trim(), out port) || port < 1 || port > 65535)
+                {
+                    throw new ConfigurationErrorsException($"Environment variable {PortVariable} is not a valid port number: '{portValue}'.");
+                }
                 builder.Port = port;
             }
 
             return builder.ConnectionString;
         }
 
+        private static string GetRequiredVariable(string variable)
+        {
+            string value = Environment.GetEnvironmentVariable(variable);
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ConfigurationErrorsException($"Environment variable {variable} is required when {DbNameVariable} is set.");
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Passes EF a ready-made Npgsql connection rather than a connection string name, so Web.config never needs modifying at runtime.
+        /// </summary>
         public DataContext()
-            : base(GetRDSConnectionString())
+           : base(new NpgsqlConnection(ConnectionString.Value), contextOwnsConnection: true)
         { }
 
         //SSG Standard Models
